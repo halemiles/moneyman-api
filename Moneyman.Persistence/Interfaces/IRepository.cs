@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Api.Models;
+using Moneyman.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.Interfaces
+namespace Moneyman.Interfaces
 {
     public interface IRepository<T> 
     {

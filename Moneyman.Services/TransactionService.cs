@@ -1,12 +1,12 @@
 using Api.Interfaces;
-using Api.Data;
-using Api.Models;
+using Moneyman.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System;
 using Moneyman.Domain;
+using Moneyman.Interfaces;
 
-namespace Api.Services
+namespace Moneyman.Services
 {
 	public class TransactionService : ITransactionService
 	{

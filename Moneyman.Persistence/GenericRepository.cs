@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Moneyman.Domain;
 using Microsoft.EntityFrameworkCore;
-using Api.Interfaces;
-using Api.Models;
+using Moneyman.Interfaces;
+using Moneyman.Models;
 
-namespace Api.Data
+namespace Moneyman.Persistence
 {
   public class GenericRepository<T> : IRepository<T> where T : class
   {

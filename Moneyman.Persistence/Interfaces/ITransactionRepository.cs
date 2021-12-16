@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Api.Models;
+using Moneyman.Models;
 using Moneyman.Domain;
 
-namespace Api.Interfaces
+namespace Moneyman.Interfaces
 {
     public interface ITransactionRepository : IRepository<Transaction>
     { 
