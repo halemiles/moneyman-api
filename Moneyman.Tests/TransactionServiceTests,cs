@@ -1,0 +1,32 @@
+using Moq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Api.Interfaces;
+using Moneyman.Services;
+
+namespace Moneyman.Tests
+{
+    [TestClass]
+    public class TransactionServiceTests
+    {
+        private Mock<ITransactionService> mockTransactionService;
+
+        [TestInitialize]
+        public void SetUp()
+        {
+            mockTransactionService = new Mock<ITransactionService>();
+        }
+
+        [TestMethod]
+        public void Create_WithValidDetails_ReturnsSuccess()
+        {
+            Transaction trans = new Transaction()
+            {
+                Name = "Trans 1",
+                Amount = 100,
+                Active = true
+            };
+
+            var result = mockTransactionService.Update(trans);
+        }
+    }
+}

@@ -1,9 +1,10 @@
+using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Moneyman.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class TransactionRepositoryTests
     {
         [TestMethod]
         public void TestMethod1()

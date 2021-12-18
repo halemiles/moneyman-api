@@ -5,12 +5,14 @@ using System.Linq;
 using System;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
+using Moneyman.Services.Validators;
 
 namespace Moneyman.Services
 {
 	public class TransactionService : ITransactionService
 	{
 		private readonly ITransactionRepository _transactionRepository;
+
 		public TransactionService(ITransactionRepository transactionRepository)
 		{
 			_transactionRepository = transactionRepository;
@@ -18,10 +20,16 @@ namespace Moneyman.Services
 
     public int Update(Transaction model, int Id)
     {
-        _transactionRepository.Update(model, Id);
-        _transactionRepository.Save();
+        TransactionValidator transactionValidator = new TransactionValidator();
+        var validationResult = transactionValidator.Validate(model);
 
-      return Id;
+        if(validationResult.IsValid)
+        {
+          _transactionRepository.Update(model, Id);
+          _transactionRepository.Save();
+        }
+
+      return model.Id;
     }
 
     public void Delete(int id)

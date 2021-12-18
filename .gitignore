@@ -1,2 +1,7 @@
 bin
 obj
+*.db
+*.db-shm
+*.db-wal
+*.dbgit
+mono_crash.*
