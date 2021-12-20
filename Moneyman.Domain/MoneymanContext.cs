@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Data.Sqlite;
 using Moneyman.Domain;
 
-namespace Moneyman.Models
+namespace Moneyman.Domain
 {
     public class MoneymanContext : DbContext
     {        

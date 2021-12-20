@@ -55,7 +55,7 @@ namespace Moneyman.Tests
             var result = sut.Validate(trans);
 
             result.IsValid.Should().Be(false);
-            result.Errors.Count.Should().Be(1);
+            result.Errors.Count.Should().Be(4);
             result.Errors.FirstOrDefault().PropertyName.Should().Be("Name");
         }
 
@@ -71,7 +71,7 @@ namespace Moneyman.Tests
             var result = sut.Validate(trans);
 
             result.IsValid.Should().Be(false);
-            result.Errors.Count.Should().Be(1);
+            result.Errors.Count.Should().Be(3);
             result.Errors.FirstOrDefault().PropertyName.Should().Be("Name");
         }
 
@@ -88,7 +88,7 @@ namespace Moneyman.Tests
             var result = sut.Validate(trans);
 
             result.IsValid.Should().Be(false);
-            result.Errors.Count.Should().Be(1);
+            result.Errors.Count.Should().Be(2);
             result.Errors.FirstOrDefault().PropertyName.Should().Be("Amount");
         }
 
@@ -99,8 +99,8 @@ namespace Moneyman.Tests
             Transaction trans = new Transaction()
             {
                 Name = "Transaction 1",
-                Amount = 0,
-                Date = DateTime.Today
+                Amount = 500,
+                Date = DateTime.MinValue
 
             };
             var result = sut.Validate(trans);

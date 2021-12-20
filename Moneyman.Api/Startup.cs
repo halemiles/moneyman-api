@@ -10,7 +10,7 @@ using Microsoft.Data.Sqlite;
 using Moneyman.Services;
 using Moneyman.Interfaces;
 using Moneyman.Persistence;
-using Moneyman.Models;
+using Moneyman.Domain;
 using Api.Interfaces;
 
 namespace Moneyman.Api

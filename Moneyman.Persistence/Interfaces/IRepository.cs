@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Moneyman.Models;
+using Moneyman.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Moneyman.Interfaces

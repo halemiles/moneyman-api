@@ -4,7 +4,7 @@ using System.Linq;
 using Moneyman.Domain;
 using Microsoft.EntityFrameworkCore;
 using Moneyman.Interfaces;
-using Moneyman.Models;
+using Moneyman.Domain;
 
 namespace Moneyman.Persistence
 {

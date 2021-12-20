@@ -15,7 +15,7 @@ namespace Api.Services
 			_transactionRepository = transactionRepository;
 		}
 
-    public int Update(MoneyTransaction model, int Id)
+    public int Update(Transaction model, int Id)
     {
         _transactionRepository.Update(model, Id);
         _transactionRepository.Save();
@@ -31,12 +31,12 @@ namespace Api.Services
         return;
     }
 
-    public List<MoneyTransaction> GetAll(int userId)
+    public List<Transaction> GetAll(int userId)
     {
       return _transactionRepository.GetAll().ToList();
     }
 
-    public MoneyTransaction GetById(int userId, int id)
+    public Transaction GetById(int userId, int id)
     {
       return _transactionRepository.Get(id);
     }
