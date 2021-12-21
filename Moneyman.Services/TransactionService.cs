@@ -24,7 +24,7 @@ namespace Moneyman.Services
 
         if(validationResult.IsValid)
         {
-          _transactionRepository.Update(model, Id);
+          _transactionRepository.Update(model);
           _transactionRepository.Save();
         }
 

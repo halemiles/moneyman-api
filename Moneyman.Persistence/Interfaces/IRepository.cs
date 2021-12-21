@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Moneyman.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Moneyman.Interfaces
 {
@@ -11,8 +12,8 @@ namespace Moneyman.Interfaces
         void Add(T newObject);
         T Get(int id);
         IEnumerable<T> GetAll();
-        bool Update(T newObject, int id);
+        bool Update(T newObject);
         void Remove(int id);
-        int Save();
+        Task<int> Save();
     }
 }
