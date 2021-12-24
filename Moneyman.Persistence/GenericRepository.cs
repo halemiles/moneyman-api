@@ -3,6 +3,8 @@ using System.Linq;
 using Moneyman.Domain;
 using Microsoft.EntityFrameworkCore;
 using Moneyman.Interfaces;
+using Moneyman.Domain;
+using System.Threading.Tasks;
 
 namespace Moneyman.Persistence
 {
@@ -40,9 +42,10 @@ namespace Moneyman.Persistence
         _context.Set<T>().Remove(entity);
     }
 
-    public virtual bool Update(T newObject, int id)
+    public virtual bool Update(T newObject)
     {
-        var existing = _context.Set<T>().Find(id);
+        IEntity entity = (IEntity)newObject;
+        var existing = _context.Set<T>().Find(entity.Id);
         if (existing == null)
         {
             _context.Add(newObject);
@@ -54,9 +57,9 @@ namespace Moneyman.Persistence
         return true; //TODO - Return failure state
     }
 
-    public virtual int Save()
+    public virtual async Task<int> Save()
     {
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
   }
 }

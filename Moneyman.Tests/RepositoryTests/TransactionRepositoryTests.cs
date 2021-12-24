@@ -12,6 +12,8 @@ using Moneyman.Persistence;
 using Moneyman.Tests.Builders;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Tests
 {
@@ -63,36 +65,6 @@ namespace Tests
         [TestMethod]
         public void Add_WithOneNewTransaction_SaveReturnsOneRecordCount()
         {
-            _contextMock.Setup(x => x.SaveChanges()).Returns(1);
-            Transaction newTransaction = new Transaction()
-            {
-                Name  = "Transaction 1"
-            };
-            
-            var repository = NewTransactionRepository();
-            repository.Add(newTransaction);               
-            var recs = repository.Save();
-            recs.Should().Be(1);
-        }
-
-        [TestMethod]
-        public void Update_WithOneNewTransaction_SaveReturnsOneRecordCount()
-        {
-            _contextMock.Setup(x => x.SaveChanges()).Returns(1);
-            Transaction newTransaction = new Transaction()
-            {
-                Name  = "Transaction 1"
-            };
-            
-            var repository = NewTransactionRepository();
-            repository.Add(newTransaction);               
-            var recs = repository.Save();
-            recs.Should().Be(1);
-        }
-
-        [TestMethod] 
-        public void Update_WithNewValidParams_PropertiesUpdated()
-        {
             var newTransaction = new TransactionBuilder()
                 .WithId(1)
                 .WithAmount(100)
@@ -100,15 +72,13 @@ namespace Tests
                 .WithFrequency(Frequency.Monthly)
                 .WithStartDate(new DateTime(2021,1,1))
                 .Build();
-            
+                
             Transaction existingTransaction = null;
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
                 context.Transactions.Add(newTransaction);
-                context.SaveChanges();  
-
+                context.SaveChanges();
                 existingTransaction = context.Transactions.FirstOrDefault();
-
             }
 
             existingTransaction.Should().NotBeNull();
@@ -117,6 +87,47 @@ namespace Tests
             existingTransaction.Active.Should().Be(true);
             existingTransaction.Frequency.Should().Be(Frequency.Monthly);
             existingTransaction.Date.Should().Be(new DateTime(2021,1,1));
+        }
+
+        [TestMethod] 
+        public async Task Update_WithNewValidParams_PropertiesUpdated()
+        {
+            //var transactionRepository = NewTransactionRepository();
+            var existingTransaction = new TransactionBuilder()
+                .WithId(1)
+                .WithAmount(100)
+                .WithActive(true)
+                .WithFrequency(Frequency.Monthly)
+                .WithStartDate(new DateTime(2021,1,1))
+                .Build();
+
+            var transactionUpdate = new TransactionBuilder()
+                .WithId(1)
+                .WithAmount(500)
+                .WithActive(false)
+                .WithFrequency(Frequency.Weekly)
+                .WithStartDate(new DateTime(2021,10,1))
+                .Build();
+                
+            Transaction updatedTransaction = null;
+            using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
+            {
+                var transactionRepository = new TransactionRepository(context);
+                transactionRepository.Add(existingTransaction);
+                await transactionRepository.Save();
+                
+                transactionRepository.Update(transactionUpdate);
+                await transactionRepository.Save();
+                
+                updatedTransaction = context.Transactions.FirstOrDefault();
+            }
+
+            updatedTransaction.Should().NotBeNull();
+            updatedTransaction.Id.Should().Be(1);
+            updatedTransaction.Amount.Should().Be(500);
+            updatedTransaction.Active.Should().Be(false);
+            updatedTransaction.Frequency.Should().Be(Frequency.Weekly);
+            updatedTransaction.Date.Should().Be(new DateTime(2021,10,1));
         }
 
         public List<Transaction> GenerateTrans()
