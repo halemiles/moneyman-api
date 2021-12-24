@@ -1,6 +1,6 @@
 using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Api.Interfaces;
+using Moneyman.Interfaces;
 using Moneyman.Services;
 
 using Moneyman.Services.Validators;

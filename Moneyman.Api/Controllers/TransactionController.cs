@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
-using Api.Interfaces;
+using Moneyman.Interfaces;
 
 namespace Moneyman.Api.Controllers
 {
@@ -22,11 +22,25 @@ namespace Moneyman.Api.Controllers
             this.transactionService = transactionService;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var transaction = transactionService.GetById(id);
+            return Ok(transaction);
+        }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var transactions = transactionService.GetAll();
+            return Ok(transactions);
+        }
+
         [HttpPost]
-        public IEnumerable<Transaction> Create(Transaction trans)
+        public IActionResult Create(Transaction trans)
         {
             transactionService.Update(trans,0);
-            return new List<Transaction>();
+            return Ok();
         }
     }
 }

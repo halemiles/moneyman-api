@@ -1,9 +1,8 @@
-using Api.Interfaces;
+using Moneyman.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System;
 using Moneyman.Domain;
-using Moneyman.Interfaces;
 using Moneyman.Services.Validators;
 
 namespace Moneyman.Services
@@ -39,12 +38,12 @@ namespace Moneyman.Services
         return;
     }
 
-    public List<Transaction> GetAll(int userId)
+    public List<Transaction> GetAll()
     {
       return _transactionRepository.GetAll().ToList();
     }
 
-    public Transaction GetById(int userId, int id)
+    public Transaction GetById(int id)
     {
       return _transactionRepository.Get(id);
     }
