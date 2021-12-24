@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
@@ -15,11 +16,34 @@ namespace Moneyman.Api.Controllers
         ITransactionService transactionService;
 
         private readonly ILogger<TransactionController> _logger;
+        private readonly IMapper _mapper;
 
-        public TransactionController(ILogger<TransactionController> logger, ITransactionService transactionService)
+        public TransactionController(
+            ILogger<TransactionController> logger,
+            ITransactionService transactionService,
+            IMapper mapper
+        )
         {
             _logger = logger;
             this.transactionService = transactionService;
+            _mapper = mapper;
+        }
+
+        [HttpPost]
+        public IActionResult Create(TransactionDto transactionDto)
+        {
+            var transaction = _mapper.Map<TransactionDto, Transaction>(transactionDto);
+            transactionService.Update(transaction);
+            return Ok();
+        }
+
+        [HttpPut]
+        public IActionResult Update(TransactionDto transactionDto)
+        {
+            var transaction = _mapper.Map<TransactionDto, Transaction>(transactionDto);            
+            transactionService.Update(transaction);
+            
+            return Ok(transaction); //TODO - Convert back to DTO
         }
 
         [HttpGet("{id}")]
@@ -36,12 +60,7 @@ namespace Moneyman.Api.Controllers
             return Ok(transactions);
         }
 
-        [HttpPost]
-        public IActionResult Create(Transaction trans)
-        {
-            transactionService.Update(trans,0);
-            return Ok();
-        }
+        
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
@@ -49,5 +68,6 @@ namespace Moneyman.Api.Controllers
             transactionService.Delete(id);
             return Ok();
         }
+        
     }
 }

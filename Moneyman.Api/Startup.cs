@@ -11,6 +11,8 @@ using Moneyman.Services;
 using Moneyman.Interfaces;
 using Moneyman.Persistence;
 using Moneyman.Domain;
+using Moneyman.Domain.MapperProfiles;
+using AutoMapper;
 
 namespace Moneyman.Api
 {
@@ -50,6 +52,17 @@ namespace Moneyman.Api
 
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ITransactionService, TransactionService>();
+            
+            AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<TransactionProfile>();
+                cfg.AddProfile<TransactionToTransactionDtoProfile>();
+                cfg.AddProfile<TransactionDtoToTransactionProfile>();
+            });
+
+            services.AddSingleton(config);
+            services.AddScoped<IMapper, Mapper>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
