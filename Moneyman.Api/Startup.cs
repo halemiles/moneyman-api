@@ -11,7 +11,6 @@ using Moneyman.Services;
 using Moneyman.Interfaces;
 using Moneyman.Persistence;
 using Moneyman.Domain;
-using Api.Interfaces;
 
 namespace Moneyman.Api
 {
