@@ -42,5 +42,12 @@ namespace Moneyman.Api.Controllers
             transactionService.Update(trans,0);
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            transactionService.Delete(id);
+            return Ok();
+        }
     }
 }
