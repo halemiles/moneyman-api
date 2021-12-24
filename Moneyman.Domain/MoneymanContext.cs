@@ -2,9 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.Sqlite;
 using Moneyman.Domain;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Moneyman.Domain
 {
+    [ExcludeFromCodeCoverage]
     public class MoneymanContext : DbContext
     {        
         protected readonly IConfiguration Configuration;

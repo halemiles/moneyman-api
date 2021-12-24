@@ -5,6 +5,7 @@ using System;
 using Moneyman.Domain;
 using Moneyman.Services.Validators;
 using AutoMapper;
+using System.Threading.Tasks;
 
 namespace Moneyman.Services
 {
@@ -22,8 +23,8 @@ namespace Moneyman.Services
     public int Update(Transaction model)
     {
        
-          _transactionRepository.Update(model);
-          _transactionRepository.Save();
+      _transactionRepository.Update(model);
+      _transactionRepository.Save();
      
 
       return model.Id;
@@ -31,7 +32,6 @@ namespace Moneyman.Services
 
     public void Delete(int id)
     {
-        //  TODO - Implement
         _transactionRepository.Remove(id);
         _transactionRepository.Save();
         return;

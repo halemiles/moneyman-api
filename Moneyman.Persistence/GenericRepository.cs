@@ -16,14 +16,8 @@ namespace Moneyman.Persistence
 
     public GenericRepository(MoneymanContext context, IMapper mapper)
     {
-        _context = context;
-        //  var configuration =  new MapperConfiguration(cfg => 
-        // {
-        //   cfg.CreateMap<Transaction,Transaction>()
-        //     .ForAllMembers(o => o.Condition((source, destination, member) => member != null));
-        // });
-
-        _mapper = mapper;
+      _context = context;
+      _mapper = mapper;
     }
     public virtual void Add(T newObject)
     {
@@ -60,11 +54,9 @@ namespace Moneyman.Persistence
         
       if (existing == null)
       {
-          _context.Add(newObject);
+          _context.Add(transaction);
           return true;
       }
-
-      //_context.Entry(existing).CurrentValues.SetValues(newObject);
 
       return true; //TODO - Return failure state
     }

@@ -25,10 +25,9 @@ namespace Api.Services
 
     public void Delete(int id)
     {
-        //  TODO - Implement
-        _transactionRepository.Remove(id);
-        _transactionRepository.Save();
-        return;
+      _transactionRepository.Remove(id);
+      _transactionRepository.Save();
+      return;
     }
 
     public List<Transaction> GetAll(int userId)
