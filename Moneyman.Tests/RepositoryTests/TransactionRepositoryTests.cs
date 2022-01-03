@@ -64,23 +64,6 @@ namespace Tests
         }
 
         [TestMethod]
-        public void GetAll_WhenOneResult_ReturnsThreeResults()
-        {
-            var repository = NewTransactionRepository();
-            var result = repository.GetAll();               
-            result.Count().Should().Be(3);
-        }
-
-        [TestMethod]
-        public void GetById_WhenNoResults_ReturnsEmptyList()
-        {
-            _contextMock.Setup(x => x.Set<Transaction>()).Returns(new List<Transaction>(){}.AsQueryable().BuildMockDbSet().Object);
-            var repository = NewTransactionRepository();
-            var result = repository.Get(1);               
-            result.Id.Should().Be(1);
-        }
-
-        [TestMethod]
         public void Add_WithOneNewTransaction_SaveReturnsOneRecordCount()
         {
             var newTransaction = new TransactionBuilder()
