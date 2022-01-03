@@ -1,0 +1,28 @@
+using System;
+using Api.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace Moneyman.Tests.Builders
+{
+    public class GenerateInMemoryOptionsBuilder
+    {
+        private Guid _dbGuid;
+        public GenerateInMemoryOptionsBuilder()
+        {
+            _dbGuid = Guid.NewGuid();
+        }
+
+        public GenerateInMemoryOptionsBuilder WithGuid(Guid dbGuid)
+        {
+            _dbGuid = dbGuid;
+            return this;
+        }
+
+        public DbContextOptions<MoneymanContext> Build()
+        {
+            return new DbContextOptionsBuilder<MoneymanContext>()
+                .UseInMemoryDatabase(databaseName: _dbGuid.ToString())
+                .Options;
+        }
+    }
+}
