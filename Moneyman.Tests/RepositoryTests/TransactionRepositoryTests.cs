@@ -14,6 +14,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Threading;
+using AutoMapper;
+using Moneyman.Domain.MapperProfiles;
 
 namespace Tests
 {
@@ -25,8 +27,9 @@ namespace Tests
         private Mock<TransactionRepository> _transRepoMock;    
         private Mock<IRepository<Transaction>> _genericRepositoryMock; 
         private Mock<DbSet<Transaction>> _transactions;
+        private IMapper _mapper;
         private TransactionRepository NewTransactionRepository() =>
-            new TransactionRepository(_contextMock.Object);
+            new TransactionRepository(_contextMock.Object, _mapper);
         
         [TestInitialize]
         public void SetUp()
@@ -43,6 +46,14 @@ namespace Tests
             }.AsQueryable().BuildMockDbSet();
             _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
             
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new TransactionDtoToTransactionProfile());
+                mc.AddProfile(new TransactionToTransactionDtoProfile());
+                mc.AddProfile(new TransactionProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            _mapper = mapper;
         }
 
         [TestMethod]
@@ -112,7 +123,7 @@ namespace Tests
             Transaction updatedTransaction = null;
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
-                var transactionRepository = new TransactionRepository(context);
+                var transactionRepository = new TransactionRepository(context, _mapper);
                 transactionRepository.Add(existingTransaction);
                 await transactionRepository.Save();
                 
