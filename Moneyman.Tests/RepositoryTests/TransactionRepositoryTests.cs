@@ -11,11 +11,10 @@ using MockQueryable.Moq;
 using Moneyman.Persistence;
 using Moneyman.Tests.Builders;
 using System;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using System.Threading;
 using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
+using Snapper;
 
 namespace Tests
 {
@@ -134,11 +133,19 @@ namespace Tests
             }
 
             updatedTransaction.Should().NotBeNull();
-            updatedTransaction.Id.Should().Be(1);
-            updatedTransaction.Amount.Should().Be(500);
-            updatedTransaction.Active.Should().Be(false);
-            updatedTransaction.Frequency.Should().Be(Frequency.Weekly);
-            updatedTransaction.Date.Should().Be(new DateTime(2021,10,1));
+            // updatedTransaction.Id.Should().Be(1);
+            // updatedTransaction.Amount.Should().Be(500);
+            // updatedTransaction.Active.Should().Be(false);
+            // updatedTransaction.Frequency.Should().Be(Frequency.Weekly);
+            // updatedTransaction.Date.Should().Be(new DateTime(2021,10,1));
+            var snapshot = new {
+                Id = updatedTransaction.Id,
+                Amount = updatedTransaction.Amount,
+                Active = updatedTransaction.Active,
+                Frequency = updatedTransaction.Frequency,
+                Date = updatedTransaction.Date
+            };
+            snapshot.ShouldMatchSnapshot();
         }
 
         public List<Transaction> GenerateTrans()

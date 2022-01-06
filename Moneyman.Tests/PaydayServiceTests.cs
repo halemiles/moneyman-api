@@ -12,7 +12,6 @@ namespace Moneyman.Tests
     public class PaydayServiceTests
     {
         private Mock<IPaydayRepository> mockPaydayRepository;
-        private IMapper _mapper;
         private PaydayService NewPaydayService() 
             => new PaydayService(mockPaydayRepository.Object);
 

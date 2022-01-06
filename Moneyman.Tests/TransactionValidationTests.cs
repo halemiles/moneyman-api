@@ -5,8 +5,6 @@ using Moneyman.Services;
 
 using Moneyman.Services.Validators;
 using Moneyman.Domain;
-using Moneyman.Persistence;
-using Moneyman.Interfaces;
 using FluentAssertions;
 using System.Linq;
 using System;
@@ -17,7 +15,6 @@ namespace Moneyman.Tests
     public class TransactionValidationTests
     {
         private Mock<ITransactionService> mockTransactionService;
-        private Mock<ITransactionRepository> mockTransactonRepository;
 
         private TransactionValidator NewTransactionValidator() => 
                 new TransactionValidator();
