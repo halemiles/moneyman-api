@@ -13,6 +13,7 @@ using Moneyman.Persistence;
 using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using AutoMapper;
+using Moneyman.Services.Interfaces;
 
 namespace Moneyman.Api
 {
@@ -52,6 +53,8 @@ namespace Moneyman.Api
 
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IPaydayRepository, PaydayRepository>();
+            services.AddScoped<IPaydayService, PaydayService>();
             
             AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
             {

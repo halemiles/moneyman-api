@@ -24,6 +24,7 @@ namespace Moneyman.Domain
 
         public MoneymanContext(){}
         public DbSet<Transaction> Transactions {get; set;}
+        public DbSet<Payday> Paydays {get; set;}
        
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

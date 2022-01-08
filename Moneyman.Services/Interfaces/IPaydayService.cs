@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Moneyman.Domain;
 
-namespace Moneyman.Interfaces
+namespace Moneyman.Services.Interfaces
 {
 	public interface IPaydayService
 	{

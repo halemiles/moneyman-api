@@ -9,8 +9,8 @@ using Moneyman.Domain;
 namespace Moneyman.Api.Migrations
 {
     [DbContext(typeof(MoneymanContext))]
-    [Migration("20211213233400_Transaction2")]
-    partial class Transaction2
+    [Migration("20220108230540_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
