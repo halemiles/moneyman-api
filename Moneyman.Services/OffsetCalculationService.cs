@@ -85,29 +85,6 @@ namespace Moneyman.Services
                 
             }
             return returnObject;
-        }
-
-        public DateTime GenerateDayOfMonth(DateTime dte, int mon, int year)
-        {
-            return DateTime.Now;
-        }
-
-        public DateTime LastWorkdayOfMonth(int mon, int year)
-        {
-            //DateTime start = new DateTime(year, mon, 1);
-            DateTime start = new DateTime(year, mon, DateTime.DaysInMonth(year, mon));
-            int offset = 0;
-            if(start.DayOfWeek == DayOfWeek.Sunday) //Sunday
-            {
-                offset = -2;
-            }
-
-            if(start.DayOfWeek == DayOfWeek.Saturday) //Saturday
-            {  
-                offset = -1; 
-            }
-            
-            return start.AddDays(offset);
-        }
+        } 
     }
 }
