@@ -21,12 +21,7 @@ namespace Tests
     [TestClass]
     public class TransactionServiceTests
     {
-        private Mock<DbSet<Transaction>> _dbSetMock;
-        private Mock<MoneymanContext> _contextMock;   
-        private Mock<ITransactionRepository> _transRepoMock;    
-        private Mock<IRepository<Transaction>> _genericRepositoryMock; 
-        private Mock<DbSet<Transaction>> _transactions;
-        private IMapper _mapper;
+        private Mock<ITransactionRepository> _transRepoMock;
         private TransactionService NewTransactionService() =>
             new TransactionService(_transRepoMock.Object);
         
