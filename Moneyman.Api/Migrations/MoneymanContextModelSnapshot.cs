@@ -16,6 +16,20 @@ namespace Moneyman.Api.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("Moneyman.Domain.Payday", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Paydays");
+                });
+
             modelBuilder.Entity("Moneyman.Domain.Transaction", b =>
                 {
                     b.Property<int>("Id")
