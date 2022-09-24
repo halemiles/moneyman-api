@@ -2,14 +2,14 @@ using System;
 
 namespace Moneyman.Domain
 {   
-    public enum TransactionFrequency {SINGLE, DAY, WEEK, MONTH, YEAR, MONTHLASTDAY};
+    //public enum Frequency {SINGLE, DAY, WEEK, MONTH, YEAR, MONTHLASTDAY};
     public enum PaymentType {MANUAL, STANDINGORDER, DIRECTDEBIT};
     public enum CategoryType {OTHER, HOUSING, TRANSPORTATION, PERSONALCARE, ENTERTAINMENT, TAXES, INSURANCE, LOANS, SAVINGS, FOOD, SERVICES};
     public enum PriorityType {DESIRED, DEPENDANT, ESSENTIAL};
 
-    public class Transaction
+    public class Transaction : Entity
     {
-        public int Id { get; set; }
+        
         public string Name { get; set; }
         private decimal amount {get; set;}
         public decimal Amount { 
@@ -17,7 +17,7 @@ namespace Moneyman.Domain
             set {amount = value;}
         }
         public bool Active { get; set; }
-        public TransactionFrequency Frequency { get; set; }
+        public Frequency Frequency { get; set; }
         public DateTime StartDate { get; set; }
         public PaymentType PaymentType { get; set; }
         public CategoryType CategoryType {get; set;}

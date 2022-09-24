@@ -96,7 +96,7 @@ namespace Tests
             existingTransaction.Amount.Should().Be(100);
             existingTransaction.Active.Should().Be(true);
             existingTransaction.Frequency.Should().Be(Frequency.Monthly);
-            existingTransaction.Date.Should().Be(new DateTime(2021,1,1));
+            existingTransaction.StartDate.Should().Be(new DateTime(2021,1,1));
         }
 
         [TestMethod] 
@@ -143,7 +143,7 @@ namespace Tests
                 Amount = updatedTransaction.Amount,
                 Active = updatedTransaction.Active,
                 Frequency = updatedTransaction.Frequency,
-                Date = updatedTransaction.Date
+                Date = updatedTransaction.StartDate
             };
             snapshot.ShouldMatchSnapshot();
         }
