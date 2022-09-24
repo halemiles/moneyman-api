@@ -56,6 +56,7 @@ namespace Moneyman.Api
             services.AddScoped<IPaydayRepository, PaydayRepository>();
             services.AddScoped<IPaydayService, PaydayService>();
             services.AddScoped<IWeekdayService, WeekdayService>();
+            services.AddScoped<IHolidayService, HolidayService>();
             
             AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
             {

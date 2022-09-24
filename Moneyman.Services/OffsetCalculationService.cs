@@ -11,63 +11,25 @@ namespace Moneyman.Services
     public class OffsetCalculationService : IOffsetCalculationService
     {
         private readonly IWeekdayService _weekdayService;
+        private readonly IHolidayService _holidayService;
         public OffsetCalculationService(
-            IWeekdayService weekdayService
+            IWeekdayService weekdayService,
+            IHolidayService holidayService
         )
         {
             _weekdayService = weekdayService;
+            _holidayService = holidayService;
         }
-        public List<string> GenerateHolidays()
-        {
-            return new List<string>()
-            {
-                "01-01-2019",
-                "19-04-2019",
-                "22-04-2019",
-                "06-05-2019",
-                "27-05-2019",
-                "26-08-2019",
-                "25-12-2019",
-                "26-12-2019",
-                "01-01-2020",
-                "10-04-2020",
-                "13-04-2020",
-                "04-05-2020",
-                "25-05-2020",
-                "31-08-2020",
-                "25-12-2020",
-                "26-12-2020",
-                "28-12-2020",
-                
-
-                "01-01-2021",
-                "02-04-2021",
-                "05-04-2021",
-                "03-05-2021",
-                "31-05-2021",
-                "30-08-2021",
-                "27-12-2021",
-                "28-12-2021",
-
-                "03-01-2022",
-                "15-04-2022",
-                "18-04-2022",
-                "02-05-2022",
-                "02-06-2022",
-                "03-06-2022",
-                "29-08-2022",
-                "26-12-2022",
-                "27-12-2022"
-
-            };
-        }
+        
         
         public DteObject CalculateOffset(DateTime dte)
         {
             var weekDays = _weekdayService.GenerateWeekdays();
-            var holidays = GenerateHolidays();
-            DateTime originalDate = dte;
-            var returnObject = new DteObject();
+            var holidays = _holidayService.GenerateHolidays();
+            var returnObject = new DteObject()
+            {
+                OriginalPlanDate = dte
+            };
 
             WeekDay offset = weekDays[(int)dte.DayOfWeek];           
 
@@ -75,12 +37,15 @@ namespace Moneyman.Services
             bool found = false;
             int foundLoopCount = 0;
 
+            //Iterate until we have found a suitable date
             while (!found)
             {
+                //Check if this current iteration is on a weekend, monday or a bank holiday
                 bool isWeekday = dte.IsWeekday();
                 bool isBankHoliday = holidays.IsBankHoliday(dte);
                 bool isMonday = dte.IsMonday();
                 
+                //If we have found a valid day (Tue-Fri and not on bank holiday)
                 if(isWeekday && !isBankHoliday )
                 {
                     
@@ -91,26 +56,33 @@ namespace Moneyman.Services
                 }
                 else
                 {
-                    
+                    //Move forward by 1 day
+                    //Note: Direct debits typically come out Mondays or Tuesdays
+                    //      if they fall on a weekend or a bank holiday
                     dte = dte.AddDays(1);
                     offsetby += 1;
                     offset = weekDays[(int)dte.DayOfWeek];
+
+                    //Check the next day to determine if it is a weekend of bank holiday
                     isWeekday = dte.IsWeekday();
                     isBankHoliday = holidays.IsBankHoliday(dte);
 
                     returnObject.OffsetBy = offsetby;
                     returnObject.Reason = "On bank holiday or weekend";  
-                    returnObject.PlanDate = dte; 
+                    returnObject.PlanDate = dte;
                     
                 }
+
+                //This is to prevent infinate loops
+                //TODO - Unit test to make sure this doesnt happen in the first place
                 if(foundLoopCount >=10)
                 {
                     found  = true;
                     //("Hit Limit");
                 }
-                //Console.WriteLine($"{dte.ToString("m")} we:{isWeekday} bh:{isBankHoliday}");              
+                                
                 foundLoopCount ++;
-                //Console.WriteLine($"{dte.ToLongDateString()}: {returnObject.PlanDate.ToLongDateString()}");
+                
             }
             return returnObject;
         }

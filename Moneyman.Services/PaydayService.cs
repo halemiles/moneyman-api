@@ -9,7 +9,6 @@ namespace Moneyman.Services
 {
 	public class PaydayService : IPaydayService
 	{
-		private readonly IMapper _mapper;
 		private readonly IPaydayRepository _paydayRepository;
 
 		public PaydayService(IPaydayRepository paydayRepository)

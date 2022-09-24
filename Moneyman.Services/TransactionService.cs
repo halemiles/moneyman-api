@@ -10,7 +10,6 @@ namespace Moneyman.Services
 {
 	public class TransactionService : ITransactionService
 	{
-    private readonly IMapper _mapper;
 		private readonly ITransactionRepository _transactionRepository;
 
 		public TransactionService(ITransactionRepository transactionRepository)

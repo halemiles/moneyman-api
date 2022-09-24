@@ -15,11 +15,12 @@ namespace Moneyman.Tests
     {
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
-        private Mock<IWeekdayService> mockWeekdayService;
+        private Mock<IHolidayService> mockHolidayService;
 
-        private OffsetCalculationService NewDtpGenerationService() =>
+        private OffsetCalculationService NewOffsetCalculationService() =>
             new OffsetCalculationService(
-                mockWeekdayService.Object
+                new WeekdayService(),
+                mockHolidayService.Object
             );
 
         [TestInitialize]
@@ -27,45 +28,32 @@ namespace Moneyman.Tests
         {
             mockTransactionService = new Mock<ITransactionService>();
             mockTransactionRepository = new Mock<ITransactionRepository>();
-            mockWeekdayService = new Mock<IWeekdayService>();
-        }
+            mockHolidayService = new Mock<IHolidayService>();
 
-        [TestMethod]
-        public void GenerateMonthly_WithInvalidTransactionId_ReturnsEmptyList()
-        {
-            // Arrange
-            var sut = NewDtpGenerationService();
-            IEnumerable<Transaction> trans = new List<Transaction>();
-            mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
-
-            // Act
-            var result = sut.CalculateOffset(System.DateTime.MaxValue);
-
-            // Assert
-            //result.Count.Should().Be(0);
-        }
-
-        [TestMethod]
-        public void GenerateMonthly_WithValidMonthlyTransaction_ReturnsSuccess()
-        {
-            // Arrange
-            var sut = NewDtpGenerationService();
-            IEnumerable<Transaction> trans = new List<Transaction>()
+            var holidays = new List<string>
             {
-                new Transaction(){
-                    Name = "Trans 1",
-                    Amount = 100,
-                    Active = true
-                }
-            }.AsEnumerable();
-            mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
+                "01-01-2022", //New years day
+                "05-05-2022", //A random Thursday - Not likley to ever happen IRL
+                "20-06-2022", //Bank holiday Monday 
+                "24-12-2022", //Christmas day
+                "25-12-2022"  //Boxing day
+            };
+            mockHolidayService.Setup(x => x.GenerateHolidays()).Returns(holidays);
+        }
 
+        [TestMethod]
+        public void CalculateOffset_WhenDateOnBankholiday_ReturnsOffsetDate()
+        {
+            // Arrange
+            var sut = NewOffsetCalculationService();            
+            var originalDate = new DateTime(2022,6,20);
+            var expectedDate = new DateTime(2022,6,21);
             // Act
-            var result = sut.CalculateOffset(DateTime.Now);
+            var result = sut.CalculateOffset(originalDate);
 
             // Assert
-            //result.Count.Should().Be(12);
-            //result.All(x => x.Transaction.Name == "Trans 1").Should().BeTrue();
+            result.OriginalPlanDate.Should().Be(originalDate);
+            result.PlanDate.Should().Be(expectedDate);
         }
     }
 }
