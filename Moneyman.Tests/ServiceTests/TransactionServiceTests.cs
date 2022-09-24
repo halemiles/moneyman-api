@@ -28,10 +28,7 @@ namespace Tests
         [TestInitialize]
         public void SetUp()
         {
-           
-            _transRepoMock = new Mock<ITransactionRepository>(); //(_contextMock.Object);    
-            
-            
+            _transRepoMock = new Mock<ITransactionRepository>();
         }
 
         [TestMethod]
@@ -42,6 +39,16 @@ namespace Tests
             var service = NewTransactionService();
             var result = service.GetAll();               
             result.Count().Should().Be(0);
+        }
+
+        [TestMethod]
+        public void GetById_WhenNoResults_ReturnsEmptyList()
+        {
+            _transRepoMock.Setup(x => x.Get(It.IsAny<int>())).Returns(new Transaction());
+            
+            var service = NewTransactionService();
+            var result = service.GetById(0);               
+            result.Should().NotBeNull();
         }
     }
 }

@@ -7,6 +7,7 @@ using FluentAssertions;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Snapper;
 
 namespace Moneyman.Tests
 {
@@ -42,11 +43,14 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public void CalculateOffset_WhenDateOnBankholiday_ReturnsOffsetDate()
+        [DataRow("2022,6,18")]
+        [DataRow("2022,6,19")]
+        [DataRow("2022,6,20")]
+        public void CalculateOffset_WhenDateIsWeekendOrBankHoliday_ReturnsOffsetDate(string testValue)
         {
             // Arrange
-            var sut = NewOffsetCalculationService();            
-            var originalDate = new DateTime(2022,6,20);
+            var sut = NewOffsetCalculationService();
+            var originalDate = DateTime.Parse(testValue);
             var expectedDate = new DateTime(2022,6,21);
             // Act
             var result = sut.CalculateOffset(originalDate);
