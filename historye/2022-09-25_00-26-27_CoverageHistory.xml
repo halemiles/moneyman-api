@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<coverage version="1.0" date="2022-09-25_00-26-27" tag="">
+  <assembly name="Moneyman.Domain">
+    <class name="Moneyman.Domain.DteObject" coveredlines="6" coverablelines="7" totallines="17" coveredbranches="0" totalbranches="0" coveredcodeelements="6" totalcodeelements="7" />
+    <class name="Moneyman.Domain.Entity" coveredlines="1" coverablelines="1" totallines="7" coveredbranches="0" totalbranches="0" coveredcodeelements="1" totalcodeelements="1" />
+    <class name="Moneyman.Domain.MapperProfiles.TransactionDtoToTransactionProfile" coveredlines="4" coverablelines="4" totallines="12" coveredbranches="0" totalbranches="0" coveredcodeelements="1" totalcodeelements="1" />
+    <class name="Moneyman.Domain.MapperProfiles.TransactionProfile" coveredlines="5" coverablelines="5" totallines="14" coveredbranches="0" totalbranches="0" coveredcodeelements="1" totalcodeelements="1" />
+    <class name="Moneyman.Domain.MapperProfiles.TransactionToTransactionDtoProfile" coveredlines="4" coverablelines="4" totallines="12" coveredbranches="0" totalbranches="0" coveredcodeelements="1" totalcodeelements="1" />
+    <class name="Moneyman.Domain.MoneymanContext" coveredlines="11" coverablelines="22" totallines="39" coveredbranches="1" totalbranches="2" coveredcodeelements="6" totalcodeelements="8" />
+    <class name="Moneyman.Domain.Payday" coveredlines="1" coverablelines="2" totallines="10" coveredbranches="0" totalbranches="0" coveredcodeelements="1" totalcodeelements="2" />
+    <class name="Moneyman.Domain.PlanDate" coveredlines="1" coverablelines="3" totallines="11" coveredbranches="0" totalbranches="0" coveredcodeelements="1" totalcodeelements="3" />
+    <class name="Moneyman.Domain.Transaction" coveredlines="11" coverablelines="11" totallines="27" coveredbranches="0" totalbranches="0" coveredcodeelements="11" totalcodeelements="11" />
+    <class name="Moneyman.Domain.TransactionDto" coveredlines="0" coverablelines="6" totallines="14" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="6" />
+    <class name="Moneyman.Domain.WeekDay" coveredlines="3" coverablelines="3" totallines="9" coveredbranches="0" totalbranches="0" coveredcodeelements="3" totalcodeelements="3" />
+    <class name="Moneyman.Extensions.DateVerificationExtensions" coveredlines="9" coverablelines="9" totallines="23" coveredbranches="2" totalbranches="2" coveredcodeelements="3" totalcodeelements="3" />
+  </assembly>
+  <assembly name="Moneyman.Persistence">
+    <class name="Moneyman.Persistence.GenericRepository`1" coveredlines="21" coverablelines="34" totallines="77" coveredbranches="1" totalbranches="2" coveredcodeelements="5" totalcodeelements="8" />
+    <class name="Moneyman.Persistence.PaydayRepository" coveredlines="0" coverablelines="3" totallines="16" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="1" />
+    <class name="Moneyman.Persistence.TransactionRepository" coveredlines="3" coverablelines="3" totallines="18" coveredbranches="0" totalbranches="0" coveredcodeelements="1" totalcodeelements="1" />
+  </assembly>
+  <assembly name="Moneyman.Services">
+    <class name="Moneyman.Services.DtpMonthlyGenerator" coveredlines="0" coverablelines="2" totallines="15" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="1" />
+    <class name="Moneyman.Services.DtpService" coveredlines="24" coverablelines="34" totallines="66" coveredbranches="4" totalbranches="4" coveredcodeelements="2" totalcodeelements="7" />
+    <class name="Moneyman.Services.HolidayService" coveredlines="0" coverablelines="43" totallines="53" coveredbranches="0" totalbranches="0" coveredcodeelements="0" totalcodeelements="1" />
+    <class name="Moneyman.Services.OffsetCalculationService" coveredlines="46" coverablelines="65" totallines="90" coveredbranches="7" totalbranches="12" coveredcodeelements="2" totalcodeelements="4" />
+    <class name="Moneyman.Services.PaydayService" coveredlines="18" coverablelines="18" totallines="37" coveredbranches="2" totalbranches="2" coveredcodeelements="2" totalcodeelements="2" />
+    <class name="Moneyman.Services.TransactionService" coveredlines="11" coverablelines="31" totallines="64" coveredbranches="0" totalbranches="2" coveredcodeelements="3" totalcodeelements="6" />
+    <class name="Moneyman.Services.Validators.TransactionValidator" coveredlines="6" coverablelines="6" totallines="16" coveredbranches="0" totalbranches="0" coveredcodeelements="1" totalcodeelements="1" />
+    <class name="Moneyman.Services.WeekdayService" coveredlines="13" coverablelines="13" totallines="24" coveredbranches="0" totalbranches="0" coveredcodeelements="1" totalcodeelements="1" />
+  </assembly>
+</coverage>

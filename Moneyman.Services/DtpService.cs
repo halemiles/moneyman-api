@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
@@ -8,18 +9,30 @@ namespace Moneyman.Services
     public class DtpService : IDtpService
     {
 
-        private ITransactionRepository transactionRepository;
+        private readonly ITransactionRepository transactionRepository;
+        private readonly IPlanDateRepository planDateRepository;
 
         public DtpService(
-            ITransactionRepository transactionRepository
+            ITransactionRepository transactionRepository,
+            IPlanDateRepository planDateRepository
         )
         {
             this.transactionRepository = transactionRepository;
+            this.planDateRepository = planDateRepository;
         }
 
         public List<PlanDate> GenerateAll()
         {
-            throw new System.NotImplementedException();
+            
+            transactionRepository.RemoveAll("PlanDates");
+            List<PlanDate> planDates = GenerateMonthly(-1);
+            foreach(var planDate in planDates)
+            {
+                planDateRepository.Add(planDate);
+                planDateRepository.Save(); //TODO - Try moving this out so we run batches
+            }
+            
+            return planDates;
         }
 
         public List<PlanDate> GenerateDaily(int transactionId)
@@ -43,9 +56,18 @@ namespace Moneyman.Services
                     //TODO - Add to profile mapping
                     planDates.Add(new PlanDate()
                     {
+                        Active = true,
+                        Date = DateTime.Today, //TODO - Needs actual data
+                        OriginalDate = DateTime.Today, //TODO - Needs actual data
+                        YearGroup = 1, //TODO - Needs actual data
+                        MonthGroup = 1, //TODO - Needs actual data
+                        IsAnticipated = false, //TODO - Needs actual data
+                        OrderId = 0, //TODO - Needs actual data
                         Transaction = new Transaction()
                         {
-                            Name = transaction.Name
+                            Name = transaction.Name,
+                            Active = true,
+                            
                         }
                     });
                 }

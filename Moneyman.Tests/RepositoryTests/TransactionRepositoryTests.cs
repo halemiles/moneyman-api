@@ -133,11 +133,7 @@ namespace Tests
             }
 
             updatedTransaction.Should().NotBeNull();
-            // updatedTransaction.Id.Should().Be(1);
-            // updatedTransaction.Amount.Should().Be(500);
-            // updatedTransaction.Active.Should().Be(false);
-            // updatedTransaction.Frequency.Should().Be(Frequency.Weekly);
-            // updatedTransaction.Date.Should().Be(new DateTime(2021,10,1));
+            
             var snapshot = new {
                 Id = updatedTransaction.Id,
                 Amount = updatedTransaction.Amount,
@@ -146,20 +142,6 @@ namespace Tests
                 Date = updatedTransaction.StartDate
             };
             snapshot.ShouldMatchSnapshot();
-        }
-
-        public List<Transaction> GenerateTrans()
-        {
-            List<Transaction> trans = new List<Transaction>();
-
-            for(int i=0; i< 10; i++)
-            {
-                trans.Add(new Transaction(){
-                    Name = $"Item {i}"
-                });
-            }
-
-            return trans;
         }
 
         public DbContextOptions<MoneymanContext> BuildGenerateInMemoryOptions()

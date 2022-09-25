@@ -14,6 +14,7 @@ namespace Moneyman.Interfaces
         IEnumerable<T> GetAll();
         bool Update(T newObject);
         void Remove(int id);
+        bool RemoveAll(string tableName);
         Task<int> Save();
     }
 }

@@ -69,9 +69,15 @@ namespace Moneyman.Persistence
       return true; //TODO - Return failure state
     }
 
-    public virtual async Task<int> Save()
+    public virtual async Task<int>  Save()
     {
         return await _context.SaveChangesAsync();
+    }
+
+    public bool RemoveAll(string tableName)
+    {
+        var result = _context.Database.ExecuteSqlRaw($"DELETE FROM {tableName}");
+        return result == 1;
     }
   }
 }
