@@ -14,15 +14,20 @@ namespace Moneyman.Tests
     {
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
+        private Mock<IPlanDateRepository> mockPlanDateRepository;
 
         private DtpService NewDtpGenerationService() =>
-            new DtpService(mockTransactionRepository.Object);
+            new DtpService(
+                mockTransactionRepository.Object,
+                mockPlanDateRepository.Object
+            );
 
         [TestInitialize]
         public void SetUp()
         {
             mockTransactionService = new Mock<ITransactionService>();
             mockTransactionRepository = new Mock<ITransactionRepository>();
+            mockPlanDateRepository = new Mock<IPlanDateRepository>();
         }
 
         //TODO - Could this be more generic?
