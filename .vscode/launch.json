@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Moneyman.Api/bin/Debug/net5.0/Moneyman.Api.dll",
+            "program": "${workspaceFolder}/Moneyman.Api/bin/Debug/net6.0/Moneyman.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Moneyman.Api",
             "stopAtEntry": false,

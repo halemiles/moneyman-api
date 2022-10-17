@@ -9,14 +9,28 @@ using Moneyman.Domain;
 namespace Moneyman.Api.Migrations
 {
     [DbContext(typeof(MoneymanContext))]
-    [Migration("20211213233400_Transaction2")]
-    partial class Transaction2
+    [Migration("20220710011413_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.0");
+
+            modelBuilder.Entity("Moneyman.Domain.Payday", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Paydays");
+                });
 
             modelBuilder.Entity("Moneyman.Domain.Transaction", b =>
                 {
@@ -30,7 +44,7 @@ namespace Moneyman.Api.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Frequency")

@@ -13,6 +13,7 @@ using Moneyman.Persistence;
 using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using AutoMapper;
+using Moneyman.Services.Interfaces;
 
 namespace Moneyman.Api
 {
@@ -52,6 +53,13 @@ namespace Moneyman.Api
 
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IPaydayRepository, PaydayRepository>();
+            services.AddScoped<IPlanDateRepository, PlanDateRepository>();
+            services.AddScoped<IPaydayService, PaydayService>();
+            services.AddScoped<IWeekdayService, WeekdayService>();
+            services.AddScoped<IHolidayService, HolidayService>();
+            services.AddScoped<IDtpService, DtpService>();
+            services.AddScoped<IOffsetCalculationService, OffsetCalculationService>();
             
             AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
             {
@@ -75,7 +83,7 @@ namespace Moneyman.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Moneyman.Api v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

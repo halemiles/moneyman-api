@@ -23,7 +23,7 @@ namespace Moneyman.Tests.Builders
             {
                 Id = 0,
                 Name = "Transaction 1",
-                Date = DateTime.Today,
+                StartDate = DateTime.Today,
                 Amount = 0,
                 Active = true,
                 Frequency = Frequency.Monthly
@@ -62,7 +62,7 @@ namespace Moneyman.Tests.Builders
 
         public TransactionBuilder WithStartDate(DateTime startDate)
         {
-            _transaction.Date = startDate;
+            _transaction.StartDate = startDate;
             return this;
         }
 

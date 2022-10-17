@@ -10,7 +10,6 @@ namespace Moneyman.Services
 {
 	public class TransactionService : ITransactionService
 	{
-    private readonly IMapper _mapper;
 		private readonly ITransactionRepository _transactionRepository;
 
 		public TransactionService(ITransactionRepository transactionRepository)
@@ -39,7 +38,8 @@ namespace Moneyman.Services
 
     public List<Transaction> GetAll()
     {
-      return _transactionRepository.GetAll().ToList();
+      var transactions =  _transactionRepository.GetAll();
+      return transactions?.ToList() ?? new List<Transaction>();
     }
 
     public Transaction GetById(int id)

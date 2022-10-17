@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
-using Moneyman.Interfaces;
+using Moneyman.Services.Interfaces;
 
 namespace Moneyman.Api.Controllers
 {
@@ -30,7 +27,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpPost("generate")]
-        public IActionResult GeneratePaydays(TransactionDto transactionDto)
+        public IActionResult GeneratePaydays()
         {
             paydayService.Generate(25);
             return Ok();

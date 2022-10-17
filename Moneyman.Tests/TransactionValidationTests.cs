@@ -33,7 +33,7 @@ namespace Moneyman.Tests
             {
                 Name = "Transaction 1",
                 Amount = 100,
-                Date = DateTime.Today
+                StartDate = DateTime.Today
 
             };
             var result = sut.Validate(trans);
@@ -97,14 +97,14 @@ namespace Moneyman.Tests
             {
                 Name = "Transaction 1",
                 Amount = 500,
-                Date = DateTime.MinValue
+                StartDate = DateTime.MinValue
 
             };
             var result = sut.Validate(trans);
 
             result.IsValid.Should().Be(false);
             result.Errors.Count.Should().Be(1);
-            result.Errors.FirstOrDefault().PropertyName.Should().Be("Date");
+            result.Errors.FirstOrDefault().PropertyName.Should().Be("StartDate");
         }
     }
 }
