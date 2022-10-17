@@ -6,8 +6,7 @@ namespace Moneyman.Domain
     {
         public DateTime PlanDate { get; set; }
         public DateTime OriginalPlanDate { get; set; }
-        public string PlanDateString { get { return PlanDate.ToString("dd-MM-YYYY");} }
-        //public string OriginalPlanDateString { get { return OriginalPlanDate.ToString("dd-MM-YYYY");}  }
+        public string PlanDateString { get { return PlanDate.ToString("dd-MM-yyyy");} }        
         public bool IsBankHoliday { get; set; }
         public bool IsValid { get; set; }
         public int OffsetBy { get; set; }
