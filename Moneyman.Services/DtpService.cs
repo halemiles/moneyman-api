@@ -11,14 +11,17 @@ namespace Moneyman.Services
 
         private readonly ITransactionRepository transactionRepository;
         private readonly IPlanDateRepository planDateRepository;
+        private readonly IOffsetCalculationService offsetCalculationService;
 
         public DtpService(
             ITransactionRepository transactionRepository,
-            IPlanDateRepository planDateRepository
+            IPlanDateRepository planDateRepository,
+            IOffsetCalculationService offsetCalculationService
         )
         {
             this.transactionRepository = transactionRepository;
             this.planDateRepository = planDateRepository;
+            this.offsetCalculationService = offsetCalculationService;
         }
 
         public List<PlanDate> GenerateAll()
@@ -53,22 +56,20 @@ namespace Moneyman.Services
             {
                 for(int i=0;i<12;i++)
                 {
+                    DateTime dateOffset = transaction.Date.AddMonths(i);
+                    
+                    DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
                     //TODO - Add to profile mapping
                     planDates.Add(new PlanDate()
                     {
                         Active = true,
-                        Date = DateTime.Today, //TODO - Needs actual data
-                        OriginalDate = DateTime.Today, //TODO - Needs actual data
+                        Date = calculatedOffsetDate,
+                        OriginalDate = transaction.Date,
                         YearGroup = 1, //TODO - Needs actual data
                         MonthGroup = 1, //TODO - Needs actual data
                         IsAnticipated = false, //TODO - Needs actual data
                         OrderId = 0, //TODO - Needs actual data
-                        Transaction = new Transaction()
-                        {
-                            Name = transaction.Name,
-                            Active = true,
-                            
-                        }
+                        Transaction = transaction
                     });
                 }
             }

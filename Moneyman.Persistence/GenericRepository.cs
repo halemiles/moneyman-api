@@ -25,6 +25,7 @@ namespace Moneyman.Persistence
 
         _mapper = mapper;
     }
+
     public virtual void Add(T newObject)
     {
         _context.Set<T>().Add(newObject);

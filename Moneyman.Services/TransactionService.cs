@@ -39,7 +39,7 @@ namespace Moneyman.Services
     public List<Transaction> GetAll()
     {
       var transactions =  _transactionRepository.GetAll();
-      return transactions.ToList();
+      return transactions?.ToList() ?? new List<Transaction>();
     }
 
     public Transaction GetById(int id)

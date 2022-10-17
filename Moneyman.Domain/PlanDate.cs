@@ -2,7 +2,7 @@ using System;
 
 namespace Moneyman.Domain
 {
-    public class PlanDate
+    public class PlanDate : IEntity
     {
         public int Id { get; set; }
         public Transaction Transaction { get; set; }
