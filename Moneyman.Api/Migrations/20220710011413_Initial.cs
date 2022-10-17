@@ -28,7 +28,7 @@ namespace Moneyman.Api.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Amount = table.Column<decimal>(type: "TEXT", nullable: false),
-                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Active = table.Column<bool>(type: "INTEGER", nullable: false),
                     Frequency = table.Column<int>(type: "INTEGER", nullable: false)
                 },
