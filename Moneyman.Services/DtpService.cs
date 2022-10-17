@@ -56,7 +56,7 @@ namespace Moneyman.Services
             {
                 for(int i=0;i<12;i++)
                 {
-                    DateTime dateOffset = transaction.Date.AddMonths(i);
+                    DateTime dateOffset = transaction.StartDate.AddMonths(i);
                     
                     DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
                     //TODO - Add to profile mapping
@@ -64,7 +64,7 @@ namespace Moneyman.Services
                     {
                         Active = true,
                         Date = calculatedOffsetDate,
-                        OriginalDate = transaction.Date,
+                        OriginalDate = transaction.StartDate,
                         YearGroup = 1, //TODO - Needs actual data
                         MonthGroup = 1, //TODO - Needs actual data
                         IsAnticipated = false, //TODO - Needs actual data

@@ -6,6 +6,7 @@ using Moneyman.Domain;
 using FluentAssertions;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Moneyman.Tests
 {
@@ -14,13 +15,14 @@ namespace Moneyman.Tests
     {
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
-
         private Mock<IPlanDateRepository> mockPlanDateRepository;
+        private Mock<IOffsetCalculationService> mockOffsetCalculationService;
 
         private DtpService NewDtpGenerationService() =>
             new DtpService(
                     mockTransactionRepository.Object,
-                    mockPlanDateRepository.Object
+                    mockPlanDateRepository.Object,
+                    mockOffsetCalculationService.Object
             );
 
         [TestInitialize]
@@ -29,6 +31,10 @@ namespace Moneyman.Tests
             mockTransactionService = new Mock<ITransactionService>();
             mockTransactionRepository = new Mock<ITransactionRepository>();
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
+            mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+
+            mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
+                .Returns(new DteObject());
         }
 
         [TestMethod]
@@ -56,7 +62,8 @@ namespace Moneyman.Tests
                 new Transaction(){
                     Name = "Trans 1",
                     Amount = 100,
-                    Active = true
+                    Active = true,
+                    StartDate = new DateTime(2022,1,1)
                 }
             }.AsEnumerable();
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
