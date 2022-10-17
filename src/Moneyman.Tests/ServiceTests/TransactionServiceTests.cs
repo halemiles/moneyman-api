@@ -50,5 +50,86 @@ namespace Tests
             var result = service.GetById(0);               
             result.Should().NotBeNull();
         }
+
+        [TestMethod]
+        public void Update_WhenObjectDoesntExist_ReturnsSuccess()
+        {
+            var newTransaction = new Transaction
+            {
+                Name = "newTransaction",
+                StartDate = new DateTime(2022,1,1),
+                Amount = 150,
+                Frequency = Frequency.Weekly
+            };
+
+            _transRepoMock.Setup(x => x.Update(It.IsAny<Transaction>()))
+                .Returns(true);
+            
+            var service = NewTransactionService();
+            var result = service.Update(newTransaction);               
+            
+            _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once());
+            _transRepoMock.Verify(x => x.Save(), Times.Once());
+            result.Should().Be(0);
+        }
+
+        [TestMethod]
+        public void Create_WhenObjectDoesntExist_ReturnsSuccess()
+        {
+            var newTransaction = new Transaction
+            {
+                Name = "newTransaction",
+                StartDate = new DateTime(2022,1,1),
+                Amount = 150,
+                Frequency = Frequency.Weekly
+            };
+
+            
+            var service = NewTransactionService();
+            var result = service.Create(newTransaction);               
+                        
+            _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Once());
+            _transRepoMock.Verify(x => x.Save(), Times.Once());
+            result.Should().Be(true);
+        }
+
+        [TestMethod]
+        [DataRow(null, 100, "2022-01-01")]
+        [DataRow("", 100, "2022-01-01")]
+        [DataRow("TransactionName", 0, "2022-01-01")]
+        [DataRow("TransactionName", 100, "1/1/0001 12:00:00 AM")]
+        public void Create_WhenObjectDoesntExist_ReturnsFailure(
+            string transactionName,
+            int amount,
+            string startDate
+        )
+        {
+            var newTransaction = new Transaction
+            {
+                Name = transactionName,
+                StartDate = DateTime.Parse(startDate),
+                Amount = amount,
+                Frequency = Frequency.Weekly
+            };
+
+            
+            var service = NewTransactionService();
+            var result = service.Create(newTransaction);               
+                        
+            _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Never());
+            _transRepoMock.Verify(x => x.Save(), Times.Never());
+            result.Should().Be(false);
+        }
+
+        [TestMethod]
+        public void Delete_WhenObjectDoesntExist_ReturnsSuccess()
+        {
+            
+            var service = NewTransactionService();
+            service.Delete(0);               
+            
+            _transRepoMock.Verify(x => x.Remove(It.IsAny<int>()), Times.Once());
+            _transRepoMock.Verify(x => x.Save(), Times.Once());
+        }
     }
 }
