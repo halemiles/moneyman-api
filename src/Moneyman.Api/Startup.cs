@@ -14,6 +14,7 @@ using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using AutoMapper;
 using Moneyman.Services.Interfaces;
+using Microsoft.ApplicationInsights.AspNetCore;
 
 namespace Moneyman.Api
 {
@@ -70,7 +71,10 @@ namespace Moneyman.Api
 
             services.AddSingleton(config);
             services.AddScoped<IMapper, Mapper>();
-
+            
+            
+            services.AddApplicationInsightsTelemetry();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
