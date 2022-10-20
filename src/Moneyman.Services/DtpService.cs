@@ -56,7 +56,8 @@ namespace Moneyman.Services
             {
                 for(int i=0;i<12;i++)
                 {
-                    DateTime dateOffset = transaction.StartDate.AddMonths(i);
+                    DateTime startDate = new DateTime(transaction.StartDate.Year, 1, transaction.StartDate.Day); //Start at Jan
+                    DateTime dateOffset = startDate.AddMonths(i);
                     
                     DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
                     //TODO - Add to profile mapping

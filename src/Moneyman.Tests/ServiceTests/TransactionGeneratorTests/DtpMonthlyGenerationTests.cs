@@ -18,6 +18,18 @@ namespace Moneyman.Tests
         private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
 
+        private List<string> holidays = new List<string>(){
+                "03-01-2022",
+                "15-04-2022",
+                "18-04-2022",
+                "02-05-2022",
+                "02-06-2022",
+                "03-06-2022",
+                "29-08-2022",
+                "26-12-2022",
+                "27-12-2022"
+        };
+
         private DtpService NewDtpGenerationService() =>
             new DtpService(
                     mockTransactionRepository.Object,
