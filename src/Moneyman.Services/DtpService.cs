@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
+using Moneyman.Services.Factories;
 using Moneyman.Services.Interfaces;
 
 namespace Moneyman.Services
@@ -60,18 +61,10 @@ namespace Moneyman.Services
                     DateTime dateOffset = startDate.AddMonths(i);
                     
                     DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
-                    //TODO - Add to profile mapping
-                    planDates.Add(new PlanDate
-                    {
-                        Active = true,
-                        Date = calculatedOffsetDate,
-                        OriginalDate = transaction.StartDate,
-                        YearGroup = 1, //TODO - Needs actual data
-                        MonthGroup = 1, //TODO - Needs actual data
-                        IsAnticipated = false, //TODO - Needs actual data
-                        OrderId = 0, //TODO - Needs actual data
-                        Transaction = transaction
-                    });
+                    
+                    var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
+
+                    planDates.Add(factory.Create());
                 }
             }
             return planDates;
