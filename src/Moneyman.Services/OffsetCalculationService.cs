@@ -61,11 +61,6 @@ namespace Moneyman.Services
                     //      if they fall on a weekend or a bank holiday
                     dte = dte.AddDays(1);
                     offsetby += 1;
-                    offset = weekDays[(int)dte.DayOfWeek];
-
-                    //Check the next day to determine if it is a weekend of bank holiday
-                    isWeekday = dte.IsWeekday();
-                    isBankHoliday = holidays.IsBankHoliday(dte);
 
                     returnObject.OffsetBy = offsetby;
                     returnObject.Reason = "On bank holiday or weekend";  

@@ -13,8 +13,7 @@ namespace Moneyman.Api.Controllers
     [Route("[controller]")]
     public class TransactionController : ControllerBase
     {
-        ITransactionService transactionService;
-
+        private readonly ITransactionService transactionService;
         private readonly ILogger<TransactionController> _logger;
         private readonly IMapper _mapper;
 

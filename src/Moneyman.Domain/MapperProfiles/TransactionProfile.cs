@@ -8,7 +8,7 @@ namespace Moneyman.Domain.MapperProfiles
         public TransactionProfile()
         {
             CreateMap<Transaction,Transaction>()
-            .ForAllMembers(o => o.Condition((source, destination, member) => member != null));
+            .ForAllMembers(o => o.Condition((_, destination, member) => member != null));
         }
     }
 }

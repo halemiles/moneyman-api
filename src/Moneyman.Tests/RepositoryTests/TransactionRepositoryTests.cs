@@ -59,7 +59,7 @@ namespace Tests
         [TestMethod]
         public void GetAll_WhenNoResults_ReturnsEmptyList()
         {
-            _contextMock.Setup(x => x.Set<Transaction>()).Returns(new List<Transaction>(){}.AsQueryable().BuildMockDbSet().Object);
+            _contextMock.Setup(x => x.Set<Transaction>()).Returns(new List<Transaction>{}.AsQueryable().BuildMockDbSet().Object);
             var repository = NewTransactionRepository();
             var result = repository.GetAll();               
             result.Count().Should().Be(0);
