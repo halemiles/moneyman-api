@@ -12,7 +12,7 @@ using Snapper;
 namespace Moneyman.Tests
 {
     [TestClass]
-    public class DtpMonthlyGenerationTests
+    public class DtpWeeklyGenerationTests
     {
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
@@ -60,14 +60,14 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateMonthly(0);
+            var result = sut.GenerateWeekly(0);
 
             // Assert
             result.Count.Should().Be(0);
         }
 
         [TestMethod]
-        public void GenerateMonthly_WithValidMonthlyTransaction_ReturnsSuccess()
+        public void GenerateWeekly_WithValidMonthlyTransaction_ReturnsSuccess()
         {
             // Arrange
             var sut = NewDtpGenerationService();
@@ -84,10 +84,10 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateMonthly(0);
+            var result = sut.GenerateWeekly(0);
 
             // Assert
-            result.Count.Should().Be(12);
+            result.Count.Should().Be(52);
             result.All(x => x.Transaction.Name == "Trans 1").Should().BeTrue();
             result.ShouldMatchSnapshot();
         }
