@@ -1,12 +1,7 @@
 using System;
 
 namespace Moneyman.Domain
-{   
-    //public enum Frequency {SINGLE, DAY, WEEK, MONTH, YEAR, MONTHLASTDAY};
-    public enum PaymentType {MANUAL, STANDINGORDER, DIRECTDEBIT};
-    public enum CategoryType {OTHER, HOUSING, TRANSPORTATION, PERSONALCARE, ENTERTAINMENT, TAXES, INSURANCE, LOANS, SAVINGS, FOOD, SERVICES};
-    public enum PriorityType {DESIRED, DEPENDANT, ESSENTIAL};
-
+{
     public class Transaction : Entity
     {
         

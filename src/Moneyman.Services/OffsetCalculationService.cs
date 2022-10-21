@@ -26,7 +26,7 @@ namespace Moneyman.Services
         {
             var weekDays = _weekdayService.GenerateWeekdays();
             var holidays = _holidayService.GenerateHolidays();
-            var returnObject = new DteObject()
+            var returnObject = new DteObject
             {
                 OriginalPlanDate = dte
             };
@@ -61,11 +61,6 @@ namespace Moneyman.Services
                     //      if they fall on a weekend or a bank holiday
                     dte = dte.AddDays(1);
                     offsetby += 1;
-                    offset = weekDays[(int)dte.DayOfWeek];
-
-                    //Check the next day to determine if it is a weekend of bank holiday
-                    isWeekday = dte.IsWeekday();
-                    isBankHoliday = holidays.IsBankHoliday(dte);
 
                     returnObject.OffsetBy = offsetby;
                     returnObject.Reason = "On bank holiday or weekend";  
@@ -78,7 +73,6 @@ namespace Moneyman.Services
                 if(foundLoopCount >=10)
                 {
                     found  = true;
-                    //("Hit Limit");
                 }
                                 
                 foundLoopCount ++;

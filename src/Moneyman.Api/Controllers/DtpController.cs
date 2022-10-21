@@ -14,8 +14,7 @@ namespace Moneyman.Api.Controllers
     [Route("[controller]")]
     public class DtpController : ControllerBase
     {
-        IDtpService dtpService;
-
+        private readonly IDtpService dtpService;
         private readonly ILogger<DtpController> _logger;
         private readonly IMapper _mapper;
 

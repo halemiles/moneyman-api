@@ -61,7 +61,7 @@ namespace Moneyman.Services
                     
                     DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
                     //TODO - Add to profile mapping
-                    planDates.Add(new PlanDate()
+                    planDates.Add(new PlanDate
                     {
                         Active = true,
                         Date = calculatedOffsetDate,

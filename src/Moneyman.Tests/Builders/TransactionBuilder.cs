@@ -5,7 +5,7 @@ namespace Moneyman.Tests.Builders
 {
     public class TransactionBuilder
     {
-        private Transaction _transaction;
+        private readonly Transaction _transaction;
 
         public TransactionBuilder()
         {
@@ -19,7 +19,7 @@ namespace Moneyman.Tests.Builders
 
         private Transaction GenerateDefaultTransaction()
         {
-            return new Transaction()
+            return new Transaction
             {
                 Id = 0,
                 Name = "Transaction 1",

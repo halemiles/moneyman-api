@@ -10,8 +10,7 @@ namespace Moneyman.Api.Controllers
     [Route("[controller]")]
     public class PaydayController : ControllerBase
     {
-        private IPaydayService paydayService;
-
+        private readonly IPaydayService paydayService;
         private readonly ILogger<TransactionController> _logger;
         private readonly IMapper _mapper;
 
