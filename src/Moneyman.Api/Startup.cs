@@ -87,6 +87,7 @@ namespace Moneyman.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Moneyman.Api v1"));
             }
 
+            //TODO - Start using this
             //app.UseHttpsRedirection();
 
             app.UseRouting();
