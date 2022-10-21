@@ -5,7 +5,7 @@ namespace Moneyman.Tests.Builders
 {
     public class TransactionBuilder
     {
-        private Transaction _transaction;
+        private readonly Transaction _transaction;
 
         public TransactionBuilder()
         {

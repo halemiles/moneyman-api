@@ -24,8 +24,7 @@ namespace Tests
         private Mock<DbSet<Transaction>> _dbSetMock;
         private Mock<MoneymanContext> _contextMock;   
         private Mock<TransactionRepository> _transRepoMock;    
-        private Mock<IRepository<Transaction>> _genericRepositoryMock; 
-        private Mock<DbSet<Transaction>> _transactions;
+        private Mock<IRepository<Transaction>> _genericRepositoryMock;
         private IMapper _mapper;
         private TransactionRepository NewTransactionRepository() =>
             new TransactionRepository(_contextMock.Object, _mapper);
@@ -38,11 +37,12 @@ namespace Tests
             _transRepoMock = new Mock<TransactionRepository>(); //(_contextMock.Object);    
             _genericRepositoryMock = new Mock<IRepository<Transaction>>();   
             
-            _transactions = new List<Transaction>()
+            var _transactions = new List<Transaction>()
             {
                 new Transaction(){Name = "Transaction 1"},
                 new Transaction(){Name = "Transaction 2"}
             }.AsQueryable().BuildMockDbSet();
+
             _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
             
             var mappingConfig = new MapperConfiguration(mc =>
@@ -51,6 +51,7 @@ namespace Tests
                 mc.AddProfile(new TransactionToTransactionDtoProfile());
                 mc.AddProfile(new TransactionProfile());
             });
+            
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
         }

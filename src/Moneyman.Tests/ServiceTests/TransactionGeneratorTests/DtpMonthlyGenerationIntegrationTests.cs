@@ -19,12 +19,11 @@ namespace Moneyman.Tests
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
-        private Mock<IOffsetCalculationService> mockOffsetCalculationService;
 
         //Mocking offset calculation service
         private Mock<IHolidayService> mockHolidayService;
 
-        private List<string> holidays = new List<string>(){
+        private readonly List<string> holidays = new List<string>(){
                 "03-01-2022",
                 "15-04-2022",
                 "18-04-2022",
@@ -55,7 +54,7 @@ namespace Moneyman.Tests
             mockTransactionService = new Mock<ITransactionService>();
             mockTransactionRepository = new Mock<ITransactionRepository>();
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
-            mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+            var mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
 
             mockHolidayService = new Mock<IHolidayService>();
 
