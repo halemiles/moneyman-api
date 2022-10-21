@@ -72,7 +72,23 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateWeekly(int transactionId)
         {
-            throw new System.NotImplementedException();
+            var transactions = transactionRepository.GetAll();
+            List<PlanDate> planDates = new List<PlanDate>();
+            foreach(var transaction in transactions)
+            {
+                for(int i=0;i<52;i++)
+                {
+                    DateTime startDate = new DateTime(transaction.StartDate.Year, 1, transaction.StartDate.Day); //Start at Jan
+                    DateTime dateOffset = startDate.AddDays(7*i);
+                    
+                    DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
+                    
+                    var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
+
+                    planDates.Add(factory.Create());
+                }
+            }
+            return planDates;
         }
 
         public List<PlanDate> GenerateYearly(int transactionId)

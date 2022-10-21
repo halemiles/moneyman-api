@@ -11,12 +11,11 @@ using AutoFixture;
 using AutoFixture.AutoMoq;
 using Moneyman.Tests.Extensions;
 using Snapper;
-using Snapper.Core;
 
 namespace Moneyman.Tests
 {
     [TestClass]
-    public class DtpMonthlyGenerationIntegrationTests
+    public class DtpWeeklyGenerationIntegrationTests
     {
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
@@ -34,6 +33,7 @@ namespace Moneyman.Tests
                 "02-06-2022",
                 "03-06-2022",
                 "29-08-2022",
+                "19-09-2022",
                 "26-12-2022",
                 "27-12-2022"
         };
@@ -68,18 +68,37 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        [DataRow("2022-01-08",10,8,8,8,9,8,8,8,8,10,8,8)]
-        [DataRow("2022-01-15",17,15,15,19,16,15,15,15,15,17,15,15)] //Includes two bank holidays in April
-        [DataRow("2022-05-08",10,8,8,8,9,8,8,8,8,10,8,8)]
-        public void GenerateMonthly_WithExpectedValues_ReturnsSuccess(string startDateString,
-            int day1,int day2,int day3,int day4,int day5,int day6,int day7,int day8,int day9,int day10,int day11,int day12
-        )
+        public void GenerateWeekly_WhenThursday_ReturnsSuccess()
         {
-            // Arrange
-            List<int> expectedDayValues = new() {day1,day2,day3,day4,day5,day6,day7,day8,day9,day10,day11,day12};
-            var startDate = DateTime.Parse(startDateString);
+            // Arrange            
+            var startDate = new DateTime(2022,1,6); //Thursday 6th Jan            
             var sut = NewDtpGenerationService();
-            
+            var fixture = new Fixture().Customize(new AutoMoqCustomization());
+
+            IEnumerable<Transaction> transactions = new List<Transaction>()
+            {
+                fixture.Build<Transaction>().With(f => f.StartDate, startDate).Create()
+            }.AsEnumerable();
+
+            mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
+
+            // Act
+            var results = sut.GenerateWeekly(0);
+
+            // Assert
+            results.Count.Should().Be(52);
+            results.Count(x => x.Date.DayOfWeek == DayOfWeek.Thursday).Should().Be(51);
+            results.Count(x => x.Date.DayOfWeek == DayOfWeek.Monday).Should().Be(1);
+            results.ShouldMatchSnapshot();
+        }
+
+        [TestMethod]
+        public void GenerateWeekly_WhenWeekend_ReturnsSuccess()
+        {
+            // Arrange            
+            var startDate = new DateTime(2022,1,2); //Sunday 2nd Jan            
+            var sut = NewDtpGenerationService();
+        
             IEnumerable<Transaction> transactions = new List<Transaction>()
             {
                 new Transaction
@@ -92,20 +111,14 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
 
             // Act
-            var results = sut.GenerateMonthly(0);
+            var results = sut.GenerateWeekly(0);
 
             // Assert
-            results.Count.Should().Be(12);
-            for(int resultCounter = 0; resultCounter < results.Count; resultCounter++)
-            {
-                 results[resultCounter].Date.Should().Be( DateTime.Now.WithMonth((resultCounter+1)).WithDate(expectedDayValues[resultCounter]));
-            }
-            results.ShouldMatchSnapshot(new SnapshotId(
-                "_snapshot",
-                "DtpService",
-                "GenerateMonthly",
-                startDateString
-            ));
+            results.Count.Should().Be(52);
+            var c = results.Select(x => x.Date.DayOfWeek);
+            results.Count(x => x.Date.DayOfWeek == DayOfWeek.Monday).Should().Be(46);
+            results.Count(x => x.Date.DayOfWeek == DayOfWeek.Tuesday).Should().Be(5);
+            results.ShouldMatchSnapshot();
         }
     }
 }
