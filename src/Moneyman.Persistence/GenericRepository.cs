@@ -50,6 +50,7 @@ namespace Moneyman.Persistence
       IEntity entity = (IEntity)newObject;
 
       var existing = _context.Set<T>().Find(entity.Id);
+       _mapper.Map(newObject, existing);
         
       if (existing == null)
       {
