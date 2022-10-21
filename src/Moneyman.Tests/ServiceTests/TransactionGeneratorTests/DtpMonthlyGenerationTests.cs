@@ -18,7 +18,8 @@ namespace Moneyman.Tests
         private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
 
-        private readonly List<string> holidays = new List<string>(){
+        private readonly List<string> holidays = new List<string> 
+        {
                 "03-01-2022",
                 "15-04-2022",
                 "18-04-2022",
@@ -69,9 +70,10 @@ namespace Moneyman.Tests
         {
             // Arrange
             var sut = NewDtpGenerationService();
-            IEnumerable<Transaction> trans = new List<Transaction>()
+            IEnumerable<Transaction> trans = new List<Transaction>
             {
-                new Transaction(){
+                new Transaction
+                {
                     Name = "Trans 1",
                     Amount = 100,
                     Active = true,

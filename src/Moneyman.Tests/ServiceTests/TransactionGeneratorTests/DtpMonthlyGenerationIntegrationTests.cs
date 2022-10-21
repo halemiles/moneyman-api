@@ -23,7 +23,8 @@ namespace Moneyman.Tests
         //Mocking offset calculation service
         private Mock<IHolidayService> mockHolidayService;
 
-        private readonly List<string> holidays = new List<string>(){
+        private readonly List<string> holidays = new List<string>
+        {
                 "03-01-2022",
                 "15-04-2022",
                 "18-04-2022",

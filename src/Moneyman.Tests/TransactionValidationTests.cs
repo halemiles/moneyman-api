@@ -29,7 +29,7 @@ namespace Moneyman.Tests
         public void Create_WithValidProperties_ReturnsSuccess()
         {
             var sut = NewTransactionValidator();
-            Transaction trans = new Transaction()
+            Transaction trans = new Transaction
             {
                 Name = "Transaction 1",
                 Amount = 100,
@@ -45,7 +45,7 @@ namespace Moneyman.Tests
         public void Create_WithNullName_ReturnsFailure()
         {
             var sut = NewTransactionValidator();
-            Transaction trans = new Transaction()
+            Transaction trans = new Transaction
             {
                 Name = null
             };
@@ -60,7 +60,7 @@ namespace Moneyman.Tests
         public void Create_WithEmptyName_ReturnsFailure()
         {
             var sut = NewTransactionValidator();
-            Transaction trans = new Transaction()
+            Transaction trans = new Transaction
             {
                 Name = string.Empty
 
@@ -76,7 +76,7 @@ namespace Moneyman.Tests
         public void Create_WithZeroAmount_ReturnsFailure()
         {
             var sut = NewTransactionValidator();
-            Transaction trans = new Transaction()
+            Transaction trans = new Transaction
             {
                 Name = "Transaction 1",
                 Amount = 0
@@ -93,7 +93,7 @@ namespace Moneyman.Tests
         public void Create_WithMinDateTime_ReturnsFailure()
         {
             var sut = NewTransactionValidator();
-            Transaction trans = new Transaction()
+            Transaction trans = new Transaction
             {
                 Name = "Transaction 1",
                 Amount = 500,

@@ -34,13 +34,13 @@ namespace Tests
         {
             _dbSetMock = new  Mock<DbSet<Transaction>>();
             _contextMock = new  Mock<MoneymanContext>();     
-            _transRepoMock = new Mock<TransactionRepository>(); //(_contextMock.Object);    
+            _transRepoMock = new Mock<TransactionRepository>();
             _genericRepositoryMock = new Mock<IRepository<Transaction>>();   
             
-            var _transactions = new List<Transaction>()
+            var _transactions = new List<Transaction>
             {
-                new Transaction(){Name = "Transaction 1"},
-                new Transaction(){Name = "Transaction 2"}
+                new Transaction {Name = "Transaction 1"},
+                new Transaction {Name = "Transaction 2"}
             }.AsQueryable().BuildMockDbSet();
 
             _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
@@ -103,7 +103,6 @@ namespace Tests
         [TestMethod] 
         public async Task Update_WithNewValidParams_PropertiesUpdated()
         {
-            //var transactionRepository = NewTransactionRepository();
             var existingTransaction = new TransactionBuilder()
                 .WithId(1)
                 .WithAmount(100)

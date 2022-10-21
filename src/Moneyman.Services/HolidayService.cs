@@ -7,7 +7,7 @@ namespace Moneyman.Services
     {
         public List<string> GenerateHolidays()
         {
-            return new List<string>()
+            return new List<string>
             {
                 "01-01-2019",
                 "19-04-2019",

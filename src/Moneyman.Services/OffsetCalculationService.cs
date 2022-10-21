@@ -26,7 +26,7 @@ namespace Moneyman.Services
         {
             var weekDays = _weekdayService.GenerateWeekdays();
             var holidays = _holidayService.GenerateHolidays();
-            var returnObject = new DteObject()
+            var returnObject = new DteObject
             {
                 OriginalPlanDate = dte
             };
@@ -73,7 +73,6 @@ namespace Moneyman.Services
                 if(foundLoopCount >=10)
                 {
                     found  = true;
-                    //("Hit Limit");
                 }
                                 
                 foundLoopCount ++;

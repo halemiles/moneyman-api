@@ -46,7 +46,7 @@ namespace Moneyman.Tests
         public void PlanDateString_WithDate_ReturnsStringInCorrectFormat()
         {
             // Arrange
-            var sut = new DteObject()
+            var sut = new DteObject
             {
                 PlanDate = new DateTime(2022,10,20)
             };

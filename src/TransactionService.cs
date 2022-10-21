@@ -28,7 +28,6 @@ namespace Api.Services
         //  TODO - Implement
         _transactionRepository.Remove(id);
         _transactionRepository.Save();
-        return;
     }
 
     public List<Transaction> GetAll(int userId)

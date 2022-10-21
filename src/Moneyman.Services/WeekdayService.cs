@@ -8,16 +8,16 @@ namespace Moneyman.Services
     {
         public List<WeekDay> GenerateWeekdays()
         {
-            return new List<WeekDay>()
+            return new List<WeekDay>
             {
            
-                new WeekDay() {Name="Monday", OffsetVal = 0,Reason=""},
-                new WeekDay() {Name="Tuesday",OffsetVal=0,Reason=""},
-                new WeekDay() {Name="Wednesday",OffsetVal=0,Reason=""},
-                new WeekDay() {Name="Thursday",OffsetVal=0,Reason=""}, 
-                new WeekDay() {Name="Friday",OffsetVal=0,Reason=""},
-                new WeekDay() {Name="Saturday",OffsetVal=-1,Reason="saturday"},
-                new WeekDay() {Name="Sunday",OffsetVal=-2,Reason="sunday"}
+                new WeekDay {Name="Monday", OffsetVal = 0,Reason=""},
+                new WeekDay {Name="Tuesday",OffsetVal=0,Reason=""},
+                new WeekDay {Name="Wednesday",OffsetVal=0,Reason=""},
+                new WeekDay {Name="Thursday",OffsetVal=0,Reason=""}, 
+                new WeekDay {Name="Friday",OffsetVal=0,Reason=""},
+                new WeekDay {Name="Saturday",OffsetVal=-1,Reason="saturday"},
+                new WeekDay {Name="Sunday",OffsetVal=-2,Reason="sunday"}
             };
         }
     }

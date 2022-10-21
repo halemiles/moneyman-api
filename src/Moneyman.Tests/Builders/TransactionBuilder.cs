@@ -19,7 +19,7 @@ namespace Moneyman.Tests.Builders
 
         private Transaction GenerateDefaultTransaction()
         {
-            return new Transaction()
+            return new Transaction
             {
                 Id = 0,
                 Name = "Transaction 1",
