@@ -77,7 +77,11 @@ namespace Moneyman.Tests
 
             IEnumerable<Transaction> transactions = new List<Transaction>()
             {
-                fixture.Build<Transaction>().With(f => f.StartDate, startDate).Create()
+                new Transaction
+                {
+                    Name = "transaction 1",
+                    StartDate = startDate
+                }
             }.AsEnumerable();
 
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
