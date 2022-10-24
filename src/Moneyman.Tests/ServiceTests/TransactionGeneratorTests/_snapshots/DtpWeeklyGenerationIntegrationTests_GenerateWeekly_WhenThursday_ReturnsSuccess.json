@@ -3,12 +3,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-01-06T00:00:00",
       "Active": true,
@@ -21,12 +21,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-01-13T00:00:00",
       "Active": true,
@@ -39,12 +39,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-01-20T00:00:00",
       "Active": true,
@@ -57,12 +57,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-01-27T00:00:00",
       "Active": true,
@@ -75,12 +75,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-02-03T00:00:00",
       "Active": true,
@@ -93,12 +93,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-02-10T00:00:00",
       "Active": true,
@@ -111,12 +111,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-02-17T00:00:00",
       "Active": true,
@@ -129,12 +129,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-02-24T00:00:00",
       "Active": true,
@@ -147,12 +147,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-03-03T00:00:00",
       "Active": true,
@@ -165,12 +165,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-03-10T00:00:00",
       "Active": true,
@@ -183,12 +183,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-03-17T00:00:00",
       "Active": true,
@@ -201,12 +201,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-03-24T00:00:00",
       "Active": true,
@@ -219,12 +219,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-03-31T00:00:00",
       "Active": true,
@@ -237,12 +237,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-04-07T00:00:00",
       "Active": true,
@@ -255,12 +255,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-04-14T00:00:00",
       "Active": true,
@@ -273,12 +273,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-04-21T00:00:00",
       "Active": true,
@@ -291,12 +291,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-04-28T00:00:00",
       "Active": true,
@@ -309,12 +309,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-05-05T00:00:00",
       "Active": true,
@@ -327,12 +327,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-05-12T00:00:00",
       "Active": true,
@@ -345,12 +345,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-05-19T00:00:00",
       "Active": true,
@@ -363,12 +363,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-05-26T00:00:00",
       "Active": true,
@@ -381,12 +381,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-06-06T00:00:00",
       "Active": true,
@@ -399,12 +399,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-06-09T00:00:00",
       "Active": true,
@@ -417,12 +417,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-06-16T00:00:00",
       "Active": true,
@@ -435,12 +435,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-06-23T00:00:00",
       "Active": true,
@@ -453,12 +453,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-06-30T00:00:00",
       "Active": true,
@@ -471,12 +471,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-07-07T00:00:00",
       "Active": true,
@@ -489,12 +489,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-07-14T00:00:00",
       "Active": true,
@@ -507,12 +507,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-07-21T00:00:00",
       "Active": true,
@@ -525,12 +525,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-07-28T00:00:00",
       "Active": true,
@@ -543,12 +543,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-08-04T00:00:00",
       "Active": true,
@@ -561,12 +561,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-08-11T00:00:00",
       "Active": true,
@@ -579,12 +579,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-08-18T00:00:00",
       "Active": true,
@@ -597,12 +597,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-08-25T00:00:00",
       "Active": true,
@@ -615,12 +615,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-09-01T00:00:00",
       "Active": true,
@@ -633,12 +633,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-09-08T00:00:00",
       "Active": true,
@@ -651,12 +651,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-09-15T00:00:00",
       "Active": true,
@@ -669,12 +669,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-09-22T00:00:00",
       "Active": true,
@@ -687,12 +687,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-09-29T00:00:00",
       "Active": true,
@@ -705,12 +705,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-10-06T00:00:00",
       "Active": true,
@@ -723,12 +723,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-10-13T00:00:00",
       "Active": true,
@@ -741,12 +741,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-10-20T00:00:00",
       "Active": true,
@@ -759,12 +759,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-10-27T00:00:00",
       "Active": true,
@@ -777,12 +777,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-11-03T00:00:00",
       "Active": true,
@@ -795,12 +795,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-11-10T00:00:00",
       "Active": true,
@@ -813,12 +813,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-11-17T00:00:00",
       "Active": true,
@@ -831,12 +831,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-11-24T00:00:00",
       "Active": true,
@@ -849,12 +849,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-12-01T00:00:00",
       "Active": true,
@@ -867,12 +867,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-12-08T00:00:00",
       "Active": true,
@@ -885,12 +885,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-12-15T00:00:00",
       "Active": true,
@@ -903,12 +903,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-12-22T00:00:00",
       "Active": true,
@@ -921,12 +921,12 @@
     {
       "Id": 0,
       "Transaction": {
-        "Name": "Name7319b88c-0d81-4b59-9c83-eeb7ac4ff292",
-        "Amount": 23.0,
-        "Active": true,
+        "Name": "transaction 1",
+        "Amount": 0.0,
+        "Active": false,
         "Frequency": 0,
         "StartDate": "2022-01-06T00:00:00",
-        "Id": 14
+        "Id": 0
       },
       "Date": "2022-12-29T00:00:00",
       "Active": true,

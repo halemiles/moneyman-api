@@ -73,11 +73,14 @@ namespace Moneyman.Tests
             // Arrange            
             var startDate = new DateTime(2022,1,6); //Thursday 6th Jan            
             var sut = NewDtpGenerationService();
-            var fixture = new Fixture().Customize(new AutoMoqCustomization());
 
             IEnumerable<Transaction> transactions = new List<Transaction>()
             {
-                fixture.Build<Transaction>().With(f => f.StartDate, startDate).Create()
+                new Transaction
+                {
+                    Name = "transaction 1",
+                    StartDate = startDate
+                }
             }.AsEnumerable();
 
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
