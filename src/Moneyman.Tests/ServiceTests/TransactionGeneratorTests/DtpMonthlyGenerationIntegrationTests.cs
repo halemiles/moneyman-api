@@ -100,12 +100,6 @@ namespace Moneyman.Tests
             {
                  results[resultCounter].Date.Should().Be( DateTime.Now.WithMonth((resultCounter+1)).WithDate(expectedDayValues[resultCounter]));
             }
-            results.ShouldMatchSnapshot(new SnapshotId(
-                "_snapshot",
-                "DtpService",
-                "GenerateMonthly",
-                startDateString
-            ));
         }
     }
 }
