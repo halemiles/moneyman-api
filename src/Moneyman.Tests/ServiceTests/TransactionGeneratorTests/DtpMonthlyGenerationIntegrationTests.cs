@@ -21,8 +21,6 @@ namespace Moneyman.Tests
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
-
-        //Mocking offset calculation service
         private Mock<IHolidayService> mockHolidayService;
 
         private readonly List<string> holidays = new List<string>
@@ -85,7 +83,8 @@ namespace Moneyman.Tests
                 new Transaction
                 {
                     Name = "transaction 1",
-                    StartDate = startDate
+                    StartDate = startDate,
+                    Frequency = Frequency.Monthly
                 }
             }.AsEnumerable();
 
