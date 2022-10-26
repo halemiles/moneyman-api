@@ -67,7 +67,7 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public void GenerateWeekly_WithValidMonthlyTransaction_ReturnsSuccess()
+        public void GenerateWeekly_WithValidWeeklyTransaction_ReturnsSuccess()
         {
             // Arrange
             var sut = NewDtpGenerationService();
@@ -78,7 +78,8 @@ namespace Moneyman.Tests
                     Name = "Trans 1",
                     Amount = 100,
                     Active = true,
-                    StartDate = new DateTime(2022,1,1)
+                    StartDate = new DateTime(2022,1,1),
+                    Frequency = Frequency.Weekly
                 }
             }.AsEnumerable();
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
@@ -89,6 +90,42 @@ namespace Moneyman.Tests
             // Assert
             result.Count.Should().Be(52);
             result.All(x => x.Transaction.Name == "Trans 1").Should().BeTrue();
+            result.ShouldMatchSnapshot();
+        }
+
+        [TestMethod]
+        public void GenerateWeekly_WithMultipleTransactionFrequencies_ReturnsSuccess()
+        {
+            // Arrange
+            var sut = NewDtpGenerationService();
+            IEnumerable<Transaction> trans = new List<Transaction>
+            {
+                new Transaction
+                {
+                    Name = "Trans 1",
+                    Amount = 100,
+                    Active = true,
+                    StartDate = new DateTime(2022,1,1),
+                    Frequency = Frequency.Monthly
+                },
+                new Transaction
+                {
+                    Name = "Trans 2",
+                    Amount = 100,
+                    Active = true,
+                    StartDate = new DateTime(2022,1,6),
+                    Frequency = Frequency.Weekly
+                }
+            }.AsEnumerable();
+            mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
+
+            // Act
+            var result = sut.GenerateWeekly(0);
+
+            // Assert
+            result.Count.Should().Be(52);
+            result.Any(x => x.Transaction.Name == "Trans 1").Should().BeFalse();
+            result.Any(x => x.Transaction.Name == "Trans 2").Should().BeTrue();
             result.ShouldMatchSnapshot();
         }
     }

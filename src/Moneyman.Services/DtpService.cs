@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
 using Moneyman.Services.Factories;
@@ -29,7 +30,8 @@ namespace Moneyman.Services
         {
             
             transactionRepository.RemoveAll("PlanDates");
-            List<PlanDate> planDates = GenerateMonthly(-1);
+            List<PlanDate> planDates = GenerateMonthly(-1);  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GenerateWeekly(-1));  //TODO - PAss in a transaction ID if available
             foreach(var planDate in planDates)
             {
                 planDateRepository.Add(planDate);
@@ -51,7 +53,7 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateMonthly(int transactionId)
         {
-            var transactions = transactionRepository.GetAll();
+            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Monthly);
             List<PlanDate> planDates = new List<PlanDate>();
             foreach(var transaction in transactions)
             {
@@ -72,7 +74,7 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateWeekly(int transactionId)
         {
-            var transactions = transactionRepository.GetAll();
+            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Weekly);
             List<PlanDate> planDates = new List<PlanDate>();
             foreach(var transaction in transactions)
             {

@@ -49,7 +49,8 @@ namespace Moneyman.Tests
                     Name = "Trans 1",
                     Amount = 100,
                     Active = true,
-                    StartDate = new DateTime(2022,1,1)
+                    StartDate = new DateTime(2022,1,1),
+                    Frequency = Frequency.Monthly
                 }
             }.AsEnumerable();
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
