@@ -26,7 +26,7 @@ namespace Moneyman.Services
             this.offsetCalculationService = offsetCalculationService;
         }
 
-        public List<PlanDate> GenerateAll()
+        public List<PlanDate> GenerateAll(int? transactionId)
         {
             
             transactionRepository.RemoveAll("PlanDates");
@@ -41,19 +41,23 @@ namespace Moneyman.Services
             return planDates;
         }
 
-        public List<PlanDate> GenerateDaily(int transactionId)
+        public List<PlanDate> GenerateDaily(int? transactionId)
         {
             throw new System.NotImplementedException();
         }
 
-        public List<PlanDate> GenerateForTransaction(int transactionId)
+        public List<PlanDate> GenerateForTransaction(int? transactionId)
         {
             throw new System.NotImplementedException();
         }
 
-        public List<PlanDate> GenerateMonthly(int transactionId)
+        public List<PlanDate> GenerateMonthly(int? transactionId)
         {
             var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Monthly);
+            if(transactionId.HasValue)
+            {
+                transactions = transactions.Where(x => x.Id == transactionId);
+            }
             List<PlanDate> planDates = new List<PlanDate>();
             foreach(var transaction in transactions)
             {
@@ -72,9 +76,14 @@ namespace Moneyman.Services
             return planDates;
         }
 
-        public List<PlanDate> GenerateWeekly(int transactionId)
+        public List<PlanDate> GenerateWeekly(int? transactionId)
         {
             var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Weekly);
+            if(transactionId.HasValue)
+            {
+                transactions = transactions.Where(x => x.Id == transactionId);
+            }   
+            
             List<PlanDate> planDates = new List<PlanDate>();
             foreach(var transaction in transactions)
             {
@@ -93,7 +102,7 @@ namespace Moneyman.Services
             return planDates;
         }
 
-        public List<PlanDate> GenerateYearly(int transactionId)
+        public List<PlanDate> GenerateYearly(int? transactionId)
         {
             throw new System.NotImplementedException();
         }

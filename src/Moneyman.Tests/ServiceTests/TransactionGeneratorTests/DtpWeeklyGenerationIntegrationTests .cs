@@ -84,7 +84,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
 
             // Act
-            var results = sut.GenerateWeekly(0);
+            var results = sut.GenerateWeekly(null);
 
             // Assert
             results.Count.Should().Be(52);
@@ -113,7 +113,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
 
             // Act
-            var results = sut.GenerateWeekly(0);
+            var results = sut.GenerateWeekly(null);
 
             // Assert
             results.Count.Should().Be(52);
