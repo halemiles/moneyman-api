@@ -39,7 +39,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("generate")]
         public IActionResult Generate()
         {
-            var planDates = dtpService.GenerateAll();
+            var planDates = dtpService.GenerateAll(null);
             return Ok(planDates.Count);
             
         }
