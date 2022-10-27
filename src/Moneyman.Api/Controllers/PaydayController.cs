@@ -25,10 +25,15 @@ namespace Moneyman.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("generate")]
-        public IActionResult GeneratePaydays()
+        [HttpGet("generate")]
+        public IActionResult GeneratePaydays([FromQuery]int? dayOfMonth)
         {
-            paydayService.Generate(25);
+            if(!dayOfMonth.HasValue || dayOfMonth == 0)
+            {
+                return BadRequest();
+            }
+            
+            paydayService.Generate(dayOfMonth.Value);
             return Ok();
         }
     }

@@ -21,7 +21,6 @@ namespace Moneyman.Tests
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
-        private Mock<IHolidayService> mockHolidayService;
 
         private readonly List<string> holidays = new List<string>
         {
@@ -36,7 +35,10 @@ namespace Moneyman.Tests
                 "27-12-2022"
         };
 
-        private OffsetCalculationService NewOffsetCalculationService() =>
+        public Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
+
+        //TODO - Move this to a fixture class
+        public OffsetCalculationService NewOffsetCalculationService() =>
             new(
                 new WeekdayService(),
                 mockHolidayService.Object
