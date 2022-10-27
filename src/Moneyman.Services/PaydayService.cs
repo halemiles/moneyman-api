@@ -4,6 +4,7 @@ using System;
 using Moneyman.Domain;
 using AutoMapper;
 using Moneyman.Services.Interfaces;
+using System.Linq;
 
 namespace Moneyman.Services
 {
@@ -11,14 +12,18 @@ namespace Moneyman.Services
 	{
 		private readonly IPaydayRepository _paydayRepository;
 		private readonly IOffsetCalculationService _offsetCalculationService;
+		private readonly IDateTimeProvider _dateTimeProvider;
 
 		public PaydayService(
 			IPaydayRepository paydayRepository,
-			IOffsetCalculationService offsetCalculationService
+			IOffsetCalculationService offsetCalculationService,
+			IDateTimeProvider dateTimeProvider
 		)
 		{
 			_paydayRepository = paydayRepository;
 			_offsetCalculationService = offsetCalculationService;
+			_dateTimeProvider = dateTimeProvider;
+
 		}
 
 		public List<Payday> Generate(int dayOfMonth)
@@ -40,5 +45,22 @@ namespace Moneyman.Services
 			
 			return payDates;
 		}
-  	}
+
+        public Payday GetNext()
+        {
+            return _paydayRepository
+				.GetAll()
+				.Where(x => x.Date > _dateTimeProvider.GetNow())
+				.FirstOrDefault();
+
+        }
+
+        public Payday GetPrevious()
+        {
+            return _paydayRepository
+				.GetAll()
+				.Where(x => x.Date < _dateTimeProvider.GetNow())
+				.LastOrDefault();
+        }
+    }
 }

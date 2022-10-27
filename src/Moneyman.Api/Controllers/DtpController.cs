@@ -37,9 +37,9 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet("generate")]
-        public IActionResult Generate()
+        public IActionResult Generate([FromQuery]int? transactionId)
         {
-            var planDates = dtpService.GenerateAll(null);
+            var planDates = dtpService.GenerateAll(transactionId);
             return Ok(planDates.Count);
             
         }
