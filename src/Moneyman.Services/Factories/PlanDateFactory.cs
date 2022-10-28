@@ -5,8 +5,8 @@ namespace Moneyman.Services.Factories
 {
     public class PlanDateFactory
     {
-        private Transaction transaction;
-        private DateTime calculatedOffsetDate;
+        private readonly Transaction transaction;
+        private readonly DateTime calculatedOffsetDate;
         public PlanDateFactory(Transaction transaction, DateTime calculatedOffsetDate )
         {
             this.transaction = transaction;

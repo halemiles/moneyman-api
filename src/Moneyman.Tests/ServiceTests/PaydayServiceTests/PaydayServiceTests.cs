@@ -16,7 +16,6 @@ namespace Moneyman.Tests
     public class PaydayServiceTests
     {
         private Mock<IPaydayRepository> mockPaydayRepository;
-        private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IDateTimeProvider> mockDateTimeProvider;
 
         private readonly List<string> holidays = new List<string>
@@ -48,7 +47,7 @@ namespace Moneyman.Tests
             new Payday { Date = DateTime.Parse("2022-12-28")}
         };
         
-        public Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
+        private Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
 
         //TODO - Move this to a fixture class
         public OffsetCalculationService NewOffsetCalculationService() =>
@@ -68,11 +67,7 @@ namespace Moneyman.Tests
         public void SetUp()
         {
             mockPaydayRepository = new Mock<IPaydayRepository>();
-            mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
             mockDateTimeProvider = new Mock<IDateTimeProvider>();
-
-            mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
-                .Returns(new DteObject());
 
             mockPaydayRepository.Setup(x => x.GetAll())
                 .Returns(payDates);

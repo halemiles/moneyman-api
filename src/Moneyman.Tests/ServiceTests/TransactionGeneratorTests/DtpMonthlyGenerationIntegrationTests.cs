@@ -35,10 +35,10 @@ namespace Moneyman.Tests
                 "27-12-2022"
         };
 
-        public Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
+        private Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
 
         //TODO - Move this to a fixture class
-        public OffsetCalculationService NewOffsetCalculationService() =>
+        private OffsetCalculationService NewOffsetCalculationService() =>
             new(
                 new WeekdayService(),
                 mockHolidayService.Object
