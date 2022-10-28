@@ -30,8 +30,8 @@ namespace Moneyman.Services
         {
             
             transactionRepository.RemoveAll("PlanDates");
-            List<PlanDate> planDates = GenerateMonthly(-1);  //TODO - PAss in a transaction ID if available
-            planDates.AddRange(GenerateWeekly(-1));  //TODO - PAss in a transaction ID if available
+            List<PlanDate> planDates = GenerateMonthly(null);  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GenerateWeekly(null));  //TODO - PAss in a transaction ID if available
             foreach(var planDate in planDates)
             {
                 planDateRepository.Add(planDate);
