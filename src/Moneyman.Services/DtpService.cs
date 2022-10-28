@@ -26,6 +26,7 @@ namespace Moneyman.Services
             this.offsetCalculationService = offsetCalculationService;
         }
 
+        //TODO: Move this to a another class so we can unit test
         public List<PlanDate> GenerateAll(int? transactionId)
         {
             
