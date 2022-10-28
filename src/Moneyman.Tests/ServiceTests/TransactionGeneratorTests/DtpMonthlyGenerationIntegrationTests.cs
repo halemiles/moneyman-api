@@ -80,7 +80,7 @@ namespace Moneyman.Tests
             var startDate = DateTime.Parse(startDateString);
             var sut = NewDtpGenerationService();
             
-            IEnumerable<Transaction> transactions = new List<Transaction>()
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction
                 {
