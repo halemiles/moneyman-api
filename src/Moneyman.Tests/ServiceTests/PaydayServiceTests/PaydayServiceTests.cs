@@ -31,6 +31,22 @@ namespace Moneyman.Tests
                 "26-12-2022",
                 "27-12-2022"
         };
+
+        private readonly List<Payday> payDates = new List<Payday>
+        {
+            new Payday { Date = DateTime.Parse("2022-01-25")},
+            new Payday { Date = DateTime.Parse("2022-02-25")},
+            new Payday { Date = DateTime.Parse("2022-03-25")},
+            new Payday { Date = DateTime.Parse("2022-04-25")},
+            new Payday { Date = DateTime.Parse("2022-05-25")},
+            new Payday { Date = DateTime.Parse("2022-06-27")},
+            new Payday { Date = DateTime.Parse("2022-07-25")},
+            new Payday { Date = DateTime.Parse("2022-08-25")},
+            new Payday { Date = DateTime.Parse("2022-09-26")},
+            new Payday { Date = DateTime.Parse("2022-10-25")},
+            new Payday { Date = DateTime.Parse("2022-11-25")},
+            new Payday { Date = DateTime.Parse("2022-12-28")}
+        };
         
         public Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
 
@@ -58,6 +74,9 @@ namespace Moneyman.Tests
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new DteObject());
 
+            mockPaydayRepository.Setup(x => x.GetAll())
+                .Returns(payDates);
+
             mockHolidayService.Setup(x => x.GenerateHolidays()).Returns(holidays);
         }
 
@@ -81,6 +100,72 @@ namespace Moneyman.Tests
             result.Count.Should().Be(12);
             result.FirstOrDefault().Date.Month.Should().Be(1);
             result.LastOrDefault().Date.Month.Should().Be(12);
+        }
+
+        [TestMethod]
+        public void GetPrevious_ReturnsSuccess()
+        {
+            var paydayService = NewPaydayService();
+            mockDateTimeProvider.Setup(x => x.GetNow())
+                .Returns(new DateTime(2022,6,27));
+            var result = paydayService.GetPrevious();
+
+            result.Date.Should().Be(new DateTime(2022,5,25));
+        }
+
+        [TestMethod]
+        public void GetPrevious_WhenOnPayday_ReturnsSuccess()
+        {
+            var paydayService = NewPaydayService();
+            mockDateTimeProvider.Setup(x => x.GetNow())
+                .Returns(new DateTime(2022,6,20));
+            var result = paydayService.GetPrevious();
+
+            result.Date.Should().Be(new DateTime(2022,5,25));
+        }
+
+        [TestMethod]
+        public void GetPrevious_WhenDayAfterPayday_ReturnsSuccess()
+        {
+            var paydayService = NewPaydayService();
+            mockDateTimeProvider.Setup(x => x.GetNow())
+                .Returns(new DateTime(2022,6,28));
+            var result = paydayService.GetPrevious();
+
+            result.Date.Should().Be(new DateTime(2022,6,27));
+        }
+
+               [TestMethod]
+        public void GetNext_ReturnsSuccess()
+        {
+            var paydayService = NewPaydayService();
+            mockDateTimeProvider.Setup(x => x.GetNow())
+                .Returns(new DateTime(2022,6,20));
+            var result = paydayService.GetNext();
+
+            result.Date.Should().Be(new DateTime(2022,6,27));
+        }
+
+        [TestMethod]
+        public void GetNext_WhenOnPayday_ReturnsSuccess()
+        {
+            var paydayService = NewPaydayService();
+            mockDateTimeProvider.Setup(x => x.GetNow())
+                .Returns(new DateTime(2022,5,25));
+            var result = paydayService.GetNext();
+
+            result.Date.Should().Be(new DateTime(2022,6,27));
+        }
+
+        [TestMethod]
+        public void GetNext_WhenDayBeforePayday_ReturnsSuccess()
+        {
+            var paydayService = NewPaydayService();
+            mockDateTimeProvider.Setup(x => x.GetNow())
+                .Returns(new DateTime(2022,5,25));
+            var result = paydayService.GetNext();
+
+            result.Date.Should().Be(new DateTime(2022,6,27));
         }
     }
 }
