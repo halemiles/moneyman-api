@@ -15,17 +15,20 @@ namespace Moneyman.Api.Controllers
     public class DtpController : ControllerBase
     {
         private readonly IDtpService dtpService;
+        private readonly IDtpReaderService dtpReaderService;
         private readonly ILogger<DtpController> _logger;
         private readonly IMapper _mapper;
 
         public DtpController(
             ILogger<DtpController> logger,
             IDtpService dtpService,
+            IDtpReaderService dtpReaderService,
             IMapper mapper
         )
         {
             _logger = logger;
             this.dtpService = dtpService;
+            this.dtpReaderService = dtpReaderService;
             _mapper = mapper;
         }
 
@@ -33,7 +36,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("current")]
         public IActionResult GetCurrentPeriod(int id)
         {
-            return Ok();
+            return Ok(dtpReaderService.GetCurrent());
         }
 
         [HttpGet("generate")]
