@@ -10,6 +10,8 @@ using System;
 using Snapper;
 using Moneyman.Services.Interfaces;
 using AutoFixture;
+using AutoMapper;
+using Moneyman.Domain.MapperProfiles;
 
 namespace Moneyman.Tests
 {
@@ -22,6 +24,7 @@ namespace Moneyman.Tests
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
         private Mock<IDateTimeProvider> mockDateTimeProvider;
+        private IMapper mockMapper;
 
         private readonly List<string> holidays = new List<string> 
         {
@@ -42,7 +45,8 @@ namespace Moneyman.Tests
                     mockPlanDateRepository.Object,
                     mockOffsetCalculationService.Object,
                     mockPaydayService.Object,
-                    mockDateTimeProvider.Object
+                    mockDateTimeProvider.Object,
+                    mockMapper
             );
 
         [TestInitialize]
@@ -57,7 +61,16 @@ namespace Moneyman.Tests
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new DteObject());
-        }
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new DtpDtoProfile());
+                mc.AddProfile(new PlanDateDtoProfile());
+            });
+            
+            IMapper mapper = mappingConfig.CreateMapper();
+            mockMapper = mapper;
+        }    
 
         [TestMethod]
         public void GenerateMonthly_WithInvalidTransactionId_ReturnsEmptyList()
@@ -67,7 +80,13 @@ namespace Moneyman.Tests
             Fixture fixture = new Fixture();
             IEnumerable<Transaction> trans = new List<Transaction>
             {
-                fixture.Build<Transaction>().With(f => f.StartDate, new DateTime(2022,10,1)).Create()
+                fixture.Build<Transaction>().With(f => f.StartDate, new DateTime(2022,10,1)).Create(),
+                new Transaction
+                {
+                    Name = "Trans 1",
+                    StartDate = new DateTime(2022,11,1),
+                    Frequency = Frequency.Monthly
+                }
             };
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
             mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(2022,1,1));
@@ -77,7 +96,7 @@ namespace Moneyman.Tests
             var result = sut.GetCurrent();
 
             // Assert
-            result.Count.Should().Be(0); //TODO - Finish this
+            result.Count.Should().NotBe(null); //TODO - Finish this
         }
     }
 }

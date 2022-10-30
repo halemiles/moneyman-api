@@ -74,6 +74,7 @@ namespace Moneyman.Services
                     planDates.Add(factory.Create());
                 }
             }
+            
             return planDates;
         }
 

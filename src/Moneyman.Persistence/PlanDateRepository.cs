@@ -13,6 +13,10 @@ namespace Moneyman.Persistence
         {
         }
 
+        public override IEnumerable<PlanDate> GetAll()
+        {
+        return  _context.Set<PlanDate>().AsEnumerable();
+        }
         
     }
 }

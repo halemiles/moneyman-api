@@ -84,6 +84,7 @@ namespace Moneyman.Tests
             {
                 new Transaction
                 {
+                    Id = 0,
                     Name = "transaction 1",
                     StartDate = startDate,
                     Frequency = Frequency.Monthly
@@ -99,7 +100,8 @@ namespace Moneyman.Tests
             results.Count.Should().Be(12);
             for(int resultCounter = 0; resultCounter < results.Count; resultCounter++)
             {
-                 results[resultCounter].Date.Should().Be( DateTime.Now.WithMonth((resultCounter+1)).WithDate(expectedDayValues[resultCounter]));
+                results[resultCounter].Date.Day.Should().Be(expectedDayValues[resultCounter]);
+                results[resultCounter].Date.Month.Should().Be(resultCounter+1);
             }
         }
     }

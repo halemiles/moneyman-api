@@ -70,6 +70,8 @@ namespace Moneyman.Api
                 cfg.AddProfile<TransactionProfile>();
                 cfg.AddProfile<TransactionToTransactionDtoProfile>();
                 cfg.AddProfile<TransactionDtoToTransactionProfile>();
+                cfg.AddProfile<PlanDateDtoProfile>();
+                cfg.AddProfile<DtpDtoProfile>();
             });
 
             services.AddSingleton(config);
