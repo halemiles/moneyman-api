@@ -26,12 +26,13 @@ namespace Moneyman.Services
             this.offsetCalculationService = offsetCalculationService;
         }
 
+        //TODO: Move this to a another class so we can unit test
         public List<PlanDate> GenerateAll(int? transactionId)
         {
             
             transactionRepository.RemoveAll("PlanDates");
-            List<PlanDate> planDates = GenerateMonthly(-1);  //TODO - PAss in a transaction ID if available
-            planDates.AddRange(GenerateWeekly(-1));  //TODO - PAss in a transaction ID if available
+            List<PlanDate> planDates = GenerateMonthly(null);  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GenerateWeekly(null));  //TODO - PAss in a transaction ID if available
             foreach(var planDate in planDates)
             {
                 planDateRepository.Add(planDate);
@@ -73,6 +74,7 @@ namespace Moneyman.Services
                     planDates.Add(factory.Create());
                 }
             }
+            
             return planDates;
         }
 

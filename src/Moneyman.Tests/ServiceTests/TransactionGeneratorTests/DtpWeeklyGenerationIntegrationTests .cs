@@ -71,7 +71,7 @@ namespace Moneyman.Tests
             var startDate = new DateTime(2022,1,6); //Thursday 6th Jan            
             var sut = NewDtpGenerationService();
 
-            IEnumerable<Transaction> transactions = new List<Transaction>()
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction
                 {
@@ -100,7 +100,7 @@ namespace Moneyman.Tests
             var startDate = new DateTime(2022,1,2); //Sunday 2nd Jan            
             var sut = NewDtpGenerationService();
         
-            IEnumerable<Transaction> transactions = new List<Transaction>()
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction
                 {

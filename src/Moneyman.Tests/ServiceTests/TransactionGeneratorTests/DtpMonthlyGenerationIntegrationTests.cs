@@ -35,10 +35,10 @@ namespace Moneyman.Tests
                 "27-12-2022"
         };
 
-        public Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
+        private Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
 
         //TODO - Move this to a fixture class
-        public OffsetCalculationService NewOffsetCalculationService() =>
+        private OffsetCalculationService NewOffsetCalculationService() =>
             new(
                 new WeekdayService(),
                 mockHolidayService.Object
@@ -80,10 +80,11 @@ namespace Moneyman.Tests
             var startDate = DateTime.Parse(startDateString);
             var sut = NewDtpGenerationService();
             
-            IEnumerable<Transaction> transactions = new List<Transaction>()
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction
                 {
+                    Id = 0,
                     Name = "transaction 1",
                     StartDate = startDate,
                     Frequency = Frequency.Monthly
@@ -99,7 +100,8 @@ namespace Moneyman.Tests
             results.Count.Should().Be(12);
             for(int resultCounter = 0; resultCounter < results.Count; resultCounter++)
             {
-                 results[resultCounter].Date.Should().Be( DateTime.Now.WithMonth((resultCounter+1)).WithDate(expectedDayValues[resultCounter]));
+                results[resultCounter].Date.Day.Should().Be(expectedDayValues[resultCounter]);
+                results[resultCounter].Date.Month.Should().Be(resultCounter+1);
             }
         }
     }
