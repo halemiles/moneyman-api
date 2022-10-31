@@ -54,11 +54,9 @@ namespace Moneyman.Persistence
         
       if (existing == null)
       {
-          _context.Add(newObject);
+          _context.Add(transaction);
           return true;
       }
-
-      //_context.Entry(existing).CurrentValues.SetValues(newObject);
 
       return true; //TODO - Return failure state
     }

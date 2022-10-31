@@ -66,14 +66,6 @@ namespace Tests
         }
 
         [TestMethod]
-        public void GetAll_WhenOneResult_ReturnsOneResult()
-        {
-            var repository = NewTransactionRepository();
-            var result = repository.GetAll();               
-            result.Count().Should().Be(2);
-        }
-
-        [TestMethod]
         public void Add_WithOneNewTransaction_SaveReturnsOneRecordCount()
         {
             var newTransaction = new TransactionBuilder()
@@ -118,7 +110,7 @@ namespace Tests
                 .WithFrequency(Frequency.Weekly)
                 .WithStartDate(new DateTime(2021,10,1))
                 .Build();
-                
+
             Transaction updatedTransaction = null;
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
