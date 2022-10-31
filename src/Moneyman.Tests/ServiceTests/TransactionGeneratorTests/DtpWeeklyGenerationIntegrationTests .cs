@@ -1,0 +1,126 @@
+using Moq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moneyman.Interfaces;
+using Moneyman.Services;
+using Moneyman.Domain;
+using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+using AutoFixture;
+using AutoFixture.AutoMoq;
+using Moneyman.Tests.Extensions;
+using Snapper;
+
+namespace Moneyman.Tests
+{
+    [TestClass]
+    public class DtpWeeklyGenerationIntegrationTests
+    {
+        private Mock<ITransactionService> mockTransactionService;
+        private Mock<ITransactionRepository> mockTransactionRepository;
+        private Mock<IPlanDateRepository> mockPlanDateRepository;        private Mock<IHolidayService> mockHolidayService;
+
+        private readonly List<string> holidays = new List<string>
+        {
+                "03-01-2022",
+                "15-04-2022",
+                "18-04-2022",
+                "02-05-2022",
+                "02-06-2022",
+                "03-06-2022",
+                "29-08-2022",
+                "19-09-2022",
+                "26-12-2022",
+                "27-12-2022"
+        };
+
+        private OffsetCalculationService NewOffsetCalculationService() =>
+            new(
+                new WeekdayService(),
+                mockHolidayService.Object
+            );
+
+        private DtpService NewDtpGenerationService() =>
+            new DtpService(
+                    mockTransactionRepository.Object,
+                    mockPlanDateRepository.Object,
+                    NewOffsetCalculationService()
+            );
+
+        [TestInitialize]
+        public void SetUp()
+        {
+            mockTransactionService = new Mock<ITransactionService>();
+            mockTransactionRepository = new Mock<ITransactionRepository>();
+            mockPlanDateRepository = new Mock<IPlanDateRepository>();
+            var mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+
+            mockHolidayService = new Mock<IHolidayService>();
+
+            mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
+                .Returns(new DteObject());
+
+            mockHolidayService.Setup(x => x.GenerateHolidays()).Returns(holidays);
+        }
+
+        [TestMethod]
+        public void GenerateWeekly_WhenThursday_ReturnsSuccess()
+        {
+            // Arrange            
+            var startDate = new DateTime(2022,1,6); //Thursday 6th Jan            
+            var sut = NewDtpGenerationService();
+
+            IEnumerable<Transaction> transactions = new List<Transaction>
+            {
+                new Transaction
+                {
+                    Name = "transaction 1",
+                    StartDate = startDate,
+                    Frequency = Frequency.Weekly
+                }
+            }.AsEnumerable();
+
+            mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
+
+            // Act
+            var results = sut.GenerateWeekly(null);
+
+            // Assert
+            results.Count.Should().Be(52);
+            results.Count(x => x.Date.DayOfWeek == DayOfWeek.Thursday).Should().Be(51);
+            results.Count(x => x.Date.DayOfWeek == DayOfWeek.Monday).Should().Be(1);
+            results.ShouldMatchSnapshot();
+        }
+
+        [TestMethod]
+        public void GenerateWeekly_WhenWeekend_ReturnsSuccess()
+        {
+            // Arrange            
+            var startDate = new DateTime(2022,1,2); //Sunday 2nd Jan            
+            var sut = NewDtpGenerationService();
+        
+            IEnumerable<Transaction> transactions = new List<Transaction>
+            {
+                new Transaction
+                {
+                    Name = "transaction 1",
+                    StartDate = startDate,
+                    Frequency = Frequency.Weekly
+                }
+            }.AsEnumerable();
+
+            mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
+
+            // Act
+            var results = sut.GenerateWeekly(null);
+
+            // Assert
+            results.Count.Should().Be(52);
+            var c = results.Select(x => x.Date.DayOfWeek);
+            results.Count(x => x.Date.DayOfWeek == DayOfWeek.Monday).Should().Be(46);
+            results.Count(x => x.Date.DayOfWeek == DayOfWeek.Tuesday).Should().Be(5);
+            results.ShouldMatchSnapshot();
+        }
+    }
+}
