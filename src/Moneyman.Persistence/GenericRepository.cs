@@ -54,7 +54,7 @@ namespace Moneyman.Persistence
         
       if (existing == null)
       {
-          _context.Add(transaction);
+          _context.Add(newObject);
           return true;
       }
 
