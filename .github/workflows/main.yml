@@ -2,14 +2,15 @@ name: .NET
 
 on:
   push:
-    branches: [ development, ci, main, refactor/*, feature/* ]
+    branches: [ development, ci/*, main, refactor/*, feature/* ]
   pull_request:
     branches: [ development, main ]
 
 jobs:
-  env:
-    working-directory: ./src
+
   build:
+    env:
+      working-directory: ./src
     runs-on: ubuntu-latest
 
     steps:
@@ -44,6 +45,8 @@ jobs:
         name: build-artifacts
         path: Moneyman.Api/bin/net6.0
   test:
+    env:
+      working-directory: ./src
 
     - uses: actions/download-artifact@master
       with:
