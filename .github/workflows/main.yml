@@ -7,10 +7,9 @@ on:
     branches: [ development, main ]
 
 jobs:
+  env:
+    working-directory: ./src
   build:
-    env:
-      working-directory: ./src
-
     runs-on: ubuntu-latest
 
     steps:
@@ -19,27 +18,37 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
-    - name: Create changelog text
-      id: changelog
-      uses: loopwerk/tag-changelog@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        exclude_types: other,doc,chore
+    # - name: Create changelog text
+    #   id: changelog
+    #   uses: loopwerk/tag-changelog@v1
+    #   with:
+    #     token: ${{ secrets.GITHUB_TOKEN }}
+    #     exclude_types: other,doc,chore
 
-    - name: Create release
-      uses: actions/create-release@latest
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body: ${{ steps.changelog.outputs.changes }}
+    # - name: Create release
+    #   uses: actions/create-release@latest
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     tag_name: ${{ github.ref }}
+    #     release_name: Release ${{ github.ref }}
+    #     body: ${{ steps.changelog.outputs.changes }}
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ${{ env.working-directory }}
     - name: Build
       run: dotnet build --no-restore
       working-directory: ${{ env.working-directory }}
+    - uses: actions/upload-artifact@master
+      with:
+        name: build-artifacts
+        path: Moneyman.Api/bin/net6.0
+  test:
+
+    - uses: actions/download-artifact@master
+      with:
+        name: my-artifact
+        path: Moneyman.Api/bin/net6.0
     - name: Test
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  --no-build --verbosity normal
       working-directory: ${{ env.working-directory }}
