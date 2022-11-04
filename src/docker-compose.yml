@@ -1,0 +1,11 @@
+version: '3'
+services:
+  moneymanapi:
+    container_name: "moneyman-api"
+    build: .
+    ports:
+      - "8600:80"
+    volumes:
+      - ./Moneyman.Api/LocalDatabase.db:/app/LocalDatabase.db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Staging

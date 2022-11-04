@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Moneyman.Domain
 {
+    [ExcludeFromCodeCoverage]
     public class TransactionDto
     {
         public int Id {get; set;}

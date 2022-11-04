@@ -58,8 +58,6 @@ namespace Moneyman.Persistence
           return true;
       }
 
-      //_context.Entry(existing).CurrentValues.SetValues(newObject);
-
       return true; //TODO - Return failure state
     }
 
@@ -68,6 +66,7 @@ namespace Moneyman.Persistence
         return await _context.SaveChangesAsync();
     }
 
+    //TODO: Update this to accept T
     public bool RemoveAll(string tableName)
     {
         var result = _context.Database.ExecuteSqlRaw($"DELETE FROM {tableName}");

@@ -5,16 +5,16 @@ namespace Moneyman.Services.Interfaces
 {
     public interface IDtpService
     {
-        List<PlanDate> GenerateAll();
+        List<PlanDate> GenerateAll(int? transactionId);
 
-        List<PlanDate> GenerateForTransaction(int transactionId);
+        List<PlanDate> GenerateForTransaction(int? transactionId);
 
-        List<PlanDate> GenerateMonthly(int transactionId);
+        List<PlanDate> GenerateMonthly(int? transactionId);
 
-        List<PlanDate> GenerateWeekly(int transactionId);
+        List<PlanDate> GenerateWeekly(int? transactionId);
 
-        List<PlanDate> GenerateDaily(int transactionId);
+        List<PlanDate> GenerateDaily(int? transactionId);
 
-        List<PlanDate> GenerateYearly(int transactionId);
+        List<PlanDate> GenerateYearly(int? transactionId);
     }
 }

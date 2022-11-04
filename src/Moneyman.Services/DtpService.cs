@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
 using Moneyman.Services.Factories;
@@ -25,11 +26,13 @@ namespace Moneyman.Services
             this.offsetCalculationService = offsetCalculationService;
         }
 
-        public List<PlanDate> GenerateAll()
+        //TODO: Move this to a another class so we can unit test
+        public List<PlanDate> GenerateAll(int? transactionId)
         {
             
             transactionRepository.RemoveAll("PlanDates");
-            List<PlanDate> planDates = GenerateMonthly(-1);
+            List<PlanDate> planDates = GenerateMonthly(null);  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GenerateWeekly(null));  //TODO - PAss in a transaction ID if available
             foreach(var planDate in planDates)
             {
                 planDateRepository.Add(planDate);
@@ -39,19 +42,23 @@ namespace Moneyman.Services
             return planDates;
         }
 
-        public List<PlanDate> GenerateDaily(int transactionId)
+        public List<PlanDate> GenerateDaily(int? transactionId)
         {
             throw new System.NotImplementedException();
         }
 
-        public List<PlanDate> GenerateForTransaction(int transactionId)
+        public List<PlanDate> GenerateForTransaction(int? transactionId)
         {
             throw new System.NotImplementedException();
         }
 
-        public List<PlanDate> GenerateMonthly(int transactionId)
+        public List<PlanDate> GenerateMonthly(int? transactionId)
         {
-            var transactions = transactionRepository.GetAll();
+            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Monthly);
+            if(transactionId.HasValue)
+            {
+                transactions = transactions.Where(x => x.Id == transactionId);
+            }
             List<PlanDate> planDates = new List<PlanDate>();
             foreach(var transaction in transactions)
             {
@@ -67,12 +74,18 @@ namespace Moneyman.Services
                     planDates.Add(factory.Create());
                 }
             }
+            
             return planDates;
         }
 
-        public List<PlanDate> GenerateWeekly(int transactionId)
+        public List<PlanDate> GenerateWeekly(int? transactionId)
         {
-            var transactions = transactionRepository.GetAll();
+            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Weekly);
+            if(transactionId.HasValue)
+            {
+                transactions = transactions.Where(x => x.Id == transactionId);
+            }   
+            
             List<PlanDate> planDates = new List<PlanDate>();
             foreach(var transaction in transactions)
             {
@@ -91,7 +104,7 @@ namespace Moneyman.Services
             return planDates;
         }
 
-        public List<PlanDate> GenerateYearly(int transactionId)
+        public List<PlanDate> GenerateYearly(int? transactionId)
         {
             throw new System.NotImplementedException();
         }

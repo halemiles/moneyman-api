@@ -19,10 +19,7 @@ namespace Moneyman.Tests
     {
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
-        private Mock<IPlanDateRepository> mockPlanDateRepository;
-
-        //Mocking offset calculation service
-        private Mock<IHolidayService> mockHolidayService;
+        private Mock<IPlanDateRepository> mockPlanDateRepository;        private Mock<IHolidayService> mockHolidayService;
 
         private readonly List<string> holidays = new List<string>
         {
@@ -73,21 +70,21 @@ namespace Moneyman.Tests
             // Arrange            
             var startDate = new DateTime(2022,1,6); //Thursday 6th Jan            
             var sut = NewDtpGenerationService();
-            var fixture = new Fixture().Customize(new AutoMoqCustomization());
 
-            IEnumerable<Transaction> transactions = new List<Transaction>()
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction
                 {
                     Name = "transaction 1",
-                    StartDate = startDate
+                    StartDate = startDate,
+                    Frequency = Frequency.Weekly
                 }
             }.AsEnumerable();
 
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
 
             // Act
-            var results = sut.GenerateWeekly(0);
+            var results = sut.GenerateWeekly(null);
 
             // Assert
             results.Count.Should().Be(52);
@@ -103,19 +100,20 @@ namespace Moneyman.Tests
             var startDate = new DateTime(2022,1,2); //Sunday 2nd Jan            
             var sut = NewDtpGenerationService();
         
-            IEnumerable<Transaction> transactions = new List<Transaction>()
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction
                 {
                     Name = "transaction 1",
-                    StartDate = startDate
+                    StartDate = startDate,
+                    Frequency = Frequency.Weekly
                 }
             }.AsEnumerable();
 
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
 
             // Act
-            var results = sut.GenerateWeekly(0);
+            var results = sut.GenerateWeekly(null);
 
             // Assert
             results.Count.Should().Be(52);

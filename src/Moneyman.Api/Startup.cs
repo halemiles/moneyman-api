@@ -61,12 +61,17 @@ namespace Moneyman.Api
             services.AddScoped<IHolidayService, HolidayService>();
             services.AddScoped<IDtpService, DtpService>();
             services.AddScoped<IOffsetCalculationService, OffsetCalculationService>();
+            services.AddScoped<IDtpReaderService, DtpReaderService>();
+            
+            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             
             AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<TransactionProfile>();
                 cfg.AddProfile<TransactionToTransactionDtoProfile>();
                 cfg.AddProfile<TransactionDtoToTransactionProfile>();
+                cfg.AddProfile<PlanDateDtoProfile>();
+                cfg.AddProfile<DtpDtoProfile>();
             });
 
             services.AddSingleton(config);
