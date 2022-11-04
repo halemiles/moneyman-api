@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: ${{ env.working-directory }}
-    - name: Archive production artifacts
+    - name: Archive prod
         working-directory: ${{ env.working-directory }}
         uses: actions/upload-artifact@v3
         with:
