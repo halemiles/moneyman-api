@@ -28,7 +28,7 @@ jobs:
     
   test:
     env:
-      working-directory: ./src
+      working-directory: src
 
     runs-on: ubuntu-latest
 
