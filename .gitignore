@@ -6,3 +6,4 @@ obj
 *.dbgit
 mono_crash.*
 TestResults
+node_modules
