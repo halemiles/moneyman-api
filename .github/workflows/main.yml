@@ -25,22 +25,12 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: ${{ env.working-directory }}
-    - name: Archive prod
-        working-directory: ${{ env.working-directory }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: |
-            Moneyman.Api/bin
+    
   test:
     env:
       working-directory: ./src
     steps:
-    - name: Upload math result for job 1
-      uses: actions/download-artifact@v3
-      with:
-        name: build-artifacts
-        path: Moneyman.Api/bin
+    
     - name: Test
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  --no-build --verbosity normal
       working-directory: ${{ env.working-directory }}
