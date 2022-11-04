@@ -27,6 +27,7 @@ jobs:
       working-directory: ${{ env.working-directory }}
     
   test:
+    needs: build
     env:
       working-directory: src
 
