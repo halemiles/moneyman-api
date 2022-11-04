@@ -32,22 +32,22 @@ jobs:
           name: build-artifacts
           path: |
             Moneyman.Api/bin
-    test:
-      env:
-        working-directory: ./src
-      - name: Upload math result for job 1
-        uses: actions/download-artifact@v3
-        with:
-          name: build-artifacts
-          path: Moneyman.Api/bin
-      - name: Test
-        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  --no-build --verbosity normal
-        working-directory: ${{ env.working-directory }}
-      - name: Codacy Coverage Reporter
-        uses: codacy/codacy-coverage-reporter-action@v1.3.0
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          # or
-          # api-token: ${{ secrets.CODACY_API_TOKEN }}
-          coverage-reports: src/Moneyman.Tests/coverage.cobertura.xml
+  test:
+    env:
+      working-directory: ./src
+    - name: Upload math result for job 1
+      uses: actions/download-artifact@v3
+      with:
+        name: build-artifacts
+        path: Moneyman.Api/bin
+    - name: Test
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  --no-build --verbosity normal
+      working-directory: ${{ env.working-directory }}
+    - name: Codacy Coverage Reporter
+      uses: codacy/codacy-coverage-reporter-action@v1.3.0
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        # or
+        # api-token: ${{ secrets.CODACY_API_TOKEN }}
+        coverage-reports: src/Moneyman.Tests/coverage.cobertura.xml
 
