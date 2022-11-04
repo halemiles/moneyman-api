@@ -29,8 +29,10 @@ jobs:
   test:
     env:
       working-directory: ./src
-    steps:
-    
+
+    runs-on: ubuntu-latest
+
+    steps:    
     - name: Test
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  --no-build --verbosity normal
       working-directory: ${{ env.working-directory }}
