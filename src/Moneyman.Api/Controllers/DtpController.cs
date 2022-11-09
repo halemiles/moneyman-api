@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
+using Moneyman.Models.Dtos;
 using Moneyman.Services.Interfaces;
 
 namespace Moneyman.Api.Controllers
@@ -34,14 +35,18 @@ namespace Moneyman.Api.Controllers
 
         
         [HttpGet("current")]
-        public IActionResult GetCurrentPeriod(int id)
+        public IActionResult GetCurrentPeriod()
         {
-            return Ok(dtpReaderService.GetCurrent());
+            List<PlanDateDto> planDateDto = new List<PlanDateDto>();
+            _logger.LogInformation("GET all current");
+            planDateDto = dtpReaderService.GetCurrent();
+            return Ok(planDateDto);            
         }
 
         [HttpGet("generate")]
         public IActionResult Generate([FromQuery]int? transactionId)
         {
+            _logger.LogInformation("GET generate DTP {TransactionId}", transactionId ?? 0);
             var planDates = dtpService.GenerateAll(transactionId);
             return Ok(planDates.Count);
             

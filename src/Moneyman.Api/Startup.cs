@@ -15,6 +15,8 @@ using Moneyman.Domain.MapperProfiles;
 using AutoMapper;
 using Moneyman.Services.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Extensions.Logging;
 
 namespace Moneyman.Api
 {
@@ -30,7 +32,8 @@ namespace Moneyman.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddApplicationInsightsTelemetry();
+                        
             try
             {
                 services.AddDbContext<MoneymanContext>(
@@ -62,7 +65,7 @@ namespace Moneyman.Api
             services.AddScoped<IDtpService, DtpService>();
             services.AddScoped<IOffsetCalculationService, OffsetCalculationService>();
             services.AddScoped<IDtpReaderService, DtpReaderService>();
-            
+                        
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             
             AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
@@ -78,7 +81,6 @@ namespace Moneyman.Api
             services.AddScoped<IMapper, Mapper>();
             
             
-            services.AddApplicationInsightsTelemetry();
             
         }
 
