@@ -55,22 +55,33 @@ namespace Tests
         }
 
         [TestMethod]
-        [Ignore]
         public void GetAll_WhenNoResults_ReturnsEmptyList()
         {
-            _contextMock.Setup(x => x.Set<PlanDate>()).Returns(new List<PlanDate>{}.AsQueryable().BuildMockDbSet().Object);
-            var repository = NewPlanDateRepository();
-            var result = repository.GetAll();               
-            result.Count().Should().Be(0);
+            List<PlanDate> updatedPlanDates = null;
+            
+            using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
+            {
+                var planDateRepository = new PlanDateRepository(context, _mapper);
+                updatedPlanDates = planDateRepository.GetAll().ToList(); 
+            }
+                          
+            updatedPlanDates.Count().Should().Be(0);
         }
 
         [TestMethod]
         [Ignore]
         public void GetAll_WhenOneResult_ReturnsOneResult()
         {
-            var repository = NewPlanDateRepository();
-            var result = repository.GetAll();               
-            result.Count().Should().Be(2);
+            List<PlanDate> updatedPlanDates = null;
+            var fixture = new Fixture();
+            using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
+            {
+                var planDateRepository = new PlanDateRepository(context, _mapper);
+                planDateRepository.Add(fixture.Create<PlanDate>());
+                planDateRepository.Add(fixture.Create<PlanDate>());
+                updatedPlanDates = planDateRepository.GetAll().ToList(); 
+            }         
+            updatedPlanDates.Count().Should().Be(2);
         }
 
         [TestMethod] 
