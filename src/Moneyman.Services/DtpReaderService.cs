@@ -48,7 +48,6 @@ namespace Moneyman.Services
                                .ToList();
             var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
             return mappedPlanDates;
-            //return new List<PlanDateDto>();
         }
 
     }
