@@ -68,10 +68,8 @@ namespace Moneyman.Api
             AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<TransactionProfile>();
-                cfg.AddProfile<TransactionToTransactionDtoProfile>();
                 cfg.AddProfile<TransactionDtoToTransactionProfile>();
                 cfg.AddProfile<PlanDateDtoProfile>();
-                cfg.AddProfile<DtpDtoProfile>();
             });
 
             services.AddSingleton(config);

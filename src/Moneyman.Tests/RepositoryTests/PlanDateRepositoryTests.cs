@@ -46,7 +46,6 @@ namespace Tests
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new TransactionDtoToTransactionProfile());
-                mc.AddProfile(new TransactionToTransactionDtoProfile());
                 mc.AddProfile(new TransactionProfile());
             });
             

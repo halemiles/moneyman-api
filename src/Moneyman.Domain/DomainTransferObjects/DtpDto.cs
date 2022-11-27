@@ -4,6 +4,6 @@ namespace Moneyman.Models.Dtos
 {
     public class DtpDto
     {
-        IEnumerable<PlanDateDto> PlanDates {get; set;}
+        public IEnumerable<PlanDateDto> PlanDates {get; set;}
     }
 }
