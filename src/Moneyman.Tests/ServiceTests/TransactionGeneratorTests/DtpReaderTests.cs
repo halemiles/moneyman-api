@@ -68,7 +68,6 @@ namespace Moneyman.Tests
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new DtpDtoProfile());
                 mc.AddProfile(new PlanDateDtoProfile());
             });
             

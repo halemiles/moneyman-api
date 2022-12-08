@@ -12,7 +12,7 @@ namespace Moneyman.Domain.MapperProfiles
             .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
             .ForMember(dest => dest.TransactionName, opt => opt.MapFrom(src => src.Transaction.Name))
             .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Transaction.Amount))
-            ;
+            .ReverseMap();
         }
     }
 }

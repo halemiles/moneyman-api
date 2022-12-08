@@ -44,7 +44,7 @@ namespace Moneyman.Services
 
         }
 
-        public List<PlanDateDto> GetCurrent()
+        public DtpDto GetCurrent()
         {
             var startDate = datetimeProvider.GetToday();
             var endDate = paydayService.GetNext().Date;
@@ -60,7 +60,11 @@ namespace Moneyman.Services
                                .Where(x => x.Date > startDate && x.Date < endDate)
                                .ToList();
             var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
-            return mappedPlanDates;
+            return new DtpDto{
+                PlanDates = mappedPlanDates,
+                StartDate = startDate,
+                EndDate = endDate
+            };
         }
 
     }
