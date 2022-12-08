@@ -84,12 +84,13 @@ namespace Moneyman.Tests
             Fixture fixture = new Fixture();
             IEnumerable<Transaction> trans = new List<Transaction>
             {
-                fixture.Build<Transaction>().With(f => f.StartDate, new DateTime(2022,10,1)).Create(),
+                fixture.Build<Transaction>().With(f => f.StartDate, new DateTime(2022,10,1)).With(f => f.Amount, 100).Create(),
                 new Transaction
                 {
                     Name = "Trans 1",
                     StartDate = new DateTime(2022,11,1),
-                    Frequency = Frequency.Monthly
+                    Frequency = Frequency.Monthly,
+                    Amount = 122
                 }
             };
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
@@ -100,7 +101,9 @@ namespace Moneyman.Tests
             var result = sut.GetCurrent();
 
             // Assert
-            result.Count.Should().NotBe(null); //TODO - Finish this
+            result.PlanDates.Count().Should().NotBe(null);
+            result.AmountDue.Should().Be(222);
+            result.EndDate.Should().Be(new DateTime(2022,12,1));
         }
     }
 }
