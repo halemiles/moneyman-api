@@ -6,6 +6,6 @@ namespace Moneyman.Interfaces
 {
     public interface IDtpReaderService
     {
-        List<PlanDateDto> GetCurrent();
+        DtpDto GetCurrent();
     }
 }
