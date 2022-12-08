@@ -95,7 +95,7 @@ namespace Moneyman.Tests
             var result = sut.GetCurrent();
 
             // Assert
-            result.Count.Should().NotBe(null); //TODO - Finish this
+            result.PlanDates.Count().Should().NotBe(null); //TODO - Finish this
         }
     }
 }
