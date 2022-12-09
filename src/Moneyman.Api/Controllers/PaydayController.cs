@@ -11,11 +11,11 @@ namespace Moneyman.Api.Controllers
     public class PaydayController : ControllerBase
     {
         private readonly IPaydayService paydayService;
-        private readonly ILogger<TransactionController> _logger;
+        private readonly ILogger<PaydayController> _logger;
         private readonly IMapper _mapper;
 
         public PaydayController(
-            ILogger<TransactionController> logger,
+            ILogger<PaydayController> logger,
             IPaydayService paydayService,
             IMapper mapper
         )
@@ -28,6 +28,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("generate")]
         public IActionResult GeneratePaydays([FromQuery]int? dayOfMonth)
         {
+            _logger.LogError("Generating paydays {month}", dayOfMonth.Value);
             if(!dayOfMonth.HasValue || dayOfMonth == 0)
             {
                 return BadRequest();

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
 using Moneyman.Models.Dtos;
@@ -19,6 +20,8 @@ namespace Moneyman.Services
         private readonly IPaydayService paydayService;
         private readonly IDateTimeProvider datetimeProvider;
         private readonly IMapper mapper;
+        private readonly ILogger<DtpReaderService> logger;
+        
 
         public DtpReaderService(
             ITransactionRepository transactionRepository,
@@ -26,8 +29,10 @@ namespace Moneyman.Services
             IOffsetCalculationService offsetCalculationService,
             IPaydayService paydayService,
             IDateTimeProvider dateTimeProvider,
-            IMapper mapper
-        )
+            IMapper mapper,
+            ILogger<DtpReaderService> logger
+            
+        ) 
         {
             this.transactionRepository = transactionRepository;
             this.planDateRepository = planDateRepository;
@@ -35,13 +40,21 @@ namespace Moneyman.Services
             this.paydayService = paydayService;
             this.datetimeProvider = dateTimeProvider;
             this.mapper = mapper;
+            this.logger = logger;
+
         }
 
         public DtpDto GetCurrent()
         {
-            
             var startDate = datetimeProvider.GetToday();
             var endDate = paydayService.GetNext().Date;
+
+            logger.LogInformation(
+                "Getting current DTP period {startDate} {endDate}",
+                startDate,
+                endDate
+            );
+            
             var planDates = planDateRepository 
                                .GetAll()
                                .Where(x => x.Date > startDate && x.Date < endDate)

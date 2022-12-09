@@ -13,12 +13,7 @@
             "program": "${workspaceFolder}/src/Moneyman.Api/bin/Debug/net6.0/Moneyman.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Moneyman.Api",
-            "stopAtEntry": false,
-            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-            },
+            "stopAtEntry": false,            
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },

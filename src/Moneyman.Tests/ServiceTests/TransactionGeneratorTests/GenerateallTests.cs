@@ -9,6 +9,7 @@ using System.Linq;
 using System;
 using Snapper;
 using AutoFixture;
+using Microsoft.Extensions.Logging;
 
 namespace Moneyman.Tests
 {
@@ -19,6 +20,7 @@ namespace Moneyman.Tests
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
+        private Mock<ILogger<DtpService>> mockLogger;
 
         private readonly List<string> holidays = new List<string> 
         {
@@ -37,7 +39,8 @@ namespace Moneyman.Tests
             new DtpService(
                     mockTransactionRepository.Object,
                     mockPlanDateRepository.Object,
-                    mockOffsetCalculationService.Object
+                    mockOffsetCalculationService.Object,
+                    mockLogger.Object
             );
 
         [TestInitialize]
@@ -47,6 +50,7 @@ namespace Moneyman.Tests
             mockTransactionRepository = new Mock<ITransactionRepository>();
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
             mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+            mockLogger = new Mock<ILogger<DtpService>>();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new DteObject());
