@@ -46,6 +46,8 @@ namespace Moneyman.Tests
             };
 
             var result = transactionService.Create(trans);
+            mockTransactionValidator.Verify(x => x.Validate(trans),Times.Once);
+            mockLogger.Verify(x => x.LogInformation("Validation transaction {TransactionName}", trans.Name), Times.Once);
             result.Should().Be(true);
         }
 

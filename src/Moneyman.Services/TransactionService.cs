@@ -48,6 +48,7 @@ namespace Moneyman.Services
     public void Delete(int id)
     {
         _transactionRepository.Remove(id);
+        logger.LogInformation("Deleting transaction {TransactionId}", id); //TODO - Add transaction name to log?
         _transactionRepository.Save();
     }
 
@@ -65,14 +66,19 @@ namespace Moneyman.Services
     public bool Create(Transaction trans)
     {
       TransactionValidator transactionValidator = new TransactionValidator();
+      logger.LogInformation("Validation transaction {TransactionName}", trans.Name);
       var validationResult = transactionValidator.Validate(trans);
 
       if(validationResult.IsValid)
       {
+        logger.LogInformation("Transaction is valid {TransactionName}", trans.Name);
         _transactionRepository.Add(trans);
+        logger.LogInformation("Saving transaction {TransactionName}", trans.Name);
         _transactionRepository.Save();
         return true;
       }
+
+      logger.LogInformation("Failed to create transaction. Please check it is valid {TransactionName}", trans.Name);
       return false;
     }
   }
