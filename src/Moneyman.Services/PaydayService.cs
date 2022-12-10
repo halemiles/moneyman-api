@@ -34,7 +34,7 @@ namespace Moneyman.Services
 			{
 				var plannedDate = new DateTime(DateTime.Now.Year,i+1,dayOfMonth);
 				var offsetDate = _offsetCalculationService.CalculateOffset(plannedDate).PlanDate;
-				Payday pd = new Payday()
+				Payday pd = new Payday
 				{
 					Date = offsetDate
 				};

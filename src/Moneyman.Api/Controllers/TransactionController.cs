@@ -37,6 +37,15 @@ namespace Moneyman.Api.Controllers
             return Ok();
         }
 
+        [HttpPost("multiple")]
+        public IActionResult CreateMultiple([FromBody] List<TransactionDto> transactions)
+        {
+            _logger.LogInformation("Creating multiple transactions transaction {TransactionCount}", transactions.Count);
+            var mappedTransactions = _mapper.Map<List<TransactionDto>, List<Transaction>>(transactions);
+            transactionService.Update(mappedTransactions);
+            return Ok();
+        }
+
         [HttpPut]
         public IActionResult Update(TransactionDto transactionDto)
         {

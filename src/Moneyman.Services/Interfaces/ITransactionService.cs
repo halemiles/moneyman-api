@@ -9,6 +9,7 @@ namespace Moneyman.Interfaces
 		List<Transaction> GetAll();
 		Transaction GetById(int id);
 		int Update(Transaction model);
+		void Update(List<Transaction> model);
     	void Delete(int id);
 	}
 }

@@ -47,9 +47,10 @@ namespace Moneyman.Tests
         {
             // Arrange
             var sut = NewDtpGenerationService();
-            IEnumerable<Transaction> trans = new List<Transaction>()
+            IEnumerable<Transaction> trans = new List<Transaction>
             {
-                new Transaction(){
+                new Transaction
+                {
                     Name = "Trans 1",
                     Amount = 100,
                     Active = true,

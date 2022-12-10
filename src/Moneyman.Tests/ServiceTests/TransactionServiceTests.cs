@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 using Snapper;
+using Microsoft.Extensions.Logging;
+using AutoFixture;
 
 namespace Tests
 {
@@ -22,13 +24,18 @@ namespace Tests
     public class TransactionServiceTests
     {
         private Mock<ITransactionRepository> _transRepoMock;
+        private Mock<ILogger<TransactionService>> mockLogger;
         private TransactionService NewTransactionService() =>
-            new TransactionService(_transRepoMock.Object);
+            new TransactionService(
+                _transRepoMock.Object,
+                mockLogger.Object
+            );
         
         [TestInitialize]
         public void SetUp()
         {
             _transRepoMock = new Mock<ITransactionRepository>();
+            mockLogger = new Mock<ILogger<TransactionService>>();
         }
 
         [TestMethod]
@@ -129,6 +136,30 @@ namespace Tests
             service.Delete(0);               
             
             _transRepoMock.Verify(x => x.Remove(It.IsAny<int>()), Times.Once());
+            _transRepoMock.Verify(x => x.Save(), Times.Once());
+        }
+
+        [TestMethod]
+        public void Update_Multiple_WithMultipleTransactions_ReturnsSuccess()
+        {
+            var fixture = new Fixture();
+            var transactionForUpdate = fixture.Create<Transaction>();
+            var newTransactions = new List<Transaction>
+            {
+                transactionForUpdate,
+                fixture.Create<Transaction>(),
+                fixture.Create<Transaction>(),
+                fixture.Create<Transaction>()
+            };
+
+            _transRepoMock.Setup(x => x.Update(It.IsAny<Transaction>()))
+                .Returns(true);
+            
+            var service = NewTransactionService();
+            service.Update(newTransactions);               
+            
+            _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Exactly(4));
+            _transRepoMock.Verify(x => x.Update(transactionForUpdate), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
         }
     }

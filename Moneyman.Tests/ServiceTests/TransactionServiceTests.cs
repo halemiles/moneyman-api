@@ -36,7 +36,7 @@ namespace Moneyman.Tests
         public void Create_WithValidDetails_ReturnsSuccess()
         {
             var transactionService = NewTransactionService();
-            Transaction trans = new Transaction()
+            Transaction trans = new Transaction
             {
                 Id = 999,
                 Name = "Trans 1",
@@ -46,6 +46,8 @@ namespace Moneyman.Tests
             };
 
             var result = transactionService.Create(trans);
+            mockTransactionValidator.Verify(x => x.Validate(trans),Times.Once);
+            mockLogger.Verify(x => x.LogInformation("Validation transaction {TransactionName}", trans.Name), Times.Once);
             result.Should().Be(true);
         }
 
@@ -53,7 +55,7 @@ namespace Moneyman.Tests
         public void Create_WithInvalidDetails_ReturnsFailure()
         {
             var transactionService = NewTransactionService();
-            Transaction trans = new Transaction()
+            Transaction trans = new Transaction
             {
                 Id = 999,
                 Name = null,
@@ -71,7 +73,7 @@ namespace Moneyman.Tests
             var transactionService = NewTransactionService();
             mockTransactionRepository.Setup(x => x.Update(It.IsAny<Transaction>())).Returns(true);
             
-            Transaction trans = new Transaction()
+            Transaction trans = new Transaction
             {
                 Id = 999,
                 Name = "Trans 1",
@@ -87,9 +89,9 @@ namespace Moneyman.Tests
         public void GetAll_WithValidDetails_ReturnsSuccess()
         {
             var transactionService = NewTransactionService();
-            List<Transaction> transactions = new List<Transaction>()
+            List<Transaction> transactions = new List<Transaction>
             {
-                new Transaction(){}
+                new Transaction()
             };
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
             
@@ -101,7 +103,7 @@ namespace Moneyman.Tests
         public void GetById_WithValidDetails_ReturnsSuccess()
         {
             var transactionService = NewTransactionService();
-            var sutTransaction = new Transaction(){Id = 1};
+            var sutTransaction = new Transaction{Id = 1};
             mockTransactionRepository.Setup(x => x.Get(It.IsAny<int>())).Returns(sutTransaction);
             
             var result = transactionService.GetById(1);
