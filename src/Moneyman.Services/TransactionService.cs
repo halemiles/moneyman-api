@@ -6,23 +6,29 @@ using Moneyman.Domain;
 using Moneyman.Services.Validators;
 using AutoMapper;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Moneyman.Services
 {
 	public class TransactionService : ITransactionService
 	{
 		private readonly ITransactionRepository _transactionRepository;
+    private readonly ILogger<TransactionService> logger;
 
-		public TransactionService(ITransactionRepository transactionRepository)
+		public TransactionService(
+      ITransactionRepository transactionRepository,
+      ILogger<TransactionService> logger
+    )
 		{
 			_transactionRepository = transactionRepository;
-      
+      this.logger = logger;
 		}
 
     public int Update(Transaction model)
     {
        
       _transactionRepository.Update(model);
+      logger.LogInformation("Saving transaction {TransactionName}", model.Name);
       _transactionRepository.Save();
      
 
@@ -35,6 +41,7 @@ namespace Moneyman.Services
       {
         _transactionRepository.Update(transaction);
       }
+      logger.LogInformation("Saving transactions {TransactionCount}", model.Count);
       _transactionRepository.Save();
     }
 
