@@ -3,5 +3,5 @@
   "Amount": 500.0,
   "Active": false,
   "Frequency": 2,
-  "Date": "2021-10-01T00:00:00"
+  "StartDate": "2021-10-01T00:00:00"
 }

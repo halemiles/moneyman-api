@@ -130,7 +130,7 @@ namespace Tests
                 Amount = updatedTransaction.Amount,
                 Active = updatedTransaction.Active,
                 Frequency = updatedTransaction.Frequency,
-                Date = updatedTransaction.StartDate
+                StartDate = updatedTransaction.StartDate
             };
             snapshot.ShouldMatchSnapshot();
         }
