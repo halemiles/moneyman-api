@@ -12,7 +12,7 @@ using Snapper;
 namespace Moneyman.Tests
 {
     [TestClass]
-    public class DteObjectTests //TODO - Rename this
+    public class CalculatedPlanDateTests
     {
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
@@ -46,7 +46,7 @@ namespace Moneyman.Tests
         public void PlanDateString_WithDate_ReturnsStringInCorrectFormat()
         {
             // Arrange
-            var sut = new DteObject
+            var sut = new CalculatedPlanDate
             {
                 PlanDate = new DateTime(2022,10,20)
             };

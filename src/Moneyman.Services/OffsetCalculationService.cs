@@ -22,11 +22,11 @@ namespace Moneyman.Services
         }
         
         
-        public DteObject CalculateOffset(DateTime dte)
+        public CalculatedPlanDate CalculateOffset(DateTime dte)
         {
             var weekDays = _weekdayService.GenerateWeekdays();
             var holidays = _holidayService.GenerateHolidays();
-            var returnObject = new DteObject
+            var returnObject = new CalculatedPlanDate
             {
                 OriginalPlanDate = dte
             };

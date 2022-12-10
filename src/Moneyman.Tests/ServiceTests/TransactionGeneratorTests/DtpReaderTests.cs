@@ -64,7 +64,7 @@ namespace Moneyman.Tests
             mockLogger = new Mock<ILogger<DtpReaderService>>();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
-                .Returns(new DteObject());
+                .Returns(new CalculatedPlanDate());
 
             var mappingConfig = new MapperConfiguration(mc =>
             {

@@ -66,7 +66,7 @@ namespace Moneyman.Tests
             mockHolidayService = new Mock<IHolidayService>();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
-                .Returns(new DteObject());
+                .Returns(new CalculatedPlanDate());
 
             mockHolidayService.Setup(x => x.GenerateHolidays()).Returns(holidays);
         }

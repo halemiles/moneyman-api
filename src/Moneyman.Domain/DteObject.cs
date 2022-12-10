@@ -2,7 +2,7 @@ using System;
 
 namespace Moneyman.Domain
 {
-    public class DteObject
+    public class CalculatedPlanDate
     {
         public DateTime PlanDate { get; set; }
         public DateTime OriginalPlanDate { get; set; }
