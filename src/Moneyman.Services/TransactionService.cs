@@ -29,6 +29,15 @@ namespace Moneyman.Services
       return model.Id;
     }
 
+    public void Update(List<Transaction> model)
+    {
+      foreach(var transaction in model)
+      {
+        _transactionRepository.Update(transaction);
+      }
+      _transactionRepository.Save();
+    }
+
     public void Delete(int id)
     {
         _transactionRepository.Remove(id);
