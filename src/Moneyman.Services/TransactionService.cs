@@ -42,7 +42,6 @@ namespace Moneyman.Services
     {
         _transactionRepository.Remove(id);
         _transactionRepository.Save();
-        return;
     }
 
     public List<Transaction> GetAll()

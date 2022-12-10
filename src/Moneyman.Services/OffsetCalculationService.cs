@@ -29,9 +29,7 @@ namespace Moneyman.Services
             var returnObject = new CalculatedPlanDate
             {
                 OriginalPlanDate = dte
-            };
-
-            WeekDay offset = weekDays[(int)dte.DayOfWeek];           
+            };        
 
             int offsetby = 0;
             bool found = false;
@@ -43,7 +41,6 @@ namespace Moneyman.Services
                 //Check if this current iteration is on a weekend, monday or a bank holiday
                 bool isWeekday = dte.IsWeekday();
                 bool isBankHoliday = holidays.IsBankHoliday(dte);
-                bool isMonday = dte.IsMonday();
                 
                 //If we have found a valid day (Tue-Fri and not on bank holiday)
                 if(isWeekday && !isBankHoliday )

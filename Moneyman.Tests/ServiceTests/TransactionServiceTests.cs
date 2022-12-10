@@ -87,7 +87,7 @@ namespace Moneyman.Tests
         public void GetAll_WithValidDetails_ReturnsSuccess()
         {
             var transactionService = NewTransactionService();
-            List<Transaction> transactions = new List<Transaction>()
+            List<Transaction> transactions = new List<Transaction>
             {
                 new Transaction()
             };
