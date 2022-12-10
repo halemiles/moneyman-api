@@ -15,7 +15,5 @@ namespace Moneyman.Domain
         public DbSet<Payday> Paydays {get; set;}
         public DbSet<PlanDate> PlanDates {get; set;}
        
-        protected override void OnConfiguring(DbContextOptionsBuilder options) {}
-
     }
 }
