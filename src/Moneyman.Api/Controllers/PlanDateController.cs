@@ -35,5 +35,13 @@ namespace Moneyman.Api.Controllers
             var planDates = planDateService.GetAll();
             return Ok(planDates);
         }
+
+        [HttpGet("search")]
+        public IActionResult Search(string transactionName)
+        {
+            _logger.LogInformation("Getting all plan dates");
+            var planDates = planDateService.Search(transactionName);
+            return Ok(planDates);
+        }
     }
 }

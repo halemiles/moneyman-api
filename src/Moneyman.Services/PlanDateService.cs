@@ -28,5 +28,15 @@ namespace Moneyman.Services
       {
           return _planDateRepository.GetAll().ToList();
       }
-  }
+
+        public List<PlanDate> Search(string transactionName)
+        {
+            var planDates = _planDateRepository.GetAll();
+            if(!string.IsNullOrEmpty(transactionName))
+            {
+              planDates = planDates.Where(x => x.Transaction.Name == transactionName);
+            }
+            return planDates.ToList();
+        }
+    }
 }
