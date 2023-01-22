@@ -65,6 +65,7 @@ namespace Moneyman.Api
             services.AddScoped<IDtpService, DtpService>();
             services.AddScoped<IOffsetCalculationService, OffsetCalculationService>();
             services.AddScoped<IDtpReaderService, DtpReaderService>();
+            services.AddScoped<IPlanDateService, PlanDateService>();
                         
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             
