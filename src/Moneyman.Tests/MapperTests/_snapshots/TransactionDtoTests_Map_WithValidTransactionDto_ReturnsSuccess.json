@@ -1,8 +1,0 @@
-{
-  "Name": "Test Transaction",
-  "Amount": 1234.0,
-  "Active": true,
-  "Frequency": 1,
-  "StartDate": "2022-01-01T00:00:00",
-  "Id": 999
-}

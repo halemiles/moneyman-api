@@ -4,5 +4,6 @@
   "Amount": 1234.0,
   "Date": "2022-01-01T00:00:00",
   "Active": true,
-  "Frequency": 1
+  "Frequency": 1,
+  "Anticipated": false
 }
