@@ -14,6 +14,7 @@ namespace Moneyman.Domain
         public bool Active { get; set; }
         public Frequency Frequency { get; set; }
         public DateTime StartDate { get; set; }
+        public bool Anticipated {get; set;}
         //public PaymentType PaymentType { get; set; }
         //public CategoryType CategoryType {get; set;}
         //public PriorityType PriorityType { get; set; }
