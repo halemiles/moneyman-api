@@ -11,5 +11,6 @@ namespace Moneyman.Domain
         public DateTime Date {get; set;}
         public bool Active { get; set; }
         public Frequency Frequency { get; set; }
+        public bool IsAnticipated {get; set;}
     }
 }
