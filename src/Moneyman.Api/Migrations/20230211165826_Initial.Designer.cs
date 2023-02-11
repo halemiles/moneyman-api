@@ -11,8 +11,8 @@ using Moneyman.Domain;
 namespace Moneyman.Api.Migrations
 {
     [DbContext(typeof(MoneymanContext))]
-    [Migration("20230207231409_Anticipated")]
-    partial class Anticipated
+    [Migration("20230211165826_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,10 +82,10 @@ namespace Moneyman.Api.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Anticipated")
+                    b.Property<int>("Frequency")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Frequency")
+                    b.Property<bool>("IsAnticipated")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
