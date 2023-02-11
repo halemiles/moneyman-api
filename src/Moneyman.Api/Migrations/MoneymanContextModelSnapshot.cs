@@ -80,10 +80,10 @@ namespace Moneyman.Api.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Anticipated")
+                    b.Property<int>("Frequency")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Frequency")
+                    b.Property<bool>("IsAnticipated")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
