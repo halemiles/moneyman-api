@@ -70,7 +70,7 @@ namespace Moneyman.Services
         public List<PlanDate> GenerateMonthly(int? transactionId)
         {
             logger.LogInformation("Generating monthly");
-            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Monthly);
+            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Monthly && !x.IsAnticipated);
             if(transactionId.HasValue)
             {
                 transactions = transactions.Where(x => x.Id == transactionId);
@@ -104,7 +104,7 @@ namespace Moneyman.Services
         public List<PlanDate> GenerateWeekly(int? transactionId)
         {
             logger.LogInformation("Generating weekly");
-            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Weekly);
+            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Weekly && !x.IsAnticipated);
             if(transactionId.HasValue)
             {
                 transactions = transactions.Where(x => x.Id == transactionId);
