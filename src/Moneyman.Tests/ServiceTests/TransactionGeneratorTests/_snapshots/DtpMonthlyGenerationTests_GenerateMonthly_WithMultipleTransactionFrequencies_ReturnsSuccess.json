@@ -4,6 +4,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -22,6 +23,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -40,6 +42,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -58,6 +61,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -76,6 +80,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -94,6 +99,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -112,6 +118,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -130,6 +137,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -148,6 +156,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -166,6 +175,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -184,6 +194,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,
@@ -202,6 +213,7 @@
       "Id": 0,
       "Transaction": {
         "Frequency": 1,
+        "IsAnticipated": false,
         "Name": "Trans 1",
         "Amount": 100.0,
         "Active": true,

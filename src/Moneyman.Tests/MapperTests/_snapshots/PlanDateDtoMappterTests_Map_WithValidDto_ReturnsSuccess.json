@@ -2,6 +2,7 @@
   "Id": 0,
   "Transaction": {
     "Frequency": 0,
+    "IsAnticipated": false,
     "Name": "Test Transaction",
     "Amount": 1234.0,
     "Active": false,

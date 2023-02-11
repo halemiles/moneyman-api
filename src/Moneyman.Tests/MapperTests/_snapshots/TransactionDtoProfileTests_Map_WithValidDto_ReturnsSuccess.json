@@ -1,5 +1,6 @@
 {
   "Frequency": 1,
+  "IsAnticipated": false,
   "Name": "Test Transaction",
   "Amount": 1234.0,
   "Active": true,
