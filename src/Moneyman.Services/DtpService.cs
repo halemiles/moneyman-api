@@ -37,7 +37,7 @@ namespace Moneyman.Services
             transactionRepository.RemoveAll("PlanDates");
             
             List<PlanDate> planDates = new();
-            planDates.AddRange(GetGenerationStrategy("monthly").Generate(null));  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GenerateMonthly(null));  //TODO - PAss in a transaction ID if available
             planDates.AddRange(GenerateWeekly(null));  //TODO - PAss in a transaction ID if available
 
             foreach(var planDate in planDates)
@@ -73,11 +73,19 @@ namespace Moneyman.Services
             switch(strategyName)
             {
                 case "monthly":
-                    generationStrategy = new GenerateMonthlyPlanDateStrategy(transactionRepository, planDateRepository, offsetCalculationService, logger);
+                    generationStrategy = new DefaultPlanDateGenerationStrategy(
+                        transactionRepository,
+                        planDateRepository,
+                        offsetCalculationService,
+                        logger);
                     break;
                 default:
                     // TODO: Maybe this needs to be a yearly for safety? Generate a single plan date
-                    generationStrategy = new GenerateMonthlyPlanDateStrategy(transactionRepository, planDateRepository, offsetCalculationService, logger);
+                    generationStrategy = new DefaultPlanDateGenerationStrategy(
+                        transactionRepository,
+                        planDateRepository,
+                        offsetCalculationService,
+                        logger);
                     break;
             }
             
@@ -125,7 +133,7 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateMonthly(int? transactionId)
         {
-            return GetGenerationStrategy("monthly").Generate(transactionId);
+            return GetGenerationStrategy("monthly").Generate(transactionId, Frequency.Monthly);
         }
     }
 }
