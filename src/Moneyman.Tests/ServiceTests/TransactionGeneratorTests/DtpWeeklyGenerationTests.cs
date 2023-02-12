@@ -9,6 +9,7 @@ using System.Linq;
 using System;
 using Snapper;
 using Microsoft.Extensions.Logging;
+using AutoFixture;
 
 namespace Moneyman.Tests
 {
@@ -167,6 +168,30 @@ namespace Moneyman.Tests
             // Assert
             result.Count.Should().Be(52);
             result.All(x => x.Transaction.Name == "Trans 2").Should().BeTrue();
+            result.ShouldMatchSnapshot();
+        }
+
+
+
+        public void GenerateWeekly_WithAnticipatedTransactions_ShouldOnlyGenerateNonAnticipated_ReturnsSuccess()
+        {
+            // Arrange
+            var sut = NewDtpGenerationService();
+            var fixture = new Fixture();
+            IEnumerable<Transaction> trans = new List<Transaction>
+            {
+                fixture.Build<Transaction>().With(f => f.IsAnticipated ,true).With(f => f.Name, "Trans 1").Create(),
+                fixture.Build<Transaction>().With(f => f.IsAnticipated, false).With(f => f.Name, "Trans 2").Create()
+            }.AsEnumerable();
+            mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
+
+            // Act
+            var result = sut.GenerateWeekly(1);
+
+            // Assert
+            result.Count.Should().Be(12);
+            result.All(x => x.Transaction.Name == "Trans 1").Should().BeTrue();
+            result.All(x => x.Transaction.IsAnticipated).Should().BeFalse();
             result.ShouldMatchSnapshot();
         }
     }
