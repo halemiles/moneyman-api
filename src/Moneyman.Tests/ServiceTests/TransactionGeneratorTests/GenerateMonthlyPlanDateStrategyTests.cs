@@ -35,8 +35,8 @@ namespace Moneyman.Tests
                 "27-12-2022"
         };
 
-        private DtpService NewDtpGenerationService() =>
-            new DtpService(
+        private GenerateMonthlyPlanDateStrategy NewDtpGenerationService() =>
+            new GenerateMonthlyPlanDateStrategy(
                     mockTransactionRepository.Object,
                     mockPlanDateRepository.Object,
                     mockOffsetCalculationService.Object,
@@ -65,7 +65,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateMonthly(null);
+            var result = sut.Generate(null);
 
             // Assert
             result.Count.Should().Be(0);
@@ -91,7 +91,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateMonthly(null);
+            var result = sut.Generate(null);
 
             // Assert
             result.Count.Should().Be(12);
@@ -128,7 +128,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateMonthly(null);
+            var result = sut.Generate(null);
 
             // Assert
             result.Count.Should().Be(12);
@@ -168,7 +168,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateMonthly(1);
+            var result = sut.Generate(1);
 
             // Assert
             result.Count.Should().Be(12);
@@ -189,7 +189,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateMonthly(1);
+            var result = sut.Generate(1);
 
             // Assert
             result.Count.Should().Be(12);
