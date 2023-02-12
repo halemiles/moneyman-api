@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.2.0"></a>
+## [1.2.0](https://www.github.com/halemiles/moneyman-api/releases/tag/v1.2.0) (2023-2-11)
+
+### Features
+
+* Updated DTP service to ingnore non-anticipated for generate monthly and weekly. Updated unit tests ([4fa6426](https://www.github.com/halemiles/moneyman-api/commit/4fa6426aeb825b2c8d0d0120c84f13316ce68740))
+* Updated transaction to include IsAnticipated field ([6e02010](https://www.github.com/halemiles/moneyman-api/commit/6e020100e462dccb1593b436c69c757a83e63ffa))
+
+### Bug Fixes
+
+* DTO correction ([0586f44](https://www.github.com/halemiles/moneyman-api/commit/0586f4496782e52b85013e7588238dbfa059d9c9))
+* updated snapshots ([fd19a5f](https://www.github.com/halemiles/moneyman-api/commit/fd19a5f1a39905efc3b7ec9619976f0f596103f1))
+
 <a name="1.1.0"></a>
 ## [1.1.0](https://www.github.com/halemiles/moneyman-api/releases/tag/v1.1.0) (2023-2-9)
 

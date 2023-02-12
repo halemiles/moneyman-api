@@ -26,11 +26,11 @@ jobs:
       run: dotnet build --no-restore
       working-directory: ${{ env.working-directory }}
     - name: Test
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  --no-build --verbosity normal
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura  /p:CoverletOutput='cobertura.xml' --no-build --verbosity normal
       working-directory: ${{ env.working-directory }}
     - name: Codacy Coverage Reporter
       uses: codacy/codacy-coverage-reporter-action@v1.3.0
       with:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        coverage-reports: src/Moneyman.Tests/coverage.cobertura.xml
+        coverage-reports: src/Moneyman.Tests/cobertura.xml
 
