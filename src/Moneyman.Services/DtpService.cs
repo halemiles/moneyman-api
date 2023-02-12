@@ -37,7 +37,7 @@ namespace Moneyman.Services
             transactionRepository.RemoveAll("PlanDates");
             
             List<PlanDate> planDates = new();
-            planDates.AddRange(GenerateMonthly(null));  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GetGenerationStrategy("monthly").Generate(null));  //TODO - PAss in a transaction ID if available
             planDates.AddRange(GenerateWeekly(null));  //TODO - PAss in a transaction ID if available
 
             foreach(var planDate in planDates)
@@ -67,38 +67,21 @@ namespace Moneyman.Services
             throw new System.NotImplementedException();
         }
 
-        public List<PlanDate> GenerateMonthly(int? transactionId)
+        public IPlanDateGenerationStrategy GetGenerationStrategy(string strategyName)
         {
-            logger.LogInformation("Generating monthly");
-            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Monthly && !x.IsAnticipated);
-            if(transactionId.HasValue)
+            IPlanDateGenerationStrategy generationStrategy;
+            switch(strategyName)
             {
-                transactions = transactions.Where(x => x.Id == transactionId);
-            }
-            List<PlanDate> planDates = new List<PlanDate>();
-            foreach(var transaction in transactions)
-            {
-                for(int i=0;i<12;i++)
-                {
-                    try
-                    {
-                        DateTime startDate = new DateTime(transaction.StartDate.Year, 1, transaction.StartDate.Day); //Start at Jan
-                        DateTime dateOffset = startDate.AddMonths(i);
-                        
-                        DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
-                        
-                        var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
-
-                        planDates.Add(factory.Create());
-                    }
-                    catch(Exception err)
-                    {
-                        logger.LogError("Error generating monthly plandate {TransactionName} {month} {exceptionText}", transaction.Name, i, err.ToString());
-                    }
-                }
+                case "monthly":
+                    generationStrategy = new GenerateMonthlyPlanDateStrategy(transactionRepository, planDateRepository, offsetCalculationService, logger);
+                    break;
+                default:
+                    // TODO: Maybe this needs to be a yearly for safety? Generate a single plan date
+                    generationStrategy = new GenerateMonthlyPlanDateStrategy(transactionRepository, planDateRepository, offsetCalculationService, logger);
+                    break;
             }
             
-            return planDates;
+            return generationStrategy;
         }
 
         public List<PlanDate> GenerateWeekly(int? transactionId)
@@ -138,6 +121,11 @@ namespace Moneyman.Services
         public List<PlanDate> GenerateYearly(int? transactionId)
         {
             throw new System.NotImplementedException();
+        }
+
+        public List<PlanDate> GenerateMonthly(int? transactionId)
+        {
+            return GetGenerationStrategy("monthly").Generate(transactionId);
         }
     }
 }
