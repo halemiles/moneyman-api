@@ -42,6 +42,14 @@ namespace Moneyman.Api.Controllers
             return Ok(planDateDto);            
         }
 
+        [HttpGet("full")]
+        public IActionResult GetOffsetPeriod(int? monthOffset = 0)
+        {
+            _logger.LogInformation("GET all DTP");
+            var planDateDto = dtpReaderService.GetOffset(monthOffset.Value);
+            return Ok(planDateDto);            
+        }
+
         [HttpGet("generate")]
         public IActionResult Generate([FromQuery]int? transactionId)
         {

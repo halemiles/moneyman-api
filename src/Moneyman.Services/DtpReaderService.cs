@@ -67,5 +67,27 @@ namespace Moneyman.Services
             };
         }
 
+        public DtpDto GetOffset(int monthOffset = 0)
+        {
+            var startDate = paydayService.GetPrevious().Date.AddMonths(monthOffset);
+            var endDate = paydayService.GetNext().Date.AddMonths(monthOffset);
+
+            logger.LogInformation(
+                "Getting current DTP period {startDate} {endDate}",
+                startDate,
+                endDate
+            );
+            
+            var planDates = planDateRepository 
+                               .GetAll()
+                               .Where(x => x.Date > startDate && x.Date < endDate)
+                               .ToList();
+            var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
+            return new DtpDto{
+                PlanDates = mappedPlanDates,
+                StartDate = startDate,
+                EndDate = endDate
+            };
+        }
     }
 }
