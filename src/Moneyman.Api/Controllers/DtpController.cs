@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
+using Moneyman.Domain.Models;
 using Moneyman.Interfaces;
 using Moneyman.Models.Dtos;
 using Moneyman.Services.Interfaces;
@@ -54,8 +55,18 @@ namespace Moneyman.Api.Controllers
         public IActionResult Generate([FromQuery]int? transactionId)
         {
             _logger.LogInformation("GET generate DTP {TransactionId}", transactionId ?? 0);
-            var planDates = dtpService.GenerateAll(transactionId);
-            return Ok(planDates.Count);
+
+            try
+            {
+                var planDates = dtpService.GenerateAll(transactionId);
+                return Ok(); //(new DtpHttpResponse{RecordCount = 0, Message = "Success"});
+            }
+            catch(Exception err)
+            {
+                return Ok(new DtpHttpResponse{RecordCount = 0, Message = "Missing Paydays"});
+            }
+
+            
             
         }
         

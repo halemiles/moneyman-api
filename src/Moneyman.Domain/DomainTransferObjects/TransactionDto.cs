@@ -7,10 +7,18 @@ namespace Moneyman.Domain
     {
         public int Id {get; set;}
         public string Name { get; set; }
-        public decimal Amount {get; set;}
-        public DateTime Date {get; set;}
-        public bool Active { get; set; }
-        public Frequency Frequency { get; set; }
-        public bool IsAnticipated {get; set;}
+        public decimal? Amount {get; set;}
+        public DateTime? Date {get; set;}
+        public bool? Active { get; set; }
+        public Frequency? Frequency { get; set; }
+        public bool? IsAnticipated {get; set;}
+        public PaymentType? PaymentType { get; set; }
+
+        public string PaymentTypeDesc => PaymentType.ToString();
+        public CategoryType? CategoryType {get; set;}
+        public string CategoryTypeDesc => CategoryType.ToString();
+        public PriorityType? PriorityType { get; set; }     
+
+        public string PriorityTypeDesc => PriorityType.ToString();
     }
 }
