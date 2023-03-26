@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
+using Moneyman.Domain.Models;
 using Moneyman.Interfaces;
 using Moneyman.Services.Factories;
 using Moneyman.Services.Interfaces;
@@ -31,8 +32,12 @@ namespace Moneyman.Services
         }
 
         //TODO: Move this to a another class so we can unit test
-        public List<PlanDate> GenerateAll(int? transactionId)
+        public ApiResponse<List<PlanDate>> GenerateAll(int? transactionId)
         {
+            if(planDateRepository.GetAll().Count() == 0)
+            {
+                return new ApiResponse<List<PlanDate>>(false, "No paydays found. Please regenerate", null);
+            }
             logger.LogInformation("Removing existing plan dates");
             transactionRepository.RemoveAll("PlanDates");
             
@@ -54,7 +59,7 @@ namespace Moneyman.Services
                 logger.LogError("Failed saving plandates {ExceptionText}", err.ToString());
                 
             }
-            return planDates;
+            return new ApiResponse<List<PlanDate>>(true, "Success",planDates);
         }
 
         public List<PlanDate> GenerateDaily(int? transactionId)

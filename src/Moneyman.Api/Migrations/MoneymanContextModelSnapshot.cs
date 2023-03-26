@@ -80,6 +80,9 @@ namespace Moneyman.Api.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("CategoryType")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Frequency")
                         .HasColumnType("INTEGER");
 
@@ -88,6 +91,12 @@ namespace Moneyman.Api.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PriorityType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
