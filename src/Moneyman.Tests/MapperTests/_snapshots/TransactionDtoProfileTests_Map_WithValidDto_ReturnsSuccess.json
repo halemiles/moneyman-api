@@ -1,6 +1,9 @@
 {
   "Frequency": 1,
   "IsAnticipated": false,
+  "PaymentType": 0,
+  "CategoryType": 0,
+  "PriorityType": 0,
   "Name": "Test Transaction",
   "Amount": 1234.0,
   "Active": true,

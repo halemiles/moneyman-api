@@ -27,6 +27,7 @@ namespace Tests
         private Mock<ITransactionRepository> _transRepoMock;
         private Mock<ILogger<PlanDateService>> mockLogger;
         private Mock<ILogger<TransactionService>> mockTransactionServiceLogger;
+        private IMapper mockMapper;
         private PlanDateService NewPlanDateService() =>
             new PlanDateService(
                 _planDateRepoMock.Object,
@@ -34,7 +35,7 @@ namespace Tests
             );
 
         private TransactionService NewTransactionService() =>
-            new TransactionService(_transRepoMock.Object, mockTransactionServiceLogger.Object);
+            new TransactionService(_transRepoMock.Object, mockTransactionServiceLogger.Object, mockMapper);
         
         [TestInitialize]
         public void SetUp()
@@ -43,6 +44,14 @@ namespace Tests
             mockLogger = new Mock<ILogger<PlanDateService>>();
             _transRepoMock = new Mock<ITransactionRepository>();
             mockTransactionServiceLogger = new Mock<ILogger<TransactionService>>();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new TransactionProfile());
+            });
+            
+            IMapper mapper = mappingConfig.CreateMapper();
+            mockMapper = mapper;
         }
 
         [TestMethod]

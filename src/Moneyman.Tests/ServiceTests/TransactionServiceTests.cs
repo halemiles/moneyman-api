@@ -25,10 +25,12 @@ namespace Tests
     {
         private Mock<ITransactionRepository> _transRepoMock;
         private Mock<ILogger<TransactionService>> mockLogger;
+        private IMapper mockMapper;
         private TransactionService NewTransactionService() =>
             new TransactionService(
                 _transRepoMock.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                mockMapper
             );
         
         [TestInitialize]
@@ -36,6 +38,14 @@ namespace Tests
         {
             _transRepoMock = new Mock<ITransactionRepository>();
             mockLogger = new Mock<ILogger<TransactionService>>();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new TransactionProfile());
+            });
+            
+            IMapper mapper = mappingConfig.CreateMapper();
+            mockMapper = mapper;
         }
 
         [TestMethod]
