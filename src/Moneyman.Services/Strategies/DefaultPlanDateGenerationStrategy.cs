@@ -4,17 +4,18 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
+using Moneyman.Services.Extentions;
 using Moneyman.Services.Factories;
 
 namespace Moneyman.Services
 {
-    public class GenerateMonthlyPlanDateStrategy : IPlanDateGenerationStrategy
+    public class DefaultPlanDateGenerationStrategy : IPlanDateGenerationStrategy
     {
         private readonly ITransactionRepository transactionRepository;
         private readonly IPlanDateRepository planDateRepository;
         private readonly IOffsetCalculationService offsetCalculationService;
         private readonly ILogger<DtpService> logger;
-        public GenerateMonthlyPlanDateStrategy(
+        public DefaultPlanDateGenerationStrategy(
             ITransactionRepository transactionRepository,
             IPlanDateRepository planDateRepository,
             IOffsetCalculationService offsetCalculationService,
@@ -27,18 +28,22 @@ namespace Moneyman.Services
             this.logger = logger;
         }
 
-        public List<PlanDate> Generate(int? transactionId)
+        public List<PlanDate> Generate(int? transactionId, Frequency frequency)
         {
             logger.LogInformation("Generating monthly");
+            
             var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Monthly && !x.IsAnticipated);
             if(transactionId.HasValue)
             {
                 transactions = transactions.Where(x => x.Id == transactionId);
             }
-            List<PlanDate> planDates = new List<PlanDate>();
+
+            List<PlanDate> planDates = new();
+            int loopCount = frequency.ToFrequencyCount();
+
             foreach(var transaction in transactions)
             {
-                for(int i=0;i<12;i++)
+                for(int i=0;i<loopCount;i++)
                 {
                     try
                     {

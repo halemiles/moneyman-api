@@ -5,6 +5,6 @@ namespace Moneyman.Interfaces
 {
     public interface IPlanDateGenerationStrategy
     {
-        public List<PlanDate> Generate(int? transactionId);
+        public List<PlanDate> Generate(int? transactionId, Frequency frequency);
     }
 }
