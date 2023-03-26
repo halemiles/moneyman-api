@@ -6,7 +6,7 @@ namespace Moneyman.Interfaces
 	public interface ITransactionService
 	{
 		bool Create(Transaction trans);
-		List<Transaction> GetAll();
+		List<TransactionDto> GetAll();
 		Transaction GetById(int id);
 		int Update(Transaction model);
 		void Update(List<Transaction> model);

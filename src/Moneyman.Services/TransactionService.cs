@@ -7,6 +7,7 @@ using Moneyman.Services.Validators;
 using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
 
 namespace Moneyman.Services
 {
@@ -15,13 +16,17 @@ namespace Moneyman.Services
 		private readonly ITransactionRepository _transactionRepository;
     private readonly ILogger<TransactionService> logger;
 
+    private readonly IMapper mapper;
+
 		public TransactionService(
       ITransactionRepository transactionRepository,
-      ILogger<TransactionService> logger
+      ILogger<TransactionService> logger,
+      IMapper mapper
     )
 		{
 			_transactionRepository = transactionRepository;
       this.logger = logger;
+      this.mapper = mapper;
 		}
 
     public int Update(Transaction model)
@@ -52,10 +57,11 @@ namespace Moneyman.Services
         _transactionRepository.Save();
     }
 
-    public List<Transaction> GetAll()
+    public List<TransactionDto> GetAll()
     {
       var transactions =  _transactionRepository.GetAll();
-      return transactions?.ToList() ?? new List<Transaction>();
+      var transactionsAsDto = mapper.Map<List<TransactionDto>>(transactions);
+      return transactionsAsDto?.ToList() ?? new List<TransactionDto>();
     }
 
     public Transaction GetById(int id)
