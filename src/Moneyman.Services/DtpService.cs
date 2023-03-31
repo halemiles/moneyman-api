@@ -36,7 +36,7 @@ namespace Moneyman.Services
         {
             if(planDateRepository.GetAll().Count() == 0)
             {
-                return new ApiResponse<List<PlanDate>>(false, "No paydays found. Please regenerate", null);
+                return ApiResponse.NotFound<List<PlanDate>>("No paydays found. Please regenerate");
             }
             logger.LogInformation("Removing existing plan dates");
             transactionRepository.RemoveAll("PlanDates");
@@ -59,7 +59,7 @@ namespace Moneyman.Services
                 logger.LogError("Failed saving plandates {ExceptionText}", err.ToString());
                 
             }
-            return new ApiResponse<List<PlanDate>>(true, "Success",planDates);
+            return ApiResponse.Success<List<PlanDate>>(planDates);
         }
 
         public List<PlanDate> GenerateDaily(int? transactionId)

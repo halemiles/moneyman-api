@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using Moneyman.Domain;
+using Moneyman.Domain.Models;
 
 namespace Moneyman.Interfaces
 {
 	public interface ITransactionService
 	{
-		bool Create(Transaction trans);
+		ApiResponse<int> Create(Transaction trans);
 		List<TransactionDto> GetAll();
 		Transaction GetById(int id);
 		int Update(Transaction model);

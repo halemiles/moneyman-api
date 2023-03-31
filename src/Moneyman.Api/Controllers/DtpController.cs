@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
 using Moneyman.Domain.Models;
 using Moneyman.Interfaces;
 using Moneyman.Models.Dtos;
 using Moneyman.Services.Interfaces;
+using Serilog;
 
 namespace Moneyman.Api.Controllers
 {
@@ -18,11 +18,11 @@ namespace Moneyman.Api.Controllers
     {
         private readonly IDtpService dtpService;
         private readonly IDtpReaderService dtpReaderService;
-        private readonly ILogger<DtpController> _logger;
+        private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
         public DtpController(
-            ILogger<DtpController> logger,
+            ILogger logger,
             IDtpService dtpService,
             IDtpReaderService dtpReaderService,
             IMapper mapper
@@ -38,7 +38,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("current")]
         public IActionResult GetCurrentPeriod()
         {
-            _logger.LogInformation("GET all current");
+            _logger.Information("GET all current");
             var planDateDto = dtpReaderService.GetCurrent();
             return Ok(planDateDto);            
         }
@@ -46,7 +46,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("full")]
         public IActionResult GetOffsetPeriod(int? monthOffset = 0)
         {
-            _logger.LogInformation("GET all DTP");
+            _logger.Information("GET all DTP");
             var planDateDto = dtpReaderService.GetOffset(monthOffset.Value);
             return Ok(planDateDto);            
         }
@@ -54,7 +54,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("generate")]
         public IActionResult Generate([FromQuery]int? transactionId)
         {
-            _logger.LogInformation("GET generate DTP {TransactionId}", transactionId ?? 0);
+            _logger.Information("GET generate DTP {TransactionId}", transactionId ?? 0);
 
             try
             {

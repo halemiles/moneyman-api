@@ -8,6 +8,7 @@ using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using Moneyman.Domain.Models;
 
 namespace Moneyman.Services
 {
@@ -69,23 +70,33 @@ namespace Moneyman.Services
       return _transactionRepository.Get(id);
     }
 
-    public bool Create(Transaction trans)
+    public ApiResponse<int> Create(Transaction trans)
     {
+		
       TransactionValidator transactionValidator = new TransactionValidator();
       logger.LogInformation("Validation transaction {TransactionName}", trans.Name);
       var validationResult = transactionValidator.Validate(trans);
 
       if(validationResult.IsValid)
       {
-        logger.LogInformation("Transaction is valid {TransactionName}", trans.Name);
-        _transactionRepository.Add(trans);
-        logger.LogInformation("Saving transaction {TransactionName}", trans.Name);
-        _transactionRepository.Save();
-        return true;
+		logger.LogInformation("Transaction is valid {TransactionName}", trans.Name);
+		_transactionRepository.Add(trans);
+
+		logger.LogInformation("Saving transaction {TransactionName}", trans.Name);
+		_transactionRepository.Save();
+      }
+      else
+      {
+		logger.LogInformation("Failed to create transaction. Please check it is valid {TransactionName}", trans.Name);
+        foreach(var error in validationResult.Errors)
+        {
+          logger.LogError(error.ErrorMessage);
+        }
+		return ApiResponse.ValidationError<int>();
       }
 
-      logger.LogInformation("Failed to create transaction. Please check it is valid {TransactionName}", trans.Name);
-      return false;
+      
+      return ApiResponse.Success<int>(trans.Id);
     }
   }
 }
