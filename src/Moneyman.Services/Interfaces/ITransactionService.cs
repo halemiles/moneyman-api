@@ -6,7 +6,7 @@ namespace Moneyman.Interfaces
 {
 	public interface ITransactionService
 	{
-		ApiResponse<int> Create(Transaction trans);
+		ApiResponse<int> Create(TransactionDto trans);
 		List<TransactionDto> GetAll();
 		Transaction GetById(int id);
 		int Update(Transaction model);

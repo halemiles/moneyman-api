@@ -67,8 +67,7 @@ namespace Tests
             updatedPlanDates.Count().Should().Be(0);
         }
 
-        [TestMethod]
-        [Ignore]
+        [TestMethod]        
         public void GetAll_WhenOneResult_ReturnsOneResult()
         {
             List<PlanDate> updatedPlanDates = null;
@@ -78,13 +77,14 @@ namespace Tests
                 var planDateRepository = new PlanDateRepository(context, _mapper);
                 planDateRepository.Add(fixture.Create<PlanDate>());
                 planDateRepository.Add(fixture.Create<PlanDate>());
+                planDateRepository.Save();
                 updatedPlanDates = planDateRepository.GetAll().ToList(); 
+                
             }         
             updatedPlanDates.Count().Should().Be(2);
         }
 
-        [TestMethod] 
-        [Ignore]
+        [TestMethod]
         public async Task Add_WithMultiplePaydays_ReturnsSuccess()
         {                
             List<PlanDate> updatedPlanDates = null;

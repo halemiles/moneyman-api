@@ -70,29 +70,29 @@ namespace Moneyman.Services
       return _transactionRepository.Get(id);
     }
 
-    public ApiResponse<int> Create(Transaction trans)
+    public ApiResponse<int> Create(TransactionDto trans)
     {
 		
       TransactionValidator transactionValidator = new TransactionValidator();
       logger.LogInformation("Validation transaction {TransactionName}", trans.Name);
       var validationResult = transactionValidator.Validate(trans);
-
+      var transaction = mapper.Map<TransactionDto, Transaction>(trans);
       if(validationResult.IsValid)
       {
-		logger.LogInformation("Transaction is valid {TransactionName}", trans.Name);
-		_transactionRepository.Add(trans);
+        logger.LogInformation("Transaction is valid {TransactionName}", trans.Name);
+        _transactionRepository.Add(transaction);
 
-		logger.LogInformation("Saving transaction {TransactionName}", trans.Name);
-		_transactionRepository.Save();
+        logger.LogInformation("Saving transaction {TransactionName}", trans.Name);
+        _transactionRepository.Save();
       }
       else
       {
-		logger.LogInformation("Failed to create transaction. Please check it is valid {TransactionName}", trans.Name);
+		    logger.LogInformation("Failed to create transaction. Please check it is valid {TransactionName}", trans.Name);
         foreach(var error in validationResult.Errors)
         {
           logger.LogError(error.ErrorMessage);
         }
-		return ApiResponse.ValidationError<int>();
+		    return ApiResponse.ValidationError<int>();
       }
 
       

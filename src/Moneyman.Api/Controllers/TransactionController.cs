@@ -32,8 +32,8 @@ namespace Moneyman.Api.Controllers
         public IActionResult Create(TransactionDto transactionDto)
         {
             _logger.Information("Creating transaction {TransactionName}", transactionDto?.Name);
-            var transaction = _mapper.Map<TransactionDto, Transaction>(transactionDto);
-            var result = transactionService.Create(transaction);
+            
+            var result = transactionService.Create(transactionDto);
             if(!result.Success)
             {
                 return StatusCode((int)result.StatusCode);
