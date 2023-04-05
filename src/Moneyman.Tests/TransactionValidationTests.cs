@@ -8,6 +8,7 @@ using Moneyman.Domain;
 using FluentAssertions;
 using System.Linq;
 using System;
+using Snapper;
 
 namespace Moneyman.Tests
 {
@@ -29,11 +30,11 @@ namespace Moneyman.Tests
         public void Create_WithValidProperties_ReturnsSuccess()
         {
             var sut = NewTransactionValidator();
-            Transaction trans = new Transaction
+            TransactionDto trans = new TransactionDto
             {
                 Name = "Transaction 1",
                 Amount = 100,
-                StartDate = DateTime.Today
+                Date = DateTime.Today
 
             };
             var result = sut.Validate(trans);
@@ -45,22 +46,21 @@ namespace Moneyman.Tests
         public void Create_WithNullName_ReturnsFailure()
         {
             var sut = NewTransactionValidator();
-            Transaction trans = new Transaction
+            TransactionDto trans = new TransactionDto
             {
                 Name = null
             };
             var result = sut.Validate(trans);
 
             result.IsValid.Should().Be(false);
-            result.Errors.Count.Should().Be(4);
-            result.Errors.FirstOrDefault().PropertyName.Should().Be("Name");
+            result.Errors.ShouldMatchSnapshot();
         }
 
         [TestMethod]
         public void Create_WithEmptyName_ReturnsFailure()
         {
             var sut = NewTransactionValidator();
-            Transaction trans = new Transaction
+            TransactionDto trans = new TransactionDto
             {
                 Name = string.Empty
 
@@ -68,15 +68,14 @@ namespace Moneyman.Tests
             var result = sut.Validate(trans);
 
             result.IsValid.Should().Be(false);
-            result.Errors.Count.Should().Be(3);
-            result.Errors.FirstOrDefault().PropertyName.Should().Be("Name");
+            result.Errors.ShouldMatchSnapshot();
         }
 
         [TestMethod]
         public void Create_WithZeroAmount_ReturnsFailure()
         {
             var sut = NewTransactionValidator();
-            Transaction trans = new Transaction
+            TransactionDto trans = new TransactionDto
             {
                 Name = "Transaction 1",
                 Amount = 0
@@ -85,26 +84,24 @@ namespace Moneyman.Tests
             var result = sut.Validate(trans);
 
             result.IsValid.Should().Be(false);
-            result.Errors.Count.Should().Be(2);
-            result.Errors.FirstOrDefault().PropertyName.Should().Be("Amount");
+            result.Errors.ShouldMatchSnapshot();
         }
 
         [TestMethod]
         public void Create_WithMinDateTime_ReturnsFailure()
         {
             var sut = NewTransactionValidator();
-            Transaction trans = new Transaction
+            TransactionDto trans = new TransactionDto
             {
                 Name = "Transaction 1",
                 Amount = 500,
-                StartDate = DateTime.MinValue
+                Date = DateTime.MinValue
 
             };
             var result = sut.Validate(trans);
 
             result.IsValid.Should().Be(false);
-            result.Errors.Count.Should().Be(1);
-            result.Errors.FirstOrDefault().PropertyName.Should().Be("StartDate");
+            result.Errors.ShouldMatchSnapshot();
         }
     }
 }

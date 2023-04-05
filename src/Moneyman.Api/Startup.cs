@@ -14,9 +14,7 @@ using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using AutoMapper;
 using Moneyman.Services.Interfaces;
-using Microsoft.ApplicationInsights.AspNetCore;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Moneyman.Api
 {
@@ -79,7 +77,12 @@ namespace Moneyman.Api
             services.AddSingleton(config);
             services.AddScoped<IMapper, Mapper>();
             
-            
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.Seq("http://localhost:5341")
+                .CreateLogger();
+
+            services.AddSingleton(Log.Logger);
             
         }
 

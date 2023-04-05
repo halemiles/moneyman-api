@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
 
@@ -14,11 +14,11 @@ namespace Moneyman.Api.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly ITransactionService transactionService;
-        private readonly ILogger<TransactionController> _logger;
+        private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
         public TransactionController(
-            ILogger<TransactionController> logger,
+            ILogger logger,
             ITransactionService transactionService,
             IMapper mapper
         )
@@ -31,16 +31,20 @@ namespace Moneyman.Api.Controllers
         [HttpPost]
         public IActionResult Create(TransactionDto transactionDto)
         {
-            _logger.LogInformation("Creating transaction {TransactionName}", transactionDto?.Name);
-            var transaction = _mapper.Map<TransactionDto, Transaction>(transactionDto);
-            transactionService.Update(transaction);
+            _logger.Information("Creating transaction {TransactionName}", transactionDto?.Name);
+            
+            var result = transactionService.Create(transactionDto);
+            if(!result.Success)
+            {
+                return StatusCode((int)result.StatusCode);
+            }
             return Ok();
         }
 
         [HttpPost("multiple")]
         public IActionResult CreateMultiple([FromBody] List<TransactionDto> transactions)
         {
-            _logger.LogInformation("Creating multiple transactions transaction {TransactionCount}", transactions.Count);
+            _logger.Information("Creating multiple transactions transaction {TransactionCount}", transactions.Count);
             var mappedTransactions = _mapper.Map<List<TransactionDto>, List<Transaction>>(transactions);
             transactionService.Update(mappedTransactions);
             return Ok();
@@ -49,7 +53,7 @@ namespace Moneyman.Api.Controllers
         [HttpPut]
         public IActionResult Update(TransactionDto transactionDto)
         {
-            _logger.LogInformation("Updating transaction {TransactionName}", transactionDto?.Name);
+            _logger.Information("Updating transaction {TransactionName}", transactionDto?.Name);
             var transaction = _mapper.Map<TransactionDto, Transaction>(transactionDto);            
             transactionService.Update(transaction);
             
@@ -59,7 +63,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            _logger.LogInformation("GET transaction {TransactionId}", id);
+            _logger.Information("GET transaction {TransactionId}", id);
             var transaction = transactionService.GetById(id);
             return Ok(transaction);
         }
@@ -67,7 +71,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            _logger.LogInformation("GET all transactions");
+            _logger.Information("GET all transactions");
             var transactions = transactionService.GetAll();
             return Ok(transactions);
         }
@@ -77,7 +81,7 @@ namespace Moneyman.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _logger.LogInformation("DELETE transaction {TransactionId}", id);
+            _logger.Information("DELETE transaction {TransactionId}", id);
             transactionService.Delete(id);
             return Ok();
         }
