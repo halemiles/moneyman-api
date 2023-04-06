@@ -73,7 +73,7 @@ namespace Moneyman.Services
     public ApiResponse<int> Create(TransactionDto trans)
     {
 		
-      TransactionValidator transactionValidator = new TransactionValidator();
+      TransactionDtoValidator transactionValidator = new TransactionDtoValidator();
       logger.LogInformation("Validation transaction {TransactionName}", trans.Name);
       var validationResult = transactionValidator.Validate(trans);
       var transaction = mapper.Map<TransactionDto, Transaction>(trans);

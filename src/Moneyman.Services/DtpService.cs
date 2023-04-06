@@ -78,6 +78,7 @@ namespace Moneyman.Services
             switch(strategyName)
             {
                 case "monthly":
+                case "weekly":
                     generationStrategy = new DefaultPlanDateGenerationStrategy(
                         transactionRepository,
                         planDateRepository,
