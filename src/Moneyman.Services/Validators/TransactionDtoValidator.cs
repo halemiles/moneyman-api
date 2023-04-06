@@ -4,9 +4,9 @@ using Moneyman.Domain;
 
 namespace Moneyman.Services.Validators
 {
-    public class TransactionValidator :  AbstractValidator<TransactionDto> //,ITransactionValidator
+    public class TransactionDtoValidator :  AbstractValidator<TransactionDto>
     {
-        public TransactionValidator()
+        public TransactionDtoValidator()
         {
             RuleFor(transaction => transaction.Name).NotNull().NotEmpty();
             RuleFor(transaction => transaction.Amount).GreaterThan(0);

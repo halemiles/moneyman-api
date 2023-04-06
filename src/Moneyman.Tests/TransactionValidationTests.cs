@@ -17,8 +17,8 @@ namespace Moneyman.Tests
     {
         private Mock<ITransactionService> mockTransactionService;
 
-        private TransactionValidator NewTransactionValidator() => 
-                new TransactionValidator();
+        private TransactionDtoValidator NewTransactionValidator() => 
+                new TransactionDtoValidator();
 
         [TestInitialize]
         public void SetUp()
