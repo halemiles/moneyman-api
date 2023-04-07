@@ -91,8 +91,7 @@ namespace Tests
         }
 
         [TestMethod]
-        [Ignore]
-        public void Create_WhenObjectDoesntExist_ReturnsSuccess()
+        public async Task Create_WhenObjectDoesntExist_ReturnsSuccess()
         {
             var newTransaction = new TransactionDto
             {
@@ -101,9 +100,9 @@ namespace Tests
                 Amount = 150,
                 Frequency = Frequency.Weekly
             };
-
+            _transRepoMock.Setup(x => x.Save()).ReturnsAsync(1);
             var service = NewTransactionService();
-            var result = service.Create(newTransaction);   
+            var result = await service.Create(newTransaction);   
                                                 
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
@@ -115,7 +114,7 @@ namespace Tests
         [DataRow("", 100, "2022-01-01")]
         [DataRow("TransactionName", 0, "2022-01-01")]
         [DataRow("TransactionName", 100, "1/1/0001 12:00:00 AM")]
-        public void Create_WhenObjectDoesntExist_ReturnsFailure(
+        public async Task Create_WhenObjectDoesntExist_ReturnsFailure(
             string transactionName,
             int amount,
             string startDate
@@ -131,7 +130,7 @@ namespace Tests
 
             
             var service = NewTransactionService();
-            var result = service.Create(newTransaction);               
+            var result = await service.Create(newTransaction);               
                         
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Never());
             _transRepoMock.Verify(x => x.Save(), Times.Never());

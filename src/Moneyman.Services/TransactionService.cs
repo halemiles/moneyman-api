@@ -70,7 +70,7 @@ namespace Moneyman.Services
       return _transactionRepository.Get(id);
     }
 
-    public ApiResponse<int> Create(TransactionDto trans)
+    public async Task<ApiResponse<int>> Create(TransactionDto trans)
     {
 		
       TransactionDtoValidator transactionValidator = new TransactionDtoValidator();
@@ -83,7 +83,7 @@ namespace Moneyman.Services
         _transactionRepository.Add(transaction);
 
         logger.LogInformation("Saving transaction {TransactionName}", trans.Name);
-        _transactionRepository.Save();
+        await _transactionRepository.Save();
       }
       else
       {
@@ -96,7 +96,7 @@ namespace Moneyman.Services
       }
 
       
-      return ApiResponse.Success<int>(trans.Id);
+      return ApiResponse.Success<int>(transaction.Id);
     }
   }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
+using System.Threading.Tasks;
 
 namespace Moneyman.Api.Controllers
 {
@@ -29,11 +30,11 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(TransactionDto transactionDto)
+        public Task<IActionResult> Create(TransactionDto transactionDto)
         {
             _logger.Information("Creating transaction {TransactionName}", transactionDto?.Name);
             
-            var result = transactionService.Create(transactionDto);
+            var result = await transactionService.Create(transactionDto);
             if(!result.Success)
             {
                 return StatusCode((int)result.StatusCode);
