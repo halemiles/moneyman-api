@@ -30,7 +30,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> Create(TransactionDto transactionDto)
+        public async Task<IActionResult> Create(TransactionDto transactionDto)
         {
             _logger.Information("Creating transaction {TransactionName}", transactionDto?.Name);
             
