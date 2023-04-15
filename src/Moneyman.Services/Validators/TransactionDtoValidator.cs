@@ -4,7 +4,7 @@ using Moneyman.Domain;
 
 namespace Moneyman.Services.Validators
 {
-    public class TransactionDtoValidator :  AbstractValidator<TransactionDto>
+    public class TransactionDtoValidator :  AbstractValidator<TransactionDto> //TODO: Introduce an IValiator so we can do some DI
     {
         public TransactionDtoValidator()
         {
