@@ -83,7 +83,21 @@ namespace Moneyman.Services
                         transactionRepository,
                         planDateRepository,
                         offsetCalculationService,
-                        logger);
+                        logger); //TODO - Generate these through a factory
+                    break;
+                case "yearly":
+                    generationStrategy = new YearlyPlanDateGenerationStrategy(
+                        transactionRepository,
+                        planDateRepository,
+                        offsetCalculationService,
+                        logger); //TODO - Generate these through a factory
+                    break;
+                case "daily":
+                    generationStrategy = new DailyPlanDateGenerationStrategy(
+                        transactionRepository,
+                        planDateRepository,
+                        offsetCalculationService,
+                        logger); //TODO - Generate these through a factory
                     break;
                 default:
                     // TODO: Maybe this needs to be a yearly for safety? Generate a single plan date
@@ -91,7 +105,7 @@ namespace Moneyman.Services
                         transactionRepository,
                         planDateRepository,
                         offsetCalculationService,
-                        logger);
+                        logger); //TODO - Generate these through a factory
                     break;
             }
             
