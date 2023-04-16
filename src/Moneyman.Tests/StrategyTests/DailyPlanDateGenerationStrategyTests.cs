@@ -43,7 +43,9 @@ namespace YourProject.Tests
 
             var transactions = new List<Transaction>
             {
-                new Transaction { Id = 1, Frequency = Frequency.Daily, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" }
+                new Transaction { Id = 1, Frequency = Frequency.Daily, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction 1" },
+                new Transaction { Id = 2, Frequency = Frequency.Weekly, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction 2" }, //Shouldn't be generated
+                new Transaction { Id = 3, Frequency = Frequency.Daily, IsAnticipated = true, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction 3" } //Shouldn't be generated
             };
 
             _mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
@@ -59,6 +61,6 @@ namespace YourProject.Tests
             result.Should().HaveCount(365);
             result.Should().OnlyContain(planDate => planDate.Transaction == transactions[0]);
             result.Should().OnlyContain(planDate => planDate.Date.Month >= 1 && planDate.Date.Month <= 12);
-        }
+        } 
     }
 }
