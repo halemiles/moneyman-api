@@ -44,6 +44,8 @@ namespace Moneyman.Services
             List<PlanDate> planDates = new();
             planDates.AddRange(GenerateMonthly(null));  //TODO - PAss in a transaction ID if available
             planDates.AddRange(GenerateWeekly(null));  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GenerateYearly(null));  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GenerateDaily(null));  //TODO - PAss in a transaction ID if available
 
             foreach(var planDate in planDates)
             {
@@ -64,7 +66,7 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateDaily(int? transactionId)
         {
-            throw new System.NotImplementedException();
+            return GetGenerationStrategy("daily").Generate(transactionId, Frequency.Daily);
         }
 
         public List<PlanDate> GenerateForTransaction(int? transactionId)
@@ -75,23 +77,27 @@ namespace Moneyman.Services
         public IPlanDateGenerationStrategy GetGenerationStrategy(string strategyName)
         {
             IPlanDateGenerationStrategy generationStrategy;
+            PlanDateGenerationStrategyFactory generationStrategyFactory = new PlanDateGenerationStrategyFactory(transactionRepository,
+                        planDateRepository,
+                        offsetCalculationService,
+                        logger);
+
             switch(strategyName)
             {
                 case "monthly":
-                case "weekly":
-                    generationStrategy = new DefaultPlanDateGenerationStrategy(
-                        transactionRepository,
-                        planDateRepository,
-                        offsetCalculationService,
-                        logger);
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Monthly);
+                    break;
+                case "weekly":                    
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Weekly);
+                    break;
+                case "yearly":
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Yearly);
+                    break;
+                case "daily":
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Daily);
                     break;
                 default:
-                    // TODO: Maybe this needs to be a yearly for safety? Generate a single plan date
-                    generationStrategy = new DefaultPlanDateGenerationStrategy(
-                        transactionRepository,
-                        planDateRepository,
-                        offsetCalculationService,
-                        logger);
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Monthly);
                     break;
             }
             
@@ -134,7 +140,7 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateYearly(int? transactionId)
         {
-            throw new System.NotImplementedException();
+            return GetGenerationStrategy("yearly").Generate(transactionId, Frequency.Yearly);
         }
 
         public List<PlanDate> GenerateMonthly(int? transactionId)
