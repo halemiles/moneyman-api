@@ -43,7 +43,9 @@ namespace YourProject.Tests
 
             var transactions = new List<Transaction>
             {
-                new Transaction { Id = 1, Frequency = Frequency.Yearly, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" }
+                new Transaction { Id = 1, Frequency = Frequency.Yearly, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" },
+                new Transaction { Id = 2, Frequency = Frequency.Monthly, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction 2" }, //Shouldn't be generated
+                new Transaction { Id = 3, Frequency = Frequency.Daily, IsAnticipated = true, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction 3" } //Shouldn't be generated
             };
 
             _mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
