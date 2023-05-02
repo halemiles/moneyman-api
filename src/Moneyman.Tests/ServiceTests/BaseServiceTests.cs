@@ -27,7 +27,7 @@ namespace Moneyman.Tests.Services
             Mock<ILogger<BaseService>> mockLogger = new Mock<ILogger<BaseService>>();
 
             // Act & Assert
-            var service = new BaseService(mockLogger.Object);
+            _ = new BaseService(mockLogger.Object);
         }
     }
 }
