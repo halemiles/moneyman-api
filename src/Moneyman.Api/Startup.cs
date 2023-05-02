@@ -79,8 +79,17 @@ namespace Moneyman.Api
             services.AddSingleton(config);
             services.AddScoped<IMapper, Mapper>();
             
-            
-            
+            services.AddCors(options =>
+        {
+            options.AddPolicy(name: "AllowAnyOrigin",
+                builder =>
+                
+		{
+			builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+                });
+        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,6 +104,8 @@ namespace Moneyman.Api
 
             //TODO - Start using this
             //app.UseHttpsRedirection();
+	    
+	    app.UseCors("AllowAnyOrigin");
 
             app.UseRouting();
 
