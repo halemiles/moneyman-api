@@ -78,16 +78,16 @@ namespace Moneyman.Api
             services.AddScoped<IMapper, Mapper>();
             
             services.AddCors(options =>
-        {
-            options.AddPolicy(name: "AllowAnyOrigin",
-                builder =>
-                
-		{
-			builder.AllowAnyOrigin()
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
-                });
-        });
+            {
+                options.AddPolicy(name: "AllowAnyOrigin",
+                    builder => {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
+            
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .WriteTo.Seq("http://localhost:5341")
@@ -110,7 +110,7 @@ namespace Moneyman.Api
             //TODO - Start using this
             //app.UseHttpsRedirection();
 	    
-	    app.UseCors("AllowAnyOrigin");
+	        app.UseCors("AllowAnyOrigin");
 
             app.UseRouting();
 
