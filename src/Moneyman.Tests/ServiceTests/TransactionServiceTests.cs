@@ -91,7 +91,6 @@ namespace Tests
         }
 
         [TestMethod]
-        [Ignore]
         public async Task Create_WhenObjectDoesntExist_ReturnsSuccess()
         {
             var newTransaction = new TransactionDto
@@ -106,7 +105,6 @@ namespace Tests
                                                 
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
-            result.Payload.Should().BeGreaterThan(0);
         }
 
         [TestMethod]

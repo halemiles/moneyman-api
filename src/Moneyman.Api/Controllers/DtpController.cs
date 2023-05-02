@@ -59,15 +59,13 @@ namespace Moneyman.Api.Controllers
             try
             {
                 var planDates = dtpService.GenerateAll(transactionId);
-                return Ok(); //(new DtpHttpResponse{RecordCount = 0, Message = "Success"});
+                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count(), Message = "Success"});
             }
             catch(Exception err)
             {
+                _logger.Fatal(err.ToString());
                 return Ok(new DtpHttpResponse{RecordCount = 0, Message = "Missing Paydays"});
             }
-
-            
-            
         }
         
     }

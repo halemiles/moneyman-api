@@ -22,6 +22,9 @@ namespace Moneyman.Services.Extentions
                 case Frequency.Yearly:
                     count = 1;
                     break;
+                default:
+                    count = 0;
+                    break;
             }
 
             return count;

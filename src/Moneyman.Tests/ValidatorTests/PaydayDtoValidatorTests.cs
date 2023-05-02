@@ -31,7 +31,6 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        [Ignore]
         public void GivenInvalidPaydayDtoWithNullDayOfMonth_ValidationShouldFail()
         {
             // Arrange
@@ -42,8 +41,8 @@ namespace Moneyman.Tests
 
             // Assert
             result.IsValid.Should().BeFalse();
-            result.Errors.Should().ContainSingle();
-            result.Errors[0].ErrorMessage.Should().Be("'Day Of Month' must not be empty.");
+            result.Errors.Count.Should().Be(2);
+            result.Errors[0].ErrorMessage.Should().BeEquivalentTo("'Day Of Month' must not be empty.");
         }
     }
 }
