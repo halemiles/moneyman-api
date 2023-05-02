@@ -14,9 +14,7 @@ using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using AutoMapper;
 using Moneyman.Services.Interfaces;
-using Microsoft.ApplicationInsights.AspNetCore;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Moneyman.Api
 {
@@ -90,6 +88,13 @@ namespace Moneyman.Api
                    .AllowAnyMethod();
                 });
         });
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.Seq("http://localhost:5341")
+                .CreateLogger();
+
+            services.AddSingleton(Log.Logger);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

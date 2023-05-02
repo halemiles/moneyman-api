@@ -7,6 +7,7 @@ using Moneyman.Services.Validators;
 using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Moneyman.Domain.Models;
 
 namespace Moneyman.Services
 {
@@ -15,13 +16,17 @@ namespace Moneyman.Services
 		private readonly ITransactionRepository _transactionRepository;
     private readonly ILogger<TransactionService> logger;
 
+    private readonly IMapper mapper;
+
 		public TransactionService(
       ITransactionRepository transactionRepository,
-      ILogger<TransactionService> logger
+      ILogger<TransactionService> logger,
+      IMapper mapper
     )
 		{
 			_transactionRepository = transactionRepository;
       this.logger = logger;
+      this.mapper = mapper;
 		}
 
     public int Update(Transaction model)
@@ -52,10 +57,11 @@ namespace Moneyman.Services
         _transactionRepository.Save();
     }
 
-    public List<Transaction> GetAll()
+    public List<TransactionDto> GetAll()
     {
       var transactions =  _transactionRepository.GetAll();
-      return transactions?.ToList() ?? new List<Transaction>();
+      var transactionsAsDto = mapper.Map<List<TransactionDto>>(transactions);
+      return transactionsAsDto?.ToList() ?? new List<TransactionDto>();
     }
 
     public Transaction GetById(int id)
@@ -63,23 +69,33 @@ namespace Moneyman.Services
       return _transactionRepository.Get(id);
     }
 
-    public bool Create(Transaction trans)
+    public async Task<ApiResponse<int>> Create(TransactionDto trans)
     {
-      TransactionValidator transactionValidator = new TransactionValidator();
+		
+      TransactionDtoValidator transactionValidator = new TransactionDtoValidator();
       logger.LogInformation("Validation transaction {TransactionName}", trans.Name);
       var validationResult = transactionValidator.Validate(trans);
-
+      var transaction = mapper.Map<TransactionDto, Transaction>(trans);
       if(validationResult.IsValid)
       {
-        logger.LogInformation("Transaction is valid {TransactionName}", trans.Name);
-        _transactionRepository.Add(trans);
-        logger.LogInformation("Saving transaction {TransactionName}", trans.Name);
-        _transactionRepository.Save();
-        return true;
+        logger.LogInformation("Transaction is valid {TransactionName}", transaction.Name);
+        _transactionRepository.Add(transaction);
+
+        logger.LogInformation("Saving transaction {TransactionName}", transaction.Name);
+        await _transactionRepository.Save();
+      }
+      else
+      {
+		    logger.LogInformation("Failed to create transaction. Please check it is valid {TransactionName}", transaction.Name);
+        foreach(var error in validationResult.Errors)
+        {
+          logger.LogError(error.ErrorMessage);
+        }
+		    return ApiResponse.ValidationError<int>();
       }
 
-      logger.LogInformation("Failed to create transaction. Please check it is valid {TransactionName}", trans.Name);
-      return false;
+      
+      return ApiResponse.Success<int>(transaction.Id);
     }
   }
 }

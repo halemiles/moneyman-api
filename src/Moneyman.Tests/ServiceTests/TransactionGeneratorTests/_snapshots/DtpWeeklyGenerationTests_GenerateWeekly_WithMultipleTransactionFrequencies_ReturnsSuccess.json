@@ -5,6 +5,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -24,6 +27,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -43,6 +49,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -62,6 +71,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -81,6 +93,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -100,6 +115,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -119,6 +137,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -138,6 +159,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -157,6 +181,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -176,6 +203,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -195,6 +225,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -214,6 +247,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -233,6 +269,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -252,6 +291,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -271,6 +313,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -290,6 +335,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -309,6 +357,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -328,6 +379,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -347,6 +401,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -366,6 +423,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -385,6 +445,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -404,6 +467,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -423,6 +489,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -442,6 +511,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -461,6 +533,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -480,6 +555,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -499,6 +577,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -518,6 +599,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -537,6 +621,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -556,6 +643,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -575,6 +665,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -594,6 +687,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -613,6 +709,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -632,6 +731,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -651,6 +753,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -670,6 +775,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -689,6 +797,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -708,6 +819,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -727,6 +841,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -746,6 +863,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -765,6 +885,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -784,6 +907,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -803,6 +929,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -822,6 +951,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -841,6 +973,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -860,6 +995,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -879,6 +1017,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -898,6 +1039,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -917,6 +1061,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -936,6 +1083,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -955,6 +1105,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,
@@ -974,6 +1127,9 @@
       "Transaction": {
         "Frequency": 2,
         "IsAnticipated": false,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
         "Name": "Trans 2",
         "Amount": 100.0,
         "Active": true,

@@ -5,5 +5,11 @@
   "Date": "2022-01-01T00:00:00",
   "Active": true,
   "Frequency": 1,
-  "IsAnticipated": false
+  "IsAnticipated": false,
+  "PaymentType": 0,
+  "PaymentTypeDesc": "MANUAL",
+  "CategoryType": 0,
+  "CategoryTypeDesc": "OTHER",
+  "PriorityType": 0,
+  "PriorityTypeDesc": "DESIRED"
 }

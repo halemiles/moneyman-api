@@ -2,7 +2,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
+using Moneyman.Models;
 using Moneyman.Services.Interfaces;
+using Moneyman.Services.Validators;
 
 namespace Moneyman.Api.Controllers
 {
@@ -25,16 +27,17 @@ namespace Moneyman.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("generate")]
-        public IActionResult GeneratePaydays([FromQuery]int? dayOfMonth)
+        [HttpPost("generate")]
+        public IActionResult GeneratePaydays([FromBody]PaydayDto body)
         {
-            _logger.LogError("Generating paydays {month}", dayOfMonth.Value);
-            if(!dayOfMonth.HasValue || dayOfMonth == 0)
+            _logger.LogError("Generating paydays {month}", body.DayOfMonth);
+             PaydayDtoValidator transactionValidator = new PaydayDtoValidator();
+            if(!transactionValidator.Validate(body).IsValid)
             {
                 return BadRequest();
             }
             
-            paydayService.Generate(dayOfMonth.Value);
+            paydayService.Generate(body.DayOfMonth.Value);
             return Ok();
         }
     }

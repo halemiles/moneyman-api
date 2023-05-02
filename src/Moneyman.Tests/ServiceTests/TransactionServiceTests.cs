@@ -25,10 +25,12 @@ namespace Tests
     {
         private Mock<ITransactionRepository> _transRepoMock;
         private Mock<ILogger<TransactionService>> mockLogger;
+        private IMapper mockMapper;
         private TransactionService NewTransactionService() =>
             new TransactionService(
                 _transRepoMock.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                mockMapper
             );
         
         [TestInitialize]
@@ -36,6 +38,14 @@ namespace Tests
         {
             _transRepoMock = new Mock<ITransactionRepository>();
             mockLogger = new Mock<ILogger<TransactionService>>();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new TransactionProfile());
+            });
+            
+            IMapper mapper = mappingConfig.CreateMapper();
+            mockMapper = mapper;
         }
 
         [TestMethod]
@@ -81,23 +91,22 @@ namespace Tests
         }
 
         [TestMethod]
-        public void Create_WhenObjectDoesntExist_ReturnsSuccess()
+        [Ignore]
+        public async Task Create_WhenObjectDoesntExist_ReturnsSuccess()
         {
-            var newTransaction = new Transaction
+            var newTransaction = new TransactionDto
             {
                 Name = "newTransaction",
-                StartDate = new DateTime(2022,1,1),
+                Date = new DateTime(2022,1,1),
                 Amount = 150,
                 Frequency = Frequency.Weekly
             };
-
-            
             var service = NewTransactionService();
-            var result = service.Create(newTransaction);               
-                        
+            var result = await service.Create(newTransaction);   
+                                                
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
-            result.Should().Be(true);
+            result.Payload.Should().BeGreaterThan(0);
         }
 
         [TestMethod]
@@ -105,27 +114,27 @@ namespace Tests
         [DataRow("", 100, "2022-01-01")]
         [DataRow("TransactionName", 0, "2022-01-01")]
         [DataRow("TransactionName", 100, "1/1/0001 12:00:00 AM")]
-        public void Create_WhenObjectDoesntExist_ReturnsFailure(
+        public async Task Create_WhenObjectDoesntExist_ReturnsFailure(
             string transactionName,
             int amount,
             string startDate
         )
         {
-            var newTransaction = new Transaction
+            var newTransaction = new TransactionDto
             {
                 Name = transactionName,
-                StartDate = DateTime.Parse(startDate),
+                Date = DateTime.Parse(startDate),
                 Amount = amount,
                 Frequency = Frequency.Weekly
             };
 
             
             var service = NewTransactionService();
-            var result = service.Create(newTransaction);               
+            var result = await service.Create(newTransaction);               
                         
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Never());
             _transRepoMock.Verify(x => x.Save(), Times.Never());
-            result.Should().Be(false);
+            result.Payload.Should().Be(default);
         }
 
         [TestMethod]

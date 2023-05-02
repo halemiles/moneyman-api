@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
+using Moneyman.Domain.Models;
 using Moneyman.Interfaces;
 using Moneyman.Services.Factories;
 using Moneyman.Services.Interfaces;
@@ -31,14 +32,20 @@ namespace Moneyman.Services
         }
 
         //TODO: Move this to a another class so we can unit test
-        public List<PlanDate> GenerateAll(int? transactionId)
+        public ApiResponse<List<PlanDate>> GenerateAll(int? transactionId)
         {
+            if(planDateRepository.GetAll().Count() == 0)
+            {
+                return ApiResponse.NotFound<List<PlanDate>>("No paydays found. Please regenerate");
+            }
             logger.LogInformation("Removing existing plan dates");
             transactionRepository.RemoveAll("PlanDates");
             
             List<PlanDate> planDates = new();
-            planDates.AddRange(GetGenerationStrategy("monthly").Generate(null));  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GenerateMonthly(null));  //TODO - PAss in a transaction ID if available
             planDates.AddRange(GenerateWeekly(null));  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GenerateYearly(null));  //TODO - PAss in a transaction ID if available
+            planDates.AddRange(GenerateDaily(null));  //TODO - PAss in a transaction ID if available
 
             foreach(var planDate in planDates)
             {
@@ -54,12 +61,12 @@ namespace Moneyman.Services
                 logger.LogError("Failed saving plandates {ExceptionText}", err.ToString());
                 
             }
-            return planDates;
+            return ApiResponse.Success<List<PlanDate>>(planDates);
         }
 
         public List<PlanDate> GenerateDaily(int? transactionId)
         {
-            throw new System.NotImplementedException();
+            return GetGenerationStrategy("daily").Generate(transactionId, Frequency.Daily);
         }
 
         public List<PlanDate> GenerateForTransaction(int? transactionId)
@@ -70,14 +77,27 @@ namespace Moneyman.Services
         public IPlanDateGenerationStrategy GetGenerationStrategy(string strategyName)
         {
             IPlanDateGenerationStrategy generationStrategy;
+            PlanDateGenerationStrategyFactory generationStrategyFactory = new PlanDateGenerationStrategyFactory(transactionRepository,
+                        planDateRepository,
+                        offsetCalculationService,
+                        logger);
+
             switch(strategyName)
             {
                 case "monthly":
-                    generationStrategy = new GenerateMonthlyPlanDateStrategy(transactionRepository, planDateRepository, offsetCalculationService, logger);
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Monthly);
+                    break;
+                case "weekly":                    
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Weekly);
+                    break;
+                case "yearly":
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Yearly);
+                    break;
+                case "daily":
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Daily);
                     break;
                 default:
-                    // TODO: Maybe this needs to be a yearly for safety? Generate a single plan date
-                    generationStrategy = new GenerateMonthlyPlanDateStrategy(transactionRepository, planDateRepository, offsetCalculationService, logger);
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Monthly);
                     break;
             }
             
@@ -120,12 +140,12 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateYearly(int? transactionId)
         {
-            throw new System.NotImplementedException();
+            return GetGenerationStrategy("yearly").Generate(transactionId, Frequency.Yearly);
         }
 
         public List<PlanDate> GenerateMonthly(int? transactionId)
         {
-            return GetGenerationStrategy("monthly").Generate(transactionId);
+            return GetGenerationStrategy("monthly").Generate(transactionId, Frequency.Monthly);
         }
     }
 }

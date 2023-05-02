@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using Moneyman.Domain;
+using Moneyman.Domain.Models;
 
 namespace Moneyman.Services.Interfaces
 {
     public interface IDtpService
     {
-        List<PlanDate> GenerateAll(int? transactionId);
+        ApiResponse<List<PlanDate>> GenerateAll(int? transactionId);
 
         List<PlanDate> GenerateForTransaction(int? transactionId);
 
