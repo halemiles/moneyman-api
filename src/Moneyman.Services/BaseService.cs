@@ -1,6 +1,5 @@
-using Microsoft.ApplicationInsights.Extensibility;
+using System;
 using Microsoft.Extensions.Logging;
-using Moneyman.Interfaces;
 
 namespace Moneyman.Services
 {
@@ -12,7 +11,7 @@ namespace Moneyman.Services
             ILogger logger
         )
         {
-            this.logger = logger;
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
     }   
 }

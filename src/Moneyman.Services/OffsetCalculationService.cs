@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Moneyman.Interfaces;
-using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
 using Moneyman.Extensions;
 
@@ -24,7 +21,6 @@ namespace Moneyman.Services
         
         public CalculatedPlanDate CalculateOffset(DateTime dte)
         {
-            var weekDays = _weekdayService.GenerateWeekdays();
             var holidays = _holidayService.GenerateHolidays();
             var returnObject = new CalculatedPlanDate
             {
