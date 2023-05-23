@@ -8,3 +8,4 @@ mono_crash.*
 TestResults
 node_modules
 coveragereport
+history
