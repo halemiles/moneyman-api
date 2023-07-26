@@ -14,7 +14,6 @@ using Moneyman.Domain.MapperProfiles;
 using AutoMapper;
 using Moneyman.Services.Interfaces;
 using Serilog;
-using MySqlConnector;
 
 namespace Moneyman.Api
 {
@@ -32,16 +31,10 @@ namespace Moneyman.Api
         {
             services.AddApplicationInsightsTelemetry();
             var connectionString = Configuration.GetConnectionString("Default");
-                        
-            try
-            {
-                
-                services.AddDbContext<MoneymanContext>(_ => new MySqlConnection(connectionString));
-            }
-            catch(Exception err)
-            {
-                Console.WriteLine(err.ToString());
-            }
+               
+
+            services.AddDbContext<MoneymanContext>(options => options.UseMySQL(connectionString));
+            
             //services.AddTransient<MySqlConnection>(_ => new MySqlConnection(connectionString));
             services.AddControllers();
             services.AddSwaggerGen(c =>
