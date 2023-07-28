@@ -8,9 +8,14 @@ namespace Moneyman.Domain
     [ExcludeFromCodeCoverage]
     public class MoneymanContext : DbContext
     {
-        static readonly string connectionString = "Server=localhost;User ID=root;Password=specialpassword;Database=moneyman;SSL Mode=None";
+        IConfiguration configuration;
+        public MoneymanContext (IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var connectionString = configuration.GetConnectionString("Default");
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
         public DbSet<Transaction> Transactions {get; set;}
