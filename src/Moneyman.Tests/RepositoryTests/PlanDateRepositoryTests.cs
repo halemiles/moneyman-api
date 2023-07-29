@@ -37,7 +37,7 @@ namespace Tests
             var transaction1 = new Transaction
             {
                 Name = "Example transaction",
-                Amount = 123.45m,
+                Amount = 123,
                 Active = true,
                 StartDate = new DateTime(2022, 03, 01),
                 Frequency = Frequency.Monthly,
@@ -62,7 +62,7 @@ namespace Tests
             var transaction2 = new Transaction
             {
                 Name = "Example transaction",
-                Amount = 123.45m,
+                Amount = 123,
                 Active = true,
                 StartDate = new DateTime(2022, 03, 01),
                 Frequency = Frequency.Monthly,
