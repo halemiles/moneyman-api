@@ -47,18 +47,19 @@ namespace Moneyman.Persistence
 
     public virtual bool Update(T newObject)
     {
-      IEntity entity = (IEntity)newObject;
+       IEntity entity = (IEntity)newObject;
 
       var existing = _context.Set<T>().Find(entity.Id);
-       _mapper.Map(newObject, existing);
-        
+
       if (existing == null)
       {
-          _context.Add(newObject);
-          return true;
+          return false; // Object not found, return failure state
       }
 
-      return true; //TODO - Return failure state
+      _context.Entry(existing).CurrentValues.SetValues(newObject);
+
+      _context.SaveChanges();
+      return true; // Object updated successfully
     }
 
     public virtual async Task<int>  Save()

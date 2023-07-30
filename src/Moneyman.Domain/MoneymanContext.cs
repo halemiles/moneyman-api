@@ -13,6 +13,9 @@ namespace Moneyman.Domain
         {
             this.configuration = configuration;
         }
+
+        //public MoneymanContext(DbContextOptions<MoneymanContext> options) : base(options){}
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connectionString = configuration.GetConnectionString("Default");
