@@ -9,7 +9,6 @@ namespace Moneyman.Domain.MapperProfiles
         public TransactionDtoToTransactionProfile()
         {
             CreateMap<TransactionDto, Transaction>()
-                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.Date))
             .ReverseMap();
         }
     }
