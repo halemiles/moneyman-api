@@ -24,7 +24,7 @@ namespace Moneyman.Tests
         public void ShouldHaveErrorWhenNameIsNull()
         {
             // Arrange
-            var dto = new TransactionDto { Name = null, Amount = 100, Date = DateTime.Now };
+            var dto = new TransactionDto { Name = null, Amount = 100, StartDate = DateTime.Now };
 
             // Act
             var result = _validator.TestValidate(dto);
@@ -37,7 +37,7 @@ namespace Moneyman.Tests
         public void ShouldHaveErrorWhenNameIsEmpty()
         {
             // Arrange
-            var dto = new TransactionDto { Name = "", Amount = 100, Date = DateTime.Now };
+            var dto = new TransactionDto { Name = "", Amount = 100, StartDate = DateTime.Now };
 
             // Act
             var result = _validator.TestValidate(dto);
@@ -50,7 +50,7 @@ namespace Moneyman.Tests
         public void ShouldHaveErrorWhenAmountIsZero()
         {
             // Arrange
-            var dto = new TransactionDto { Name = "Test", Amount = 0, Date = DateTime.Now };
+            var dto = new TransactionDto { Name = "Test", Amount = 0, StartDate = DateTime.Now };
 
             // Act
             var result = _validator.TestValidate(dto);
@@ -63,7 +63,7 @@ namespace Moneyman.Tests
         public void ShouldHaveErrorWhenAmountIsNull()
         {
             // Arrange
-            var dto = new TransactionDto { Name = "Test", Amount = null, Date = DateTime.Now };
+            var dto = new TransactionDto { Name = "Test", Amount = null, StartDate = DateTime.Now };
 
             // Act
             var result = _validator.TestValidate(dto);
@@ -76,20 +76,20 @@ namespace Moneyman.Tests
         public void ShouldHaveErrorWhenDateIsMinValue()
         {
             // Arrange
-            var dto = new TransactionDto { Name = "Test", Amount = 100, Date = DateTime.MinValue };
+            var dto = new TransactionDto { Name = "Test", Amount = 100, StartDate = DateTime.MinValue };
 
             // Act
             var result = _validator.TestValidate(dto);
 
             // Assert
-            result.ShouldHaveValidationErrorFor(x => x.Date);
+            result.ShouldHaveValidationErrorFor(x => x.StartDate);
         }
 
         [TestMethod]
         public void ShouldNotHaveErrorsWhenAllFieldsAreValid()
         {
             // Arrange
-            var dto = new TransactionDto { Name = "Test", Amount = 100, Date = DateTime.Now };
+            var dto = new TransactionDto { Name = "Test", Amount = 100, StartDate = DateTime.Now };
 
             // Act
             var result = _validator.TestValidate(dto);
