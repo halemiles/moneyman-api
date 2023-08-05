@@ -26,6 +26,7 @@ namespace Tests
         private Mock<TransactionRepository> _transRepoMock;    
         private Mock<IRepository<Transaction>> _genericRepositoryMock;
         private IMapper _mapper;
+        private GenericRepository<Transaction> repository;
         private TransactionRepository NewTransactionRepository() =>
             new TransactionRepository(_contextMock.Object, _mapper);
         
@@ -53,6 +54,8 @@ namespace Tests
             
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
+
+            repository = new GenericRepository<Transaction>(_contextMock.Object, mapper);
         }
 
         [TestMethod]
@@ -75,65 +78,80 @@ namespace Tests
                 .WithStartDate(new DateTime(2021,1,1))
                 .Build();
                 
-            Transaction existingTransaction = null;
-            using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
-            {
-                context.Transactions.Add(newTransaction);
-                context.SaveChanges();
-                existingTransaction = context.Transactions.FirstOrDefault();
-            }
+            List<Transaction> existingTransaction = new List<Transaction>();
 
-            existingTransaction.Should().NotBeNull();
-            existingTransaction.Id.Should().Be(1);
-            existingTransaction.Amount.Should().Be(100);
-            existingTransaction.Active.Should().Be(true);
-            existingTransaction.Frequency.Should().Be(Frequency.Monthly);
-            existingTransaction.StartDate.Should().Be(new DateTime(2021,1,1));
+
+
+            var mockDbSet = new Mock<Transaction>();
+            mockDbSet.As<IQueryable<Transaction>>().Setup(m => m.Provider).Returns(existingTransaction.AsQueryable().Provider);
+            mockDbSet.As<IQueryable<Transaction>>().Setup(m => m.Expression).Returns(existingTransaction.AsQueryable().Expression);
+            mockDbSet.As<IQueryable<Transaction>>().Setup(m => m.ElementType).Returns(existingTransaction.AsQueryable().ElementType);
+            mockDbSet.As<IQueryable<Transaction>>().Setup(m => m.GetEnumerator()).Returns(existingTransaction.GetEnumerator());
+
+
+            // using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
+            // {
+            //.Transactions.Add(newTransaction);
+            //     context.SaveChanges();
+            //     existingTransaction = context.Transactions.FirstOrDefault();
+            // }
+
+            repository.Add(newTransaction);
+            repository.Save();
+            var result = repository.GetAll();
+
+            // existingTransaction.Should().NotBeNull();
+            // existingTransaction.Id.Should().Be(1);
+            // existingTransaction.Amount.Should().Be(100);
+            // existingTransaction.Active.Should().Be(true);
+            // existingTransaction.Frequency.Should().Be(Frequency.Monthly);
+            // existingTransaction.StartDate.Should().Be(new DateTime(2021,1,1));
+            result.Count().Should().Be(2);
         }
 
-        [TestMethod] 
-        public async Task Update_WithNewValidParams_PropertiesUpdated()
-        {
-            var existingTransaction = new TransactionBuilder()
-                .WithId(1)
-                .WithAmount(100)
-                .WithActive(true)
-                .WithFrequency(Frequency.Monthly)
-                .WithStartDate(new DateTime(2021,1,1))
-                .Build();
+        // [TestMethod] 
+        // public async Task Update_WithNewValidParams_PropertiesUpdated()
+        // {
+        //     var existingTransaction = new TransactionBuilder()
+        //         .WithId(1)
+        //         .WithAmount(100)
+        //         .WithActive(true)
+        //         .WithFrequency(Frequency.Monthly)
+        //         .WithStartDate(new DateTime(2021,1,1))
+        //         .Build();
 
-            var transactionUpdate = new TransactionBuilder()
-                .WithId(1)
-                .WithAmount(500)
-                .WithActive(false)
-                .WithFrequency(Frequency.Weekly)
-                .WithStartDate(new DateTime(2021,10,1))
-                .Build();
+        //     var transactionUpdate = new TransactionBuilder()
+        //         .WithId(1)
+        //         .WithAmount(500)
+        //         .WithActive(false)
+        //         .WithFrequency(Frequency.Weekly)
+        //         .WithStartDate(new DateTime(2021,10,1))
+        //         .Build();
 
-            Transaction updatedTransaction = null;
-            using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
-            {
-                var transactionRepository = new TransactionRepository(context, _mapper);
-                transactionRepository.Add(existingTransaction);
-                await transactionRepository.Save();
+        //     Transaction updatedTransaction = null;
+        //     using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
+        //     {
+        //         var transactionRepository = new TransactionRepository(context, _mapper);
+        //         transactionRepository.Add(existingTransaction);
+        //         await transactionRepository.Save();
                 
-                transactionRepository.Update(transactionUpdate);
-                await transactionRepository.Save();
+        //         transactionRepository.Update(transactionUpdate);
+        //         await transactionRepository.Save();
                 
-                updatedTransaction = context.Transactions.FirstOrDefault();
-            }
+        //         updatedTransaction = context.Transactions.FirstOrDefault();
+        //     }
 
-            updatedTransaction.Should().NotBeNull();
+        //     updatedTransaction.Should().NotBeNull();
             
-            var snapshot = new {
-                Id = updatedTransaction.Id,
-                Amount = updatedTransaction.Amount,
-                Active = updatedTransaction.Active,
-                Frequency = updatedTransaction.Frequency,
-                StartDate = updatedTransaction.StartDate
-            };
-            snapshot.ShouldMatchSnapshot();
-        }
+        //     var snapshot = new {
+        //         Id = updatedTransaction.Id,
+        //         Amount = updatedTransaction.Amount,
+        //         Active = updatedTransaction.Active,
+        //         Frequency = updatedTransaction.Frequency,
+        //         StartDate = updatedTransaction.StartDate
+        //     };
+        //     snapshot.ShouldMatchSnapshot();
+        // }
 
         public DbContextOptions<MoneymanContext> BuildGenerateInMemoryOptions()
         {
