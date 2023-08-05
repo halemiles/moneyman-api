@@ -9,12 +9,11 @@ namespace Moneyman.Domain
     public class MoneymanContext : DbContext
     {
         IConfiguration configuration;
+        public MoneymanContext (){}
         public MoneymanContext (IConfiguration configuration)
         {
             this.configuration = configuration;
         }
-
-        //public MoneymanContext(DbContextOptions<MoneymanContext> options) : base(options){}
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
