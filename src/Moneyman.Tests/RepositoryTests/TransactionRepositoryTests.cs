@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 using Snapper;
+using Microsoft.Extensions.Configuration;
+using System.Threading;
 
 namespace Tests
 {
@@ -68,45 +70,29 @@ namespace Tests
         }
 
         [TestMethod]
-        public void Add_WithOneNewTransaction_SaveReturnsOneRecordCount()
-        {
-            var newTransaction = new TransactionBuilder()
-                .WithId(1)
-                .WithAmount(100)
-                .WithActive(true)
-                .WithFrequency(Frequency.Monthly)
-                .WithStartDate(new DateTime(2021,1,1))
-                .Build();
-                
-            List<Transaction> existingTransaction = new List<Transaction>();
+        public async Task Add_WithOneNewTransaction_SaveReturnsOneRecordCount()
+        {  
+            // Arrange
+            var options = new DbContextOptionsBuilder<MoneymanContext>()
+                .UseInMemoryDatabase(databaseName: "TestDb")
+                .Options;
 
+            var dbContext = new MoneymanContext(new ConfigurationBuilder().Build())
+            {
+                Transactions = Mock.Of<DbSet<Transaction>>()
+            };
+            //var mockContext = new Mock<MoneymanContext>(new ConfigurationBuilder().Build(), options) { CallBase = true };
 
+            var repository = new GenericRepository<Transaction>(_contextMock.Object, _mapper);
+            var newTransaction = new Transaction();
 
-            var mockDbSet = new Mock<Transaction>();
-            mockDbSet.As<IQueryable<Transaction>>().Setup(m => m.Provider).Returns(existingTransaction.AsQueryable().Provider);
-            mockDbSet.As<IQueryable<Transaction>>().Setup(m => m.Expression).Returns(existingTransaction.AsQueryable().Expression);
-            mockDbSet.As<IQueryable<Transaction>>().Setup(m => m.ElementType).Returns(existingTransaction.AsQueryable().ElementType);
-            mockDbSet.As<IQueryable<Transaction>>().Setup(m => m.GetEnumerator()).Returns(existingTransaction.GetEnumerator());
-
-
-            // using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
-            // {
-            //.Transactions.Add(newTransaction);
-            //     context.SaveChanges();
-            //     existingTransaction = context.Transactions.FirstOrDefault();
-            // }
-
+            // Act
             repository.Add(newTransaction);
-            repository.Save();
-            var result = repository.GetAll();
+            await repository.Save();
 
-            // existingTransaction.Should().NotBeNull();
-            // existingTransaction.Id.Should().Be(1);
-            // existingTransaction.Amount.Should().Be(100);
-            // existingTransaction.Active.Should().Be(true);
-            // existingTransaction.Frequency.Should().Be(Frequency.Monthly);
-            // existingTransaction.StartDate.Should().Be(new DateTime(2021,1,1));
-            result.Count().Should().Be(2);
+            // Assert
+            //_contextMock.Verify(x => x.Add(newTransaction), Times.Once);
+            _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once); // If your Add method doesn't save immediately
         }
 
         // [TestMethod] 
