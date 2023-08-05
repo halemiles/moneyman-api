@@ -2,7 +2,7 @@
   "Id": 999,
   "Name": "Test Transaction",
   "Amount": 1234.0,
-  "Date": "2022-01-01T00:00:00",
+  "StartDate": "2022-01-01T00:00:00",
   "Active": true,
   "Frequency": 1,
   "IsAnticipated": false,
