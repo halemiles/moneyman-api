@@ -97,12 +97,13 @@ namespace Tests
 
             var repository = new TransactionRepository(_contextMock.Object, _mapper);
             _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
+            _contextMock.Setup(x => x.SaveChanges()).Returns(1);
 
             // Act
             repository.Add(new Transaction());
             await repository.Save();
 
-            repository.Update(updatedTransaction);
+            var recordCount = repository.Update(updatedTransaction);
             await repository.Save();
 
 
@@ -110,6 +111,8 @@ namespace Tests
             _contextMock.Verify(x => x.Set<Transaction>().Add(It.IsAny<Transaction>()), Times.Once);
             _contextMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once);
             _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));           
+
+            recordCount.Should().BeTrue();
         }
     }
 }
