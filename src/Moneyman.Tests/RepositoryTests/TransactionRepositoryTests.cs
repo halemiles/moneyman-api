@@ -89,31 +89,11 @@ namespace Tests
         public async Task Update_WithNewValidParams_PropertiesUpdated()
         {
             // Arrange
-            var existingTransaction = new TransactionBuilder()
-                .WithId(1)
-                .WithAmount(100)
-                .WithActive(true)
-                .WithFrequency(Frequency.Monthly)
-                .WithStartDate(new DateTime(2021,1,1))
-                .Build();
+            var existingTransaction = new Transaction();
+            var updatedTransaction = new Transaction();
 
-            var updatedTransaction = new TransactionBuilder()
-                .WithId(1)
-                .WithAmount(500)
-                .WithActive(false)
-                .WithFrequency(Frequency.Weekly)
-                .WithStartDate(new DateTime(2021,10,1))
-                .Build();
-
-            var transactionUpdate = new List<Transaction>
-            { 
-                updatedTransaction
-            }.ToList();
-            
-            var _transactions = new List<Transaction>
-            {
-                existingTransaction
-            }.AsQueryable().BuildMockDbSet();
+            var transactionUpdate = new List<Transaction>{ updatedTransaction}.ToList();            
+            var _transactions = new List<Transaction>{existingTransaction}.AsQueryable().BuildMockDbSet();
 
             var repository = new TransactionRepository(_contextMock.Object, _mapper);
             _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
