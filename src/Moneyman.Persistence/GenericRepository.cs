@@ -45,6 +45,7 @@ namespace Moneyman.Persistence
         _context.Set<T>().Remove(entity);
     }
 
+    //TODO: Deprecate this in lieu of higher level repositories
     public virtual bool Update(T newObject)
     {
        IEntity entity = (IEntity)newObject;
