@@ -8,7 +8,7 @@ namespace Moneyman.Domain
     [ExcludeFromCodeCoverage]
     public class MoneymanContext : DbContext
     {
-        IConfiguration configuration;
+        private readonly IConfiguration configuration;
         public MoneymanContext (){}
         public MoneymanContext (IConfiguration configuration)
         {
