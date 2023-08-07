@@ -111,6 +111,7 @@ namespace Tests
             _contextMock.Verify(x => x.Set<Transaction>().Add(It.IsAny<Transaction>()), Times.Once);
             _contextMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once);
             _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
+            _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
 
             recordCount.Should().BeTrue();
         }
