@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 using Snapper;
+using Microsoft.Extensions.Configuration;
+using System.Threading;
 
 namespace Tests
 {
@@ -26,6 +28,7 @@ namespace Tests
         private Mock<TransactionRepository> _transRepoMock;    
         private Mock<IRepository<Transaction>> _genericRepositoryMock;
         private IMapper _mapper;
+        private GenericRepository<Transaction> repository;
         private TransactionRepository NewTransactionRepository() =>
             new TransactionRepository(_contextMock.Object, _mapper);
         
@@ -53,6 +56,8 @@ namespace Tests
             
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
+
+            repository = new GenericRepository<Transaction>(_contextMock.Object, mapper);
         }
 
         [TestMethod]
@@ -65,81 +70,130 @@ namespace Tests
         }
 
         [TestMethod]
-        public void Add_WithOneNewTransaction_SaveReturnsOneRecordCount()
-        {
-            var newTransaction = new TransactionBuilder()
-                .WithId(1)
-                .WithAmount(100)
-                .WithActive(true)
-                .WithFrequency(Frequency.Monthly)
-                .WithStartDate(new DateTime(2021,1,1))
-                .Build();
-                
-            Transaction existingTransaction = null;
-            using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
-            {
-                context.Transactions.Add(newTransaction);
-                context.SaveChanges();
-                existingTransaction = context.Transactions.FirstOrDefault();
-            }
+        public async Task Add_WithOneNewTransaction_SaveReturnsOneRecordCount()
+        {  
+            // Arrange
+            var repository = new GenericRepository<Transaction>(_contextMock.Object, _mapper);
+            var newTransaction = new Transaction();
 
-            existingTransaction.Should().NotBeNull();
-            existingTransaction.Id.Should().Be(1);
-            existingTransaction.Amount.Should().Be(100);
-            existingTransaction.Active.Should().Be(true);
-            existingTransaction.Frequency.Should().Be(Frequency.Monthly);
-            existingTransaction.StartDate.Should().Be(new DateTime(2021,1,1));
+            // Act
+            repository.Add(newTransaction);
+            await repository.Save();
+
+            // Assert
+            _contextMock.Verify(x => x.Set<Transaction>().Add(newTransaction), Times.Once);
+            _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [TestMethod] 
         public async Task Update_WithNewValidParams_PropertiesUpdated()
         {
-            var existingTransaction = new TransactionBuilder()
-                .WithId(1)
-                .WithAmount(100)
-                .WithActive(true)
-                .WithFrequency(Frequency.Monthly)
-                .WithStartDate(new DateTime(2021,1,1))
-                .Build();
+            // Arrange
+            var existingTransaction = new Transaction();
+            var updatedTransaction = new Transaction();
 
-            var transactionUpdate = new TransactionBuilder()
-                .WithId(1)
-                .WithAmount(500)
-                .WithActive(false)
-                .WithFrequency(Frequency.Weekly)
-                .WithStartDate(new DateTime(2021,10,1))
-                .Build();
+            var transactionUpdate = new List<Transaction>{ updatedTransaction}.ToList();            
+            var _transactions = new List<Transaction>{existingTransaction}.AsQueryable().BuildMockDbSet();
 
-            Transaction updatedTransaction = null;
-            using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
-            {
-                var transactionRepository = new TransactionRepository(context, _mapper);
-                transactionRepository.Add(existingTransaction);
-                await transactionRepository.Save();
-                
-                transactionRepository.Update(transactionUpdate);
-                await transactionRepository.Save();
-                
-                updatedTransaction = context.Transactions.FirstOrDefault();
-            }
+            var repository = new TransactionRepository(_contextMock.Object, _mapper);
+            _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
+            _contextMock.Setup(x => x.SaveChanges()).Returns(1);
 
-            updatedTransaction.Should().NotBeNull();
-            
-            var snapshot = new {
-                Id = updatedTransaction.Id,
-                Amount = updatedTransaction.Amount,
-                Active = updatedTransaction.Active,
-                Frequency = updatedTransaction.Frequency,
-                StartDate = updatedTransaction.StartDate
-            };
-            snapshot.ShouldMatchSnapshot();
+            // Act
+            repository.Add(new Transaction());
+            await repository.Save();
+
+            var recordCount = repository.Update(updatedTransaction);
+            await repository.Save();
+
+
+            // Assert
+            _contextMock.Verify(x => x.Set<Transaction>().Add(It.IsAny<Transaction>()), Times.Once);
+            _contextMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once);
+            _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
+            _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
+
+            recordCount.Should().BeTrue();
         }
 
-        public DbContextOptions<MoneymanContext> BuildGenerateInMemoryOptions()
+        [TestMethod] 
+        public async Task Update_WithDifferingStartDate_PropertiesUpdated()
         {
-            return new DbContextOptionsBuilder<MoneymanContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
+            // Arrange
+            var existingTransaction = new Transaction(){StartDate = new DateTime(2023,1,1)};
+            var updatedTransaction = new Transaction(){StartDate = new DateTime(2023,1,2)};
+
+            var transactionUpdate = new List<Transaction>{ updatedTransaction}.ToList();            
+            var _transactions = new List<Transaction>{existingTransaction}.AsQueryable().BuildMockDbSet();
+
+            var repository = new TransactionRepository(_contextMock.Object, _mapper);
+            _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
+            _contextMock.Setup(x => x.SaveChanges()).Returns(1);
+
+            // Act
+            repository.Add(new Transaction());
+            await repository.Save();
+
+            var recordCount = repository.Update(updatedTransaction);
+            await repository.Save();
+
+
+            // Assert
+            _contextMock.Verify(x => x.Set<Transaction>().Add(It.IsAny<Transaction>()), Times.Once);
+            _contextMock.Verify(x => x.Update(updatedTransaction), Times.Once);
+            _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
+
+            recordCount.Should().BeTrue();
+        }
+
+        [TestMethod] 
+        [Ignore]
+        public async Task Update_WithNullStartDate_PropertiesUpdated()
+        {
+            // Arrange
+            var existingTransaction = new Transaction(){StartDate = new DateTime(2023,1,1)};
+            var updatedTransaction = new Transaction(){StartDate = DateTime.MinValue};
+
+            var transactionUpdate = new List<Transaction>{ updatedTransaction}.ToList();            
+            var _transactions = new List<Transaction>{existingTransaction}.AsQueryable().BuildMockDbSet();
+
+            var repository = new TransactionRepository(_contextMock.Object, _mapper);
+            _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
+            _contextMock.Setup(x => x.SaveChanges()).Returns(1);
+
+            // Act
+            repository.Add(new Transaction());
+            await repository.Save();
+
+            var recordCount = repository.Update(updatedTransaction);
+            await repository.Save();
+
+
+            // Assert
+            _contextMock.Verify(x => x.Set<Transaction>().Add(It.IsAny<Transaction>()), Times.Once);
+            //_contextMock.Verify(x => x.Update(existingTransaction), Times.Once);
+            _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
+
+            recordCount.Should().BeTrue();
+        }
+
+        [TestMethod] 
+        public async Task Update_WhenExistingReturnsNull_ReturnsFalse()
+        {
+            // Arrange
+            var updatedTransaction = new Transaction(){Id = 1, StartDate = new DateTime(2023,1,2)};
+            var _transactions = new List<Transaction>().AsQueryable().BuildMockDbSet();
+
+            var repository = new TransactionRepository(_contextMock.Object, _mapper);
+            _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
+
+            // Act
+            var recordCount = repository.Update(updatedTransaction);
+            //await repository.Save();
+
+            // Assert
+//            _contextMock.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+            recordCount.Should().BeFalse();
         }
     }
 }

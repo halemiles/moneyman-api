@@ -38,7 +38,7 @@ namespace Moneyman.Tests
                 Id = 999,
                 Name = "Test Transaction",
                 Amount = 1234,
-                Date = new DateTime(2022,1,1),
+                StartDate = new DateTime(2022,1,1),
                 Active = true,
                 Frequency = Frequency.Monthly
             };
