@@ -1,0 +1,7 @@
+{
+  "Id": 1,
+  "Amount": 100.0,
+  "Active": true,
+  "Frequency": 1,
+  "StartDate": "2021-01-01T00:00:00"
+}

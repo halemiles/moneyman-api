@@ -122,7 +122,7 @@ namespace Tests
             var newTransaction = new TransactionDto
             {
                 Name = "newTransaction",
-                StartDate = new DateTime(2022,1,1),
+                Date = new DateTime(2022,1,1),
                 Amount = 150,
                 Frequency = Frequency.Weekly
             };
@@ -150,7 +150,7 @@ namespace Tests
             var newTransaction = new TransactionDto
             {
                 Name = transactionName,
-                StartDate = DateTime.Parse(startDate),
+                Date = DateTime.Parse(startDate),
                 Amount = amount,
                 Frequency = Frequency.Weekly
             };

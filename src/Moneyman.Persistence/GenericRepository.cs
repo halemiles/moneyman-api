@@ -45,22 +45,20 @@ namespace Moneyman.Persistence
         _context.Set<T>().Remove(entity);
     }
 
-    //TODO: Deprecate this in lieu of higher level repositories
     public virtual bool Update(T newObject)
     {
-       IEntity entity = (IEntity)newObject;
+      IEntity entity = (IEntity)newObject;
 
       var existing = _context.Set<T>().Find(entity.Id);
-
+       _mapper.Map(newObject, existing);
+        
       if (existing == null)
       {
-          return false; // Object not found, return failure state
+          _context.Add(newObject);
+          return true;
       }
 
-      _context.Entry(existing).CurrentValues.SetValues(newObject);
-
-      _context.SaveChanges();
-      return true; // Object updated successfully
+      return true; //TODO - Return failure state
     }
 
     public virtual async Task<int>  Save()

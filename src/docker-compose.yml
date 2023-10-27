@@ -9,13 +9,3 @@ services:
       - ./Moneyman.Api/LocalDatabase.db:/app/LocalDatabase.db
     environment:
       ASPNETCORE_ENVIRONMENT: Staging
-  mysql:
-    image: mysql:8.0
-    environment:
-      - MYSQL_ROOT_PASSWORD=rootpass
-    volumes:
-      - mysql:/var/lib/mysql
-      - /home/miles/dev/moneyman-api/src/Moneyman.Api/export_script.sql:/dump.sql
-
-volumes:
-  mysql:

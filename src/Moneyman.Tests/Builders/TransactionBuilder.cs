@@ -48,7 +48,7 @@ namespace Moneyman.Tests.Builders
             return this;
         }
 
-        public TransactionBuilder WithAmount(int amount)
+        public TransactionBuilder WithAmount(decimal amount)
         {
             _transaction.Amount = amount;
             return this;
