@@ -50,15 +50,16 @@ namespace Moneyman.Persistence
       IEntity entity = (IEntity)newObject;
 
       var existing = _context.Set<T>().Find(entity.Id);
-       _mapper.Map(newObject, existing);
         
       if (existing == null)
       {
-          _context.Add(newObject);
-          return true;
+          
+          return false;
       }
+      _context.Entry(existing).CurrentValues.SetValues(newObject);
+      _context.SaveChanges();
 
-      return true; //TODO - Return failure state
+      return true;
     }
 
     public virtual async Task<int>  Save()

@@ -10,7 +10,7 @@ namespace Moneyman.Services.Validators
         {
             RuleFor(transaction => transaction.Name).NotNull().NotEmpty();
             RuleFor(transaction => transaction.Amount).NotNull().GreaterThan(0);
-            RuleFor(transaction => transaction.Date).GreaterThan(DateTime.MinValue);
+            RuleFor(transaction => transaction.StartDate).GreaterThan(DateTime.MinValue);
         }
     }
 }
