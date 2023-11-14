@@ -39,7 +39,7 @@ namespace Moneyman.Api.Controllers
             {
                 return StatusCode((int)result.StatusCode);
             }
-            return Ok();
+            return Ok(new { id = result.Payload });
         }
 
         [HttpPost("multiple")]
@@ -66,6 +66,11 @@ namespace Moneyman.Api.Controllers
         {
             _logger.Information("GET transaction {TransactionId}", id);
             var transaction = transactionService.GetById(id);
+
+            if(transaction == null)
+            {
+                return NotFound();
+            }
             return Ok(transaction);
         }
 

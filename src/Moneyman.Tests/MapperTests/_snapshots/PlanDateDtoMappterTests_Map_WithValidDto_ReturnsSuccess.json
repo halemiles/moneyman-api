@@ -7,7 +7,7 @@
     "CategoryType": 0,
     "PriorityType": 0,
     "Name": "Test Transaction",
-    "Amount": 1234,
+    "Amount": 0.0,
     "Active": false,
     "StartDate": "0001-01-01T00:00:00",
     "Id": 0

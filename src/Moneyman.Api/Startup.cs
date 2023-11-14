@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
 using Moneyman.Services;
 using Moneyman.Interfaces;
 using Moneyman.Persistence;
@@ -30,12 +31,22 @@ namespace Moneyman.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry();
-            var connectionString = Configuration.GetConnectionString("Default");
-               
+                        
+            try
+            {
+                services.AddDbContext<MoneymanContext>(
+                    options => options.UseSqlite(
+                        new SqliteConnection(Configuration.GetConnectionString("WebApiDatabase")),
+                        x => x.MigrationsAssembly("Moneyman.Api")
+                    )
+                    
+                );
+            }
+            catch(Exception err)
+            {
+                Console.WriteLine(err.ToString());
+            }
 
-            services.AddDbContext<MoneymanContext>(options => options.UseMySQL(connectionString));
-            
-            //services.AddTransient<MySqlConnection>(_ => new MySqlConnection(connectionString));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

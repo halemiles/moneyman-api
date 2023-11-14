@@ -28,15 +28,16 @@ namespace Moneyman.Persistence
 
             //TODO - Update this in the mapping profile
             newObject.Name = existing.Name;
-            
+
             if(newObject.StartDate == System.DateTime.MinValue)
             {
                 newObject.StartDate = existing.StartDate;
             }
-            
+
             _context.Update(newObject);
             int recordCount = _context.SaveChanges();
             return recordCount > 0;
         }
+        
     }
 }
