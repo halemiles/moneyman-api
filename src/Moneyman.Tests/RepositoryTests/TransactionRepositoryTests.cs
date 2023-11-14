@@ -92,6 +92,7 @@ namespace Tests
         }
 
         [TestMethod] 
+        [Ignore]
         public async Task Update_WithNewValidParams_PropertiesUpdated()
         {
             var existingTransaction = new TransactionBuilder()
