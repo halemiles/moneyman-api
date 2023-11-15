@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "husky": "^8.0.0"
+  },
+  "dependencies": {
+    "@hoppscotch/cli": "^0.3.3"
   }
 }

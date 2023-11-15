@@ -1,0 +1,9 @@
+{
+  "name": "Local - Dotnet",
+  "variables": [
+    {
+      "value": "http://localhost:5000",
+      "key": "serverurl"
+    }
+  ]
+}
