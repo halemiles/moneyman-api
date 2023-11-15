@@ -39,7 +39,7 @@ namespace Moneyman.Api.Controllers
             {
                 return StatusCode((int)result.StatusCode);
             }
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost("multiple")]
