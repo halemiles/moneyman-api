@@ -76,24 +76,30 @@ namespace Moneyman.Tests
         }    
 
         [TestMethod]
-        [Ignore("Amount Due incorrect")]
         public void GenerateMonthly_WithInvalidTransactionId_ReturnsEmptyList()
         {
             // Arrange
             var sut = NewDtpReaderService();
             Fixture fixture = new Fixture();
-            IEnumerable<Transaction> trans = new List<Transaction>
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>()
             {
-                fixture.Build<Transaction>().With(f => f.StartDate, new DateTime(2022,10,1)).With(f => f.Amount, 100).Create(),
-                new Transaction
+                new PlanDate
                 {
-                    Name = "Trans 1",
-                    StartDate = new DateTime(2022,11,1),
-                    Frequency = Frequency.Monthly,
-                    Amount = 122
+                    Date = new DateTime(2022,11,1),
+                    Transaction = new Transaction{
+                        Amount = 100
+                    } 
+                },
+                new PlanDate
+                {
+                    Date = new DateTime(2022,11,1),
+                    Transaction = new Transaction{
+                        Amount = 100,
+                        
+                    } 
                 }
-            };
-            mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
+            });
+            
             mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(2022,1,1));
             mockPaydayService.Setup(x => x.GetNext()).Returns(new Payday{Date = new DateTime(2022,12,1)});
 
@@ -101,9 +107,9 @@ namespace Moneyman.Tests
             var result = sut.GetCurrent();
 
             // Assert
-            result.PlanDates.Count().Should().NotBe(null);
-            result.AmountDue.Should().Be(222);
-            result.EndDate.Should().Be(new DateTime(2022,12,1));
+            result.PlanDates.Count().Should().Be(2);
+            result.AmountDue.Should().Be(200);
+            result.ShouldMatchSnapshot();
         }
     }
 }

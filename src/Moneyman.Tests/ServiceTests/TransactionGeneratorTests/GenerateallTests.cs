@@ -57,7 +57,19 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        [Ignore("Needs fixing")]
+        public void GenerateMonthly_WhenNoPaydaysExist_ReturnsNotFound()
+        {
+            // Arrange
+            var sut = NewDtpGenerationService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>());
+            // Act
+            var result = sut.GenerateAll(null);
+
+            // Assert
+            result.StatusCode.Should().Be(Domain.Models.StatusCode.NotFound);
+        }
+
+        [TestMethod]
         public void GenerateMonthly_WithInvalidTransactionId_ReturnsEmptyList()
         {
             // Arrange
@@ -70,12 +82,13 @@ namespace Moneyman.Tests
                 fixture.Create<Transaction>()
             };
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
-
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>(){new PlanDate()});
             // Act
             var result = sut.GenerateAll(null);
 
             // Assert
-            result.Payload.Count.Should().NotBe(null);
+            result.StatusCode.Should().Be(Domain.Models.StatusCode.Success);
+            result.Payload.Count().Should().Be(0);
         }
     }
 }
