@@ -91,27 +91,6 @@ namespace Tests
             updatedPaydays.ShouldMatchSnapshot();
         }
 
-        [TestMethod] 
-        [Ignore("Needs additonal setup")]
-        public async Task RemoveAll_WithMultiplePaydays_ReturnsSuccess()
-        {                
-            List<Payday> updatedPaydays = null;
-            using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
-            {
-                var paydayRepository = new PaydayRepository(context, _mapper);
-                foreach(var payday in _paydays)
-                {
-                    paydayRepository.Add(payday);
-                }
-                await paydayRepository.Save();
-                paydayRepository.RemoveAll("Payday");
-                updatedPaydays = context.Paydays.ToList();
-            }
-
-            updatedPaydays.Should().NotBeNull();
-            updatedPaydays.Count.Should().Be(0);
-        }
-
         public DbContextOptions<MoneymanContext> BuildGenerateInMemoryOptions()
         {
             return new DbContextOptionsBuilder<MoneymanContext>()

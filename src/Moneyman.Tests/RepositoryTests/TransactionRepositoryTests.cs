@@ -91,7 +91,7 @@ namespace Tests
             existingTransaction.StartDate.Should().Be(new DateTime(2021,1,1));
         }
 
-        [TestMethod] 
+        [TestMethod]
         [Ignore]
         public async Task Update_WithNewValidParams_PropertiesUpdated()
         {

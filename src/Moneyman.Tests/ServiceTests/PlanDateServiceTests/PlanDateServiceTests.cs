@@ -21,7 +21,6 @@ using AutoFixture;
 namespace Tests
 {
     [TestClass]
-    [Ignore]
     public class planDateServiceTests
     {
         private Mock<IPlanDateRepository> _planDateRepoMock;
@@ -117,7 +116,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void Create_WhenObjectDoesntExist_ReturnsSuccess()
+        public async Task Create_WhenObjectDoesntExist_ReturnsSuccess()
         {
             var newTransaction = new TransactionDto
             {
@@ -129,11 +128,11 @@ namespace Tests
 
             
             var service = NewTransactionService();
-            var result = service.Create(newTransaction);               
+            var result = await service.Create(newTransaction);               
                         
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
-            result.Should().Be(true);
+            result.Payload.Should().Be(0);
         }
 
         [TestMethod]
@@ -141,7 +140,7 @@ namespace Tests
         [DataRow("", 100, "2022-01-01")]
         [DataRow("TransactionName", 0, "2022-01-01")]
         [DataRow("TransactionName", 100, "1/1/0001 12:00:00 AM")]
-        public void Create_WhenObjectDoesntExist_ReturnsFailure(
+        public async void Create_WhenObjectDoesntExist_ReturnsFailure(
             string transactionName,
             int amount,
             string startDate
@@ -157,7 +156,7 @@ namespace Tests
 
             
             var service = NewTransactionService();
-            var result = service.Create(newTransaction);               
+            var result = await service.Create(newTransaction);               
                         
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Never());
             _transRepoMock.Verify(x => x.Save(), Times.Never());
