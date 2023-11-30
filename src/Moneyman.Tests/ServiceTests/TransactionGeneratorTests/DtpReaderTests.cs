@@ -19,8 +19,6 @@ namespace Moneyman.Tests
     [TestClass]
     public class DtpReaderTests
     {
-        private Mock<ITransactionService> mockTransactionService;
-        private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
@@ -43,9 +41,7 @@ namespace Moneyman.Tests
 
         private DtpReaderService NewDtpReaderService() =>
             new DtpReaderService(
-                    mockTransactionRepository.Object,
                     mockPlanDateRepository.Object,
-                    mockOffsetCalculationService.Object,
                     mockPaydayService.Object,
                     mockDateTimeProvider.Object,
                     mockMapper,
@@ -55,8 +51,6 @@ namespace Moneyman.Tests
         [TestInitialize]
         public void SetUp()
         {
-            mockTransactionService = new Mock<ITransactionService>();
-            mockTransactionRepository = new Mock<ITransactionRepository>();
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
             mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
             mockPaydayService = new Mock<IPaydayService>();

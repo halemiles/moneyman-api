@@ -13,10 +13,7 @@ namespace Moneyman.Services
 {
     public class DtpReaderService : IDtpReaderService
     {
-
-        private readonly ITransactionRepository transactionRepository;
         private readonly IPlanDateRepository planDateRepository;
-        private readonly IOffsetCalculationService offsetCalculationService;
         private readonly IPaydayService paydayService;
         private readonly IDateTimeProvider datetimeProvider;
         private readonly IMapper mapper;
@@ -24,9 +21,7 @@ namespace Moneyman.Services
         
 
         public DtpReaderService(
-            ITransactionRepository transactionRepository,
             IPlanDateRepository planDateRepository,
-            IOffsetCalculationService offsetCalculationService,
             IPaydayService paydayService,
             IDateTimeProvider dateTimeProvider,
             IMapper mapper,
@@ -34,9 +29,7 @@ namespace Moneyman.Services
             
         ) 
         {
-            this.transactionRepository = transactionRepository;
             this.planDateRepository = planDateRepository;
-            this.offsetCalculationService = offsetCalculationService;
             this.paydayService = paydayService;
             this.datetimeProvider = dateTimeProvider;
             this.mapper = mapper;
