@@ -42,11 +42,10 @@ namespace Moneyman.Services
             transactionRepository.RemoveAll("PlanDates");
             
             List<PlanDate> planDates = new();
-            planDates.AddRange(GenerateMonthly(null));  //TODO - PAss in a transaction ID if available
-            planDates.AddRange(GenerateWeekly(null));  //TODO - PAss in a transaction ID if available
-            planDates.AddRange(GenerateYearly(null));  //TODO - PAss in a transaction ID if available
-            planDates.AddRange(GenerateDaily(null));  //TODO - PAss in a transaction ID if available
-
+            planDates.AddRange(GenerateMonthly(transactionId));
+            planDates.AddRange(GenerateWeekly(transactionId));
+            planDates.AddRange(GenerateYearly(transactionId));
+            planDates.AddRange(GenerateDaily(transactionId));
             foreach(var planDate in planDates)
             {
                 planDateRepository.Add(planDate);                
@@ -66,15 +65,16 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateDaily(int? transactionId)
         {
-            return GetGenerationStrategy("daily").Generate(transactionId, Frequency.Daily);
+            return GetGenerationStrategy(GenerationStrategy.Daily).Generate(transactionId, Frequency.Daily);
         }
 
+        //TODO - Do we need this?
         public List<PlanDate> GenerateForTransaction(int? transactionId)
         {
             throw new System.NotImplementedException();
         }
 
-        public IPlanDateGenerationStrategy GetGenerationStrategy(string strategyName)
+        public IPlanDateGenerationStrategy GetGenerationStrategy(GenerationStrategy strategyName)
         {
             IPlanDateGenerationStrategy generationStrategy;
             PlanDateGenerationStrategyFactory generationStrategyFactory = new PlanDateGenerationStrategyFactory(transactionRepository,
@@ -84,16 +84,16 @@ namespace Moneyman.Services
 
             switch(strategyName)
             {
-                case "monthly":
+                case GenerationStrategy.Monthly:
                     generationStrategy = generationStrategyFactory.Create(Frequency.Monthly);
                     break;
-                case "weekly":                    
+                case GenerationStrategy.Weekly:
                     generationStrategy = generationStrategyFactory.Create(Frequency.Weekly);
                     break;
-                case "yearly":
+                case GenerationStrategy.Yearly:
                     generationStrategy = generationStrategyFactory.Create(Frequency.Yearly);
                     break;
-                case "daily":
+                case GenerationStrategy.Daily:
                     generationStrategy = generationStrategyFactory.Create(Frequency.Daily);
                     break;
                 default:
@@ -120,7 +120,7 @@ namespace Moneyman.Services
                 {
                     try
                     {
-                        DateTime startDate = new DateTime(transaction.StartDate.Year, 1, transaction.StartDate.Day); //Start at Jan
+                        DateTime startDate = new DateTime(transaction.StartDate.Year, 1, transaction.StartDate.Day); //Start at Jan of the current year
                         DateTime dateOffset = startDate.AddDays(7*i);
                         
                         DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
@@ -140,12 +140,12 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateYearly(int? transactionId)
         {
-            return GetGenerationStrategy("yearly").Generate(transactionId, Frequency.Yearly);
+            return GetGenerationStrategy(GenerationStrategy.Yearly).Generate(transactionId, Frequency.Yearly);
         }
 
         public List<PlanDate> GenerateMonthly(int? transactionId)
         {
-            return GetGenerationStrategy("monthly").Generate(transactionId, Frequency.Monthly);
+            return GetGenerationStrategy(GenerationStrategy.Monthly).Generate(transactionId, Frequency.Monthly);
         }
     }
 }
