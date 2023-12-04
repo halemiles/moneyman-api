@@ -60,7 +60,7 @@ namespace Moneyman.Services
                 logger.LogError("Failed saving plandates {ExceptionText}", err.ToString());
                 
             }
-            return ApiResponse.Success<List<PlanDate>>(planDates);
+            return ApiResponse.Success<List<PlanDate>>(planDates, "Successfully generated plandates");
         }
 
         public List<PlanDate> GenerateDaily(int? transactionId)

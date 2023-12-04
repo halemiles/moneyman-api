@@ -25,18 +25,21 @@ namespace Moneyman.Domain.Models
 
     public static class ApiResponse
     {
-        public static ApiResponse<T> Success<T>(this T data, string message = "Success")
+        public static ApiResponse<T> Success<T>(this T data, string message)
         {
+            message ??= "Success";
             return new ApiResponse<T>(StatusCode.Success, message, data);
         }
 
-        public static ApiResponse<T> ValidationError<T>(string message = "Success")
+        public static ApiResponse<T> ValidationError<T>(string message)
         {
+            message  ??= "Validation Error";
             return new ApiResponse<T>(StatusCode.BadRequest, message, default);
         }
 
-        public static ApiResponse<T> NotFound<T>(string message = "Success")
+        public static ApiResponse<T> NotFound<T>(string message)
         {
+            message ??= "Not Found";
             return new ApiResponse<T>(StatusCode.NotFound, message, default);
         }
     }

@@ -91,11 +91,11 @@ namespace Moneyman.Services
         {
           logger.LogError(error.ErrorMessage);
         }
-		    return ApiResponse.ValidationError<int>();
+		    return ApiResponse.ValidationError<int>("Validation error");
       }
 
       
-      return ApiResponse.Success<int>(transaction.Id);
+      return ApiResponse.Success<int>(transaction.Id, "Successfully created transaction");
     }
   }
 }

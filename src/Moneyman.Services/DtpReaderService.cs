@@ -60,10 +60,11 @@ namespace Moneyman.Services
             };
         }
 
-        public DtpDto GetOffset(int monthOffset = 0)
+        public DtpDto GetOffset(int? monthOffset )
         {
-            var startDate = paydayService.GetPrevious().Date.AddMonths(monthOffset);
-            var endDate = paydayService.GetNext().Date.AddMonths(monthOffset);
+            var offset = monthOffset ?? 0;
+            var startDate = paydayService.GetPrevious().Date.AddMonths(offset);
+            var endDate = paydayService.GetNext().Date.AddMonths(offset);
 
             logger.LogInformation(
                 "Getting current DTP period {startDate} {endDate}",
