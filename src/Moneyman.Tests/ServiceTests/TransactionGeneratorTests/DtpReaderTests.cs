@@ -9,7 +9,6 @@ using System.Linq;
 using System;
 using Snapper;
 using Moneyman.Services.Interfaces;
-using AutoFixture;
 using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 using Microsoft.Extensions.Logging;
@@ -25,19 +24,6 @@ namespace Moneyman.Tests
         private Mock<IDateTimeProvider> mockDateTimeProvider;
         private IMapper mockMapper;
         private Mock<ILogger<DtpReaderService>> mockLogger;
-
-        private readonly List<string> holidays = new List<string> 
-        {
-                "03-01-2022",
-                "15-04-2022",
-                "18-04-2022",
-                "02-05-2022",
-                "02-06-2022",
-                "03-06-2022",
-                "29-08-2022",
-                "26-12-2022",
-                "27-12-2022"
-        };
 
         private DtpReaderService NewDtpReaderService() =>
             new DtpReaderService(
@@ -74,23 +60,22 @@ namespace Moneyman.Tests
         {
             // Arrange
             var sut = NewDtpReaderService();
-            Fixture fixture = new Fixture();
-            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>()
+            _ = mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
             {
                 new PlanDate
                 {
                     Date = new DateTime(2022,11,1),
                     Transaction = new Transaction{
                         Amount = 100
-                    } 
+                    }
                 },
                 new PlanDate
                 {
                     Date = new DateTime(2022,11,1),
                     Transaction = new Transaction{
                         Amount = 100,
-                        
-                    } 
+
+                    }
                 }
             });
             

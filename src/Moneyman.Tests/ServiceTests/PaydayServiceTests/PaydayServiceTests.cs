@@ -47,7 +47,7 @@ namespace Moneyman.Tests
             new Payday { Date = DateTime.Parse("2022-12-28")}
         };
         
-        private Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
+        private readonly Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
 
         //TODO - Move this to a fixture class
         public OffsetCalculationService NewOffsetCalculationService() =>

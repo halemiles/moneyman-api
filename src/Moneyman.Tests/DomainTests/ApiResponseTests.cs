@@ -15,7 +15,7 @@ namespace Moneyman.UnitTests
             var expectedResponse = new ApiResponse<object>(StatusCode.Success, "Success", payload);
 
             // Act
-            var actualResponse = payload.Success();
+            var actualResponse = payload.Success("Success");
 
             // Assert
             Assert.AreEqual(expectedResponse.Success, actualResponse.Success);
