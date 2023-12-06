@@ -60,7 +60,7 @@ namespace Moneyman.Tests
         {
             // Arrange
             var sut = NewDtpReaderService();
-            _ = mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>()
+            _ = mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
             {
                 new PlanDate
                 {
