@@ -32,7 +32,7 @@ namespace Moneyman.Services
             int foundLoopCount = 0;
 
             if(dte.Month == 12)
-                dte.AddYears(1);
+                dte = dte.AddYears(1);
 
             //Iterate until we have found a suitable date
             while (!found)
