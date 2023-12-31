@@ -40,7 +40,16 @@ namespace Moneyman.Services
         public DtpDto GetCurrent()
         {
             var startDate = datetimeProvider.GetToday();
-            var endDate = paydayService.GetNext().Date;
+            DateTime endDate = DateTime.MinValue; 
+            try
+            {
+                endDate = paydayService.GetNext().Date;
+            }
+            catch(Exception ex)
+            {
+                logger.LogError("Failed to get payday information");
+                return new DtpDto();
+            }
 
             logger.LogInformation(
                 "Getting current DTP period {startDate} {endDate}",
