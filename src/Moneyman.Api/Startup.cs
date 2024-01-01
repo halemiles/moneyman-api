@@ -53,6 +53,7 @@ namespace Moneyman.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Moneyman.Api", Version = "v1" });
             });
 
+            //TODO: Move to seperate service creation file
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IPaydayRepository, PaydayRepository>();

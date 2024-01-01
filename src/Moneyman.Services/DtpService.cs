@@ -120,7 +120,7 @@ namespace Moneyman.Services
                 {
                     try
                     {
-                        DateTime startDate = new DateTime(transaction.StartDate.Year, 1, transaction.StartDate.Day); //Start at Jan of the current year
+                        DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan of the current year
                         DateTime dateOffset = startDate.AddDays(7*i);
                         
                         DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
