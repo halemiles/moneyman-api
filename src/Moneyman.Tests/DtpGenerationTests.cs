@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Microsoft.Extensions.Logging;
+using Moneyman.Services.Interfaces;
 
 namespace Moneyman.Tests
 {
@@ -18,6 +19,7 @@ namespace Moneyman.Tests
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
+        private Mock<IPaydayService> mockPaydayService;
         private Mock<ILogger<DtpService>> mockLogger;
 
         private DtpService NewDtpGenerationService() =>
@@ -25,6 +27,7 @@ namespace Moneyman.Tests
                 mockTransactionRepository.Object,
                 mockPlanDateRepository.Object,
                 mockOffsetCalculationService.Object,
+                mockPaydayService.Object,
                 mockLogger.Object
             );
 
@@ -35,10 +38,13 @@ namespace Moneyman.Tests
             mockTransactionRepository = new Mock<ITransactionRepository>();
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
             mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+            mockPaydayService = new Mock<IPaydayService>();
             mockLogger = new Mock<ILogger<DtpService>>();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new CalculatedPlanDate());
+
+            mockPaydayService.Setup(x => x.GetAll()).Returns(new List<Payday>());
         }
 
         //TODO - Could this be more generic?
