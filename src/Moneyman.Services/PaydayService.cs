@@ -26,6 +26,11 @@ namespace Moneyman.Services
 
 		}
 
+		public List<Payday> GetAll()
+		{
+			return _paydayRepository.GetAll().ToList();
+		}
+
 		public List<Payday> Generate(int dayOfMonth)
 		{
 			_paydayRepository.RemoveAll("Paydays");
