@@ -59,5 +59,19 @@ namespace Moneyman.Tests
             result.OriginalPlanDate.Should().Be(originalDate);
             result.PlanDate.Should().Be(expectedDate);
         }
+
+        [TestMethod]
+        public void CalculateOffset_WhenCurrentMonthIsDecember_GeneratesNextYear()
+        {
+            // Arrange
+            var sut = NewOffsetCalculationService();
+            var originalDate = new DateTime(2023,12,1);
+
+            // Act
+            var result = sut.CalculateOffset(originalDate);
+
+            // Assert
+            result.PlanDate.Year.Should().Be(2024);
+        }
     }
 }

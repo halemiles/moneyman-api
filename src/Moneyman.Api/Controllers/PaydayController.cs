@@ -37,8 +37,8 @@ namespace Moneyman.Api.Controllers
                 return BadRequest();
             }
             
-            paydayService.Generate(body.DayOfMonth.Value);
-            return Ok();
+            var paydays = paydayService.Generate(body.DayOfMonth.Value);
+            return Ok(paydays);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
+using Moneyman.Domain.Models;
 using Moneyman.Interfaces;
 using Moneyman.Models.Dtos;
 using Moneyman.Services.Factories;
@@ -37,10 +38,19 @@ namespace Moneyman.Services
 
         }
 
-        public DtpDto GetCurrent()
+        public ApiResponse<DtpDto> GetCurrent()
         {
             var startDate = datetimeProvider.GetToday();
-            var endDate = paydayService.GetNext().Date;
+            DateTime endDate = DateTime.MinValue; 
+            try
+            {
+                endDate = paydayService.GetNext().Date;
+            }
+            catch(Exception ex)
+            {
+                logger.LogError("Failed to get payday information");
+                return ApiResponse.NotFound<DtpDto>("Could not find any paydays. Please ensure they have been generated");
+            }
 
             logger.LogInformation(
                 "Getting current DTP period {startDate} {endDate}",
@@ -53,17 +63,18 @@ namespace Moneyman.Services
                                .Where(x => x.Date > startDate && x.Date < endDate)
                                .ToList();
             var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
-            return new DtpDto{
+            return ApiResponse.Success<DtpDto>( new DtpDto{
                 PlanDates = mappedPlanDates,
                 StartDate = startDate,
                 EndDate = endDate
-            };
+            }, "Success");
         }
 
         public DtpDto GetOffset(int? monthOffset )
         {
             var offset = monthOffset ?? 0;
-            var startDate = paydayService.GetPrevious().Date.AddMonths(offset);
+            var startDateRaw = paydayService.GetPrevious();
+            var startDate = startDateRaw.Date.AddMonths(offset);
             var endDate = paydayService.GetNext().Date.AddMonths(offset);
 
             logger.LogInformation(

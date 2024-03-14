@@ -47,7 +47,7 @@ namespace Moneyman.Services
                 {
                     try
                     {
-                        DateTime startDate = new DateTime(transaction.StartDate.Year, 1, transaction.StartDate.Day); //Start at Jan
+                        DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan
                         DateTime dateOffset = startDate.AddMonths(i);
                         
                         DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?

@@ -19,19 +19,16 @@ namespace Moneyman.Api.Controllers
         private readonly IDtpService dtpService;
         private readonly IDtpReaderService dtpReaderService;
         private readonly ILogger _logger;
-        private readonly IMapper _mapper;
 
         public DtpController(
             ILogger logger,
             IDtpService dtpService,
-            IDtpReaderService dtpReaderService,
-            IMapper mapper
+            IDtpReaderService dtpReaderService
         )
         {
             _logger = logger;
             this.dtpService = dtpService;
             this.dtpReaderService = dtpReaderService;
-            _mapper = mapper;
         }
 
         
