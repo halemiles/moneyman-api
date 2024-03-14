@@ -6,7 +6,7 @@ namespace Moneyman.Services
 {
     public class HolidayService : IHolidayService
     {
-        private IOptions<HolidayOptions> holidayOptions;
+        private readonly IOptions<HolidayOptions> holidayOptions;
         public HolidayService(IOptions<HolidayOptions> holidayOptions)
         {
             this.holidayOptions = holidayOptions;
