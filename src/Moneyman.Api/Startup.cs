@@ -94,7 +94,7 @@ namespace Moneyman.Api
                 .CreateLogger();
 
             services.AddSingleton(Log.Logger);
-            
+            services.Configure<HolidayOptions>(Configuration.GetSection("HolidayOptions"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
