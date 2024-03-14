@@ -47,7 +47,7 @@ namespace Moneyman.Api.Controllers
         public IActionResult GetOffsetPeriod(int? monthOffset)
         {
             _logger.Information("GET all DTP");
-            var planDateDto = dtpReaderService.GetOffset(monthOffset.Value);
+            var planDateDto = dtpReaderService.GetOffset(monthOffset ?? 0);
             return Ok(planDateDto);            
         }
 
