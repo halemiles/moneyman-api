@@ -16,25 +16,28 @@ namespace Moneyman.Services
         private readonly ITransactionRepository transactionRepository;
         private readonly IPlanDateRepository planDateRepository;
         private readonly IOffsetCalculationService offsetCalculationService;
+        private readonly IPaydayService paydayService;
         private readonly ILogger<DtpService> logger;
 
         public DtpService(
             ITransactionRepository transactionRepository,
             IPlanDateRepository planDateRepository,
             IOffsetCalculationService offsetCalculationService,
+            IPaydayService paydayService,
             ILogger<DtpService> logger
         ) 
         {
             this.transactionRepository = transactionRepository;
             this.planDateRepository = planDateRepository;
             this.offsetCalculationService = offsetCalculationService;
+            this.paydayService = paydayService;
             this.logger = logger;
         }
 
         //TODO: Move this to a another class so we can unit test
         public ApiResponse<List<PlanDate>> GenerateAll(int? transactionId)
         {
-            if(planDateRepository.GetAll().Count() == 0)
+            if(!paydayService.GetAll().Any())
             {
                 return ApiResponse.NotFound<List<PlanDate>>("No paydays found. Please regenerate");
             }
