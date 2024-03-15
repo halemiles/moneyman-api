@@ -1,17 +1,22 @@
 {
-  "PlanDates": [
-    {
-      "TransactionName": null,
-      "Amount": 100.0,
-      "Date": "2022-11-01T00:00:00"
-    },
-    {
-      "TransactionName": null,
-      "Amount": 100.0,
-      "Date": "2022-11-01T00:00:00"
-    }
-  ],
-  "AmountDue": 200.0,
-  "StartDate": "2022-01-01T00:00:00",
-  "EndDate": "2022-12-01T00:00:00"
+  "Success": true,
+  "StatusCode": 200,
+  "Message": "Success",
+  "Payload": {
+    "PlanDates": [
+      {
+        "TransactionName": null,
+        "Amount": 100.0,
+        "Date": "2022-11-01T00:00:00"
+      },
+      {
+        "TransactionName": null,
+        "Amount": 100.0,
+        "Date": "2022-11-01T00:00:00"
+      }
+    ],
+    "AmountDue": 200.0,
+    "StartDate": "2022-01-01T00:00:00",
+    "EndDate": "2022-12-01T00:00:00"
+  }
 }

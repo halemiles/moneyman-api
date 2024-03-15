@@ -8,19 +8,22 @@ namespace Moneyman.Services.Factories
     public class PlanDateGenerationStrategyFactory
     {
         private readonly ITransactionRepository transactionRepository;
-        private readonly IPlanDateRepository planDateRepository;
+        private readonly IPlanDateRepository planDateRepository; //TODO: Is this required
         private readonly IOffsetCalculationService offsetCalculationService;
+        private readonly IDateTimeProvider dateTimeProvider;
         private readonly ILogger<DtpService> logger;
         public PlanDateGenerationStrategyFactory(
             ITransactionRepository transactionRepository,
-            IPlanDateRepository planDateRepository,
+            IDateTimeProvider dateTimeProvider,
             IOffsetCalculationService offsetCalculationService,
+            IPlanDateRepository planDateRepository,
             ILogger<DtpService> logger
         )
         {
             this.transactionRepository = transactionRepository;
-            this.planDateRepository = planDateRepository;
+            this.dateTimeProvider = dateTimeProvider;
             this.offsetCalculationService = offsetCalculationService;
+            this.planDateRepository = planDateRepository;
             this.logger = logger;
         }
         public IPlanDateGenerationStrategy Create(Frequency frequency)
@@ -31,8 +34,9 @@ namespace Moneyman.Services.Factories
                 case Frequency.Monthly:
                     return new DefaultPlanDateGenerationStrategy(
                         transactionRepository,
-                        planDateRepository,
+                        dateTimeProvider,
                         offsetCalculationService,
+                        
                         logger
                     );
                 case Frequency.Yearly:

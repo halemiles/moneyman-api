@@ -12,19 +12,19 @@ namespace Moneyman.Services
     public class DefaultPlanDateGenerationStrategy : IPlanDateGenerationStrategy
     {
         private readonly ITransactionRepository transactionRepository;
-        private readonly IPlanDateRepository planDateRepository;
         private readonly IOffsetCalculationService offsetCalculationService;
+        private readonly IDateTimeProvider dateTimeProvider;
         private readonly ILogger<DtpService> logger;
         public DefaultPlanDateGenerationStrategy(
             ITransactionRepository transactionRepository,
-            IPlanDateRepository planDateRepository,
+            IDateTimeProvider dateTimeProvider,
             IOffsetCalculationService offsetCalculationService,
             ILogger<DtpService> logger
         )
         {
             this.transactionRepository = transactionRepository;
-            this.planDateRepository = planDateRepository;
             this.offsetCalculationService = offsetCalculationService;
+            this.dateTimeProvider = dateTimeProvider;
             this.logger = logger;
         }
 
@@ -47,7 +47,7 @@ namespace Moneyman.Services
                 {
                     try
                     {
-                        DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan
+                        DateTime startDate = new DateTime(dateTimeProvider.GetNow().Year, 1, transaction.StartDate.Day); //Start at Jan
                         DateTime dateOffset = startDate.AddMonths(i);
                         
                         DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?

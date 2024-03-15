@@ -17,19 +17,22 @@ namespace Moneyman.Services
         private readonly IPlanDateRepository planDateRepository;
         private readonly IOffsetCalculationService offsetCalculationService;
         private readonly IPaydayService paydayService;
+        private readonly IDateTimeProvider dateTimeProvider;
         private readonly ILogger<DtpService> logger;
 
         public DtpService(
             ITransactionRepository transactionRepository,
             IPlanDateRepository planDateRepository,
-            IOffsetCalculationService offsetCalculationService,
+            IOffsetCalculationService offsetCalculationService,            
             IPaydayService paydayService,
+            IDateTimeProvider dateTimeProvider,
             ILogger<DtpService> logger
         ) 
         {
             this.transactionRepository = transactionRepository;
             this.planDateRepository = planDateRepository;
             this.offsetCalculationService = offsetCalculationService;
+            this.dateTimeProvider = dateTimeProvider;
             this.paydayService = paydayService;
             this.logger = logger;
         }
@@ -80,9 +83,11 @@ namespace Moneyman.Services
         public IPlanDateGenerationStrategy GetGenerationStrategy(GenerationStrategy strategyName)
         {
             IPlanDateGenerationStrategy generationStrategy;
-            PlanDateGenerationStrategyFactory generationStrategyFactory = new PlanDateGenerationStrategyFactory(transactionRepository,
-                        planDateRepository,
+            PlanDateGenerationStrategyFactory generationStrategyFactory = new PlanDateGenerationStrategyFactory(
+                        transactionRepository,
+                        dateTimeProvider,                        
                         offsetCalculationService,
+                        planDateRepository,
                         logger);
 
             switch(strategyName)

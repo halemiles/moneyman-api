@@ -21,6 +21,7 @@ namespace Moneyman.Tests
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
         private Mock<ILogger<DtpService>> mockLogger;
+        private Mock<DateTimeProvider> mockDateTimeProvider;
 
         private DtpService NewDtpGenerationService() =>
             new DtpService(
@@ -28,6 +29,7 @@ namespace Moneyman.Tests
                 mockPlanDateRepository.Object,
                 mockOffsetCalculationService.Object,
                 mockPaydayService.Object,
+                mockDateTimeProvider.Object,
                 mockLogger.Object
             );
 
@@ -38,6 +40,7 @@ namespace Moneyman.Tests
             mockTransactionRepository = new Mock<ITransactionRepository>();
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
             mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+            mockDateTimeProvider = new Mock<DateTimeProvider>();
             mockPaydayService = new Mock<IPaydayService>();
             mockLogger = new Mock<ILogger<DtpService>>();
 

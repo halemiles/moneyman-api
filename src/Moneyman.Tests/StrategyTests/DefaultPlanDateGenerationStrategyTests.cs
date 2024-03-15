@@ -19,16 +19,18 @@ namespace YourProject.Tests
         private readonly Mock<IOffsetCalculationService> _mockOffsetCalculationService;
         private readonly DefaultPlanDateGenerationStrategy _generator;
         private readonly Mock<IPlanDateRepository> mockPlanDateRepository;
+        private readonly Mock<IDateTimeProvider> mockDateTimeProvider;
 
         public DefaultPlanDateGenerationStrategyTests()
         {
             _mockLogger = new Mock<ILogger<DtpService>>();
             _mockTransactionRepository = new Mock<ITransactionRepository>();
             _mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+            mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
             _generator = new DefaultPlanDateGenerationStrategy(
                 _mockTransactionRepository.Object,
-                mockPlanDateRepository.Object,
+                mockDateTimeProvider.Object,
                 _mockOffsetCalculationService.Object,
                 _mockLogger.Object
             );

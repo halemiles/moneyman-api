@@ -86,8 +86,8 @@ namespace Moneyman.Tests
             var result = sut.GetCurrent();
 
             // Assert
-            result.PlanDates.Count().Should().Be(2);
-            result.AmountDue.Should().Be(200);
+            result.Payload.PlanDates.Count().Should().Be(2);
+            result.Payload.AmountDue.Should().Be(200);
             result.ShouldMatchSnapshot();
         }
     }
