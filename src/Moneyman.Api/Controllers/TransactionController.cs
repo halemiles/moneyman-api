@@ -33,7 +33,7 @@ namespace Moneyman.Api.Controllers
         public async Task<IActionResult> Create(TransactionDto transactionDto)
         {
             _logger.Information("Creating transaction {TransactionName}", transactionDto?.Name);
-            
+
             var result = await transactionService.Create(transactionDto);
             if(!result.Success)
             {
@@ -55,9 +55,9 @@ namespace Moneyman.Api.Controllers
         public IActionResult Update(TransactionDto transactionDto)
         {
             _logger.Information("Updating transaction {TransactionName}", transactionDto?.Name);
-            var transaction = _mapper.Map<TransactionDto, Transaction>(transactionDto);            
+            var transaction = _mapper.Map<TransactionDto, Transaction>(transactionDto);
             transactionService.Update(transaction);
-            
+
             return Ok(transaction); //TODO - Convert back to DTO
         }
 
@@ -75,14 +75,19 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] bool? anticipated)
         {
             _logger.Information("GET all transactions");
             var transactions = transactionService.GetAll();
+
+            if(anticipated.HasValue && anticipated.Value == true)
+            {
+                transactions = transactions.Where(x => x.IsAnticipated == true).ToList();
+            }
             return Ok(transactions);
         }
 
-        
+
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
@@ -91,6 +96,6 @@ namespace Moneyman.Api.Controllers
             transactionService.Delete(id);
             return Ok();
         }
-        
+
     }
 }
