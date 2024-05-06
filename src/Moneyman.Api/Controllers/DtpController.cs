@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moneyman.Domain;
 using Moneyman.Domain.Models;
+using Moneyman.Domain.Models.Dtos;
 using Moneyman.Interfaces;
 using Moneyman.Models.Dtos;
 using Moneyman.Services.Interfaces;
@@ -33,10 +34,10 @@ namespace Moneyman.Api.Controllers
 
 
         [HttpPost("current")]
-        public IActionResult GetCurrentPeriod([FromBody] int? startingValue)
+        public IActionResult GetCurrentPeriod([FromBody] DtpRequestDto startingValue)
         {
             _logger.Information("GET all current");
-            var planDateDto = dtpReaderService.GetCurrent(startingValue);
+            var planDateDto = dtpReaderService.GetCurrent(startingValue.StartingValue);
             return Ok(planDateDto);
         }
 
