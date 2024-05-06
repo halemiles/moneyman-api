@@ -30,7 +30,7 @@ namespace Moneyman.Services
 
         public List<PlanDate> Generate(int? transactionId, Frequency frequency)
         {
-            logger.LogInformation("Generating monthly");
+            logger.LogInformation("Generating anticipated");
 
             var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Anticipated);
             if(transactionId.HasValue)
