@@ -31,13 +31,13 @@ namespace Moneyman.Api.Controllers
             this.dtpReaderService = dtpReaderService;
         }
 
-        
-        [HttpGet("current")]
-        public IActionResult GetCurrentPeriod()
+
+        [HttpPost("current")]
+        public IActionResult GetCurrentPeriod([FromBody] int? startingValue)
         {
             _logger.Information("GET all current");
-            var planDateDto = dtpReaderService.GetCurrent();
-            return Ok(planDateDto);            
+            var planDateDto = dtpReaderService.GetCurrent(startingValue);
+            return Ok(planDateDto);
         }
 
         [HttpGet("full")]
@@ -45,7 +45,7 @@ namespace Moneyman.Api.Controllers
         {
             _logger.Information("GET all DTP");
             var planDateDto = dtpReaderService.GetOffset(monthOffset ?? 0);
-            return Ok(planDateDto);            
+            return Ok(planDateDto);
         }
 
         [HttpGet("generate")]
@@ -64,6 +64,6 @@ namespace Moneyman.Api.Controllers
                 return Ok(new DtpHttpResponse{RecordCount = 0, Message = "Missing Paydays"});
             }
         }
-        
+
     }
 }

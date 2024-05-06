@@ -7,7 +7,7 @@ namespace Moneyman.Interfaces
 {
     public interface IDtpReaderService
     {
-        ApiResponse<DtpDto> GetCurrent();
+        ApiResponse<DtpDto> GetCurrent(int? startingValue);
         DtpDto GetOffset(int? monthOffset);
     }
 }

@@ -19,7 +19,7 @@ namespace Moneyman.Services
         private readonly IDateTimeProvider datetimeProvider;
         private readonly IMapper mapper;
         private readonly ILogger<DtpReaderService> logger;
-        
+
 
         public DtpReaderService(
             IPlanDateRepository planDateRepository,
@@ -27,8 +27,8 @@ namespace Moneyman.Services
             IDateTimeProvider dateTimeProvider,
             IMapper mapper,
             ILogger<DtpReaderService> logger
-            
-        ) 
+
+        )
         {
             this.planDateRepository = planDateRepository;
             this.paydayService = paydayService;
@@ -38,10 +38,10 @@ namespace Moneyman.Services
 
         }
 
-        public ApiResponse<DtpDto> GetCurrent()
+        public ApiResponse<DtpDto> GetCurrent(int? startingValue)
         {
             var startDate = datetimeProvider.GetToday();
-            DateTime endDate = DateTime.MinValue; 
+            DateTime endDate = DateTime.MinValue;
             try
             {
                 endDate = paydayService.GetNext().Date;
@@ -57,17 +57,27 @@ namespace Moneyman.Services
                 startDate,
                 endDate
             );
-            
-            var planDates = planDateRepository 
+
+            var planDates = planDateRepository
                                .GetAll()
                                .Where(x => x.Date > startDate && x.Date < endDate)
                                .ToList();
             var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
+            var amountDue = mappedPlanDates.Sum(x => x.Amount);
+            var weeksRemaining = WeeksRemaining(startDate, endDate);
             return ApiResponse.Success<DtpDto>( new DtpDto{
                 PlanDates = mappedPlanDates,
                 StartDate = startDate,
-                EndDate = endDate
+                EndDate = endDate,
+                WeeksRemaining = weeksRemaining,
+                AmountDue = amountDue,
+                SpendPerWeek = (amountDue / weeksRemaining),
+                Remaining = startingValue.Value - amountDue
             }, "Success");
+        }
+
+        private int WeeksRemaining(DateTime start, DateTime end){
+            return (end - start).Days / 7;
         }
 
         public DtpDto GetOffset(int? monthOffset )
@@ -82,8 +92,8 @@ namespace Moneyman.Services
                 startDate,
                 endDate
             );
-            
-            var planDates = planDateRepository 
+
+            var planDates = planDateRepository
                                .GetAll()
                                .Where(x => x.Date > startDate && x.Date < endDate)
                                .ToList();
