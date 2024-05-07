@@ -71,7 +71,7 @@ namespace Moneyman.Services
                 EndDate = endDate,
                 WeeksRemaining = weeksRemaining,
                 AmountDue = amountDue,
-                SpendPerWeek = (amountDue / weeksRemaining),
+                SpendPerWeek = ((startingValue.Value - amountDue) / weeksRemaining),
                 Remaining = startingValue.Value - amountDue
             }, "Success");
         }
