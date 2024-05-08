@@ -18,19 +18,22 @@ namespace Moneyman.Tests
     [TestClass]
     public class DtpReaderTests
     {
+        private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
         private Mock<IDateTimeProvider> mockDateTimeProvider;
         private IMapper mockMapper;
-        private Mock<ILogger<DtpReaderService>> mockLogger;
+        private Mock<ILogger<DtpService>> mockLogger;
 
-        private DtpReaderService NewDtpReaderService() =>
-            new DtpReaderService(
+        private DtpService NewDtpService() =>
+            new DtpService(
+                    mockTransactionRepository.Object,
                     mockPlanDateRepository.Object,
+                    mockOffsetCalculationService.Object,
                     mockPaydayService.Object,
-                    mockDateTimeProvider.Object,
                     mockMapper,
+                    mockDateTimeProvider.Object,
                     mockLogger.Object
             );
 
@@ -38,10 +41,11 @@ namespace Moneyman.Tests
         public void SetUp()
         {
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
+            mockTransactionRepository = new Mock<ITransactionRepository>();
             mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
             mockPaydayService = new Mock<IPaydayService>();
             mockDateTimeProvider = new Mock<IDateTimeProvider>();
-            mockLogger = new Mock<ILogger<DtpReaderService>>();
+            mockLogger = new Mock<ILogger<DtpService>>();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new CalculatedPlanDate());
@@ -50,16 +54,16 @@ namespace Moneyman.Tests
             {
                 mc.AddProfile(new PlanDateDtoProfile());
             });
-            
+
             IMapper mapper = mappingConfig.CreateMapper();
             mockMapper = mapper;
-        }    
+        }
 
         [TestMethod]
         public void GenerateMonthly_WithInvalidTransactionId_ReturnsEmptyList()
         {
             // Arrange
-            var sut = NewDtpReaderService();
+            var sut = NewDtpService();
             _ = mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
             {
                 new PlanDate
@@ -78,16 +82,16 @@ namespace Moneyman.Tests
                     }
                 }
             });
-            
+
             mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(2022,1,1));
             mockPaydayService.Setup(x => x.GetNext()).Returns(new Payday{Date = new DateTime(2022,12,1)});
 
             // Act
-            var result = sut.GetCurrent();
+            var result = sut.GetCurrent(null);
 
             // Assert
-            result.PlanDates.Count().Should().Be(2);
-            result.AmountDue.Should().Be(200);
+            result.Payload.PlanDates.Count().Should().Be(2);
+            result.Payload.AmountDue.Should().Be(200);
             result.ShouldMatchSnapshot();
         }
     }
