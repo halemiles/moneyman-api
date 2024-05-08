@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
 using Moneyman.Domain.Models;
 using Moneyman.Interfaces;
+using Moneyman.Models.Dtos;
 using Moneyman.Services.Factories;
 using Moneyman.Services.Interfaces;
 
@@ -18,19 +20,25 @@ namespace Moneyman.Services
         private readonly IOffsetCalculationService offsetCalculationService;
         private readonly IPaydayService paydayService;
         private readonly ILogger<DtpService> logger;
+        private readonly IDateTimeProvider dateTimeProvider;
+        private readonly IMapper mapper;
 
         public DtpService(
             ITransactionRepository transactionRepository,
             IPlanDateRepository planDateRepository,
             IOffsetCalculationService offsetCalculationService,
             IPaydayService paydayService,
+            IMapper mapper,
+            IDateTimeProvider dateTimeProvider,
             ILogger<DtpService> logger
-        ) 
+        )
         {
             this.transactionRepository = transactionRepository;
             this.planDateRepository = planDateRepository;
             this.offsetCalculationService = offsetCalculationService;
             this.paydayService = paydayService;
+            this.dateTimeProvider = dateTimeProvider;
+            this.mapper = mapper;
             this.logger = logger;
         }
 
@@ -43,7 +51,7 @@ namespace Moneyman.Services
             }
             logger.LogInformation("Removing existing plan dates");
             transactionRepository.RemoveAll("PlanDates");
-            
+
             List<PlanDate> planDates = new();
             planDates.AddRange(GenerateMonthly(transactionId));
             planDates.AddRange(GenerateWeekly(transactionId));
@@ -51,9 +59,9 @@ namespace Moneyman.Services
             planDates.AddRange(GenerateDaily(transactionId));
             foreach(var planDate in planDates)
             {
-                planDateRepository.Add(planDate);                
+                planDateRepository.Add(planDate);
             }
-            
+
             try
             {
                 planDateRepository.Save(); //TODO - Try moving this out so we run batches
@@ -61,7 +69,7 @@ namespace Moneyman.Services
             catch(Exception err)
             {
                 logger.LogError("Failed saving plandates {ExceptionText}", err.ToString());
-                
+
             }
             return ApiResponse.Success<List<PlanDate>>(planDates, "Successfully generated plandates");
         }
@@ -103,7 +111,7 @@ namespace Moneyman.Services
                     generationStrategy = generationStrategyFactory.Create(Frequency.Monthly);
                     break;
             }
-            
+
             return generationStrategy;
         }
 
@@ -114,8 +122,8 @@ namespace Moneyman.Services
             if(transactionId.HasValue)
             {
                 transactions = transactions.Where(x => x.Id == transactionId);
-            }   
-            
+            }
+
             List<PlanDate> planDates = new List<PlanDate>();
             foreach(var transaction in transactions)
             {
@@ -125,9 +133,9 @@ namespace Moneyman.Services
                     {
                         DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan of the current year
                         DateTime dateOffset = startDate.AddDays(7*i);
-                        
+
                         DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
-                        
+
                         var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
 
                         planDates.Add(factory.Create());
@@ -149,6 +157,73 @@ namespace Moneyman.Services
         public List<PlanDate> GenerateMonthly(int? transactionId)
         {
             return GetGenerationStrategy(GenerationStrategy.Monthly).Generate(transactionId, Frequency.Monthly);
+        }
+
+        public ApiResponse<DtpDto> GetCurrent(int? startingValue)
+        {
+            var startDate = dateTimeProvider.GetToday();
+            DateTime endDate = DateTime.MinValue;
+            try
+            {
+                endDate = paydayService.GetNext().Date;
+            }
+            catch(Exception ex)
+            {
+                logger.LogError("Failed to get payday information");
+                return ApiResponse.NotFound<DtpDto>("Could not find any paydays. Please ensure they have been generated");
+            }
+
+            logger.LogInformation(
+                "Getting current DTP period {startDate} {endDate}",
+                startDate,
+                endDate
+            );
+
+            var planDates = planDateRepository
+                               .GetAll()
+                               .Where(x => x.Date > startDate && x.Date < endDate)
+                               .ToList();
+            var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
+            var amountDue = mappedPlanDates.Sum(x => x.Amount);
+            var weeksRemaining = WeeksRemaining(startDate, endDate);
+            return ApiResponse.Success<DtpDto>( new DtpDto{
+                PlanDates = mappedPlanDates,
+                StartDate = startDate,
+                EndDate = endDate,
+                WeeksRemaining = weeksRemaining,
+                AmountDue = amountDue,
+                SpendPerWeek = ((startingValue.Value - amountDue) / weeksRemaining),
+                Remaining = startingValue.Value - amountDue
+            }, "Success");
+        }
+
+        private int WeeksRemaining(DateTime start, DateTime end){
+            return (end - start).Days / 7;
+        }
+
+        public DtpDto GetOffset(int? monthOffset )
+        {
+            var offset = monthOffset ?? 0;
+            var startDateRaw = paydayService.GetPrevious();
+            var startDate = startDateRaw.Date.AddMonths(offset);
+            var endDate = paydayService.GetNext().Date.AddMonths(offset);
+
+            logger.LogInformation(
+                "Getting current DTP period {startDate} {endDate}",
+                startDate,
+                endDate
+            );
+
+            var planDates = planDateRepository
+                               .GetAll()
+                               .Where(x => x.Date > startDate && x.Date < endDate)
+                               .ToList();
+            var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
+            return new DtpDto{
+                PlanDates = mappedPlanDates,
+                StartDate = startDate,
+                EndDate = endDate
+            };
         }
     }
 }

@@ -18,18 +18,15 @@ namespace Moneyman.Api.Controllers
     public class DtpController : ControllerBase
     {
         private readonly IDtpService dtpService;
-        private readonly IDtpReaderService dtpReaderService;
         private readonly ILogger _logger;
 
         public DtpController(
             ILogger logger,
-            IDtpService dtpService,
-            IDtpReaderService dtpReaderService
+            IDtpService dtpService
         )
         {
             _logger = logger;
             this.dtpService = dtpService;
-            this.dtpReaderService = dtpReaderService;
         }
 
 
@@ -37,7 +34,7 @@ namespace Moneyman.Api.Controllers
         public IActionResult GetCurrentPeriod(DtpRequestDto startingValue)
         {
             _logger.Information("GET all current");
-            var planDateDto = dtpReaderService.GetCurrent(startingValue.StartingValue);
+            var planDateDto = dtpService.GetCurrent(startingValue.StartingValue);
             return Ok(planDateDto);
         }
 
@@ -45,7 +42,7 @@ namespace Moneyman.Api.Controllers
         public IActionResult GetOffsetPeriod(int? monthOffset)
         {
             _logger.Information("GET all DTP");
-            var planDateDto = dtpReaderService.GetOffset(monthOffset ?? 0);
+            var planDateDto = dtpService.GetOffset(monthOffset ?? 0);
             return Ok(planDateDto);
         }
 

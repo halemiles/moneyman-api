@@ -31,7 +31,7 @@ namespace Moneyman.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry();
-                        
+
             try
             {
                 services.AddDbContext<MoneymanContext>(
@@ -39,7 +39,7 @@ namespace Moneyman.Api
                         new SqliteConnection(Configuration.GetConnectionString("WebApiDatabase")),
                         x => x.MigrationsAssembly("Moneyman.Api")
                     )
-                    
+
                 );
             }
             catch(Exception err)
@@ -63,11 +63,10 @@ namespace Moneyman.Api
             services.AddScoped<IHolidayService, HolidayService>();
             services.AddScoped<IDtpService, DtpService>();
             services.AddScoped<IOffsetCalculationService, OffsetCalculationService>();
-            services.AddScoped<IDtpReaderService, DtpReaderService>();
             services.AddScoped<IPlanDateService, PlanDateService>();
-                        
+
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
-            
+
             AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<TransactionProfile>();
@@ -77,7 +76,7 @@ namespace Moneyman.Api
 
             services.AddSingleton(config);
             services.AddScoped<IMapper, Mapper>();
-            
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: "AllowAnyOrigin",
@@ -88,7 +87,7 @@ namespace Moneyman.Api
                         .AllowAnyMethod();
                     });
             });
-            
+
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .WriteTo.Seq("http://localhost:5341")
@@ -110,7 +109,7 @@ namespace Moneyman.Api
 
             //TODO - Start using this
             //app.UseHttpsRedirection();
-	    
+
 	        app.UseCors("AllowAnyOrigin");
 
             app.UseRouting();
