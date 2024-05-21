@@ -186,13 +186,14 @@ namespace Moneyman.Services
             var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
             var amountDue = mappedPlanDates.Sum(x => x.Amount);
             var weeksRemaining = WeeksRemaining(startDate, endDate);
+            var weekDivisder = weeksRemaining == 0 ? 1 : weeksRemaining;
             return ApiResponse.Success<DtpDto>( new DtpDto{
                 PlanDates = mappedPlanDates,
                 StartDate = startDate,
                 EndDate = endDate,
-                WeeksRemaining = weeksRemaining,
+                WeeksRemaining = weekDivisder,
                 AmountDue = amountDue,
-                SpendPerWeek = ((startingValue.Value - amountDue) / weeksRemaining),
+                SpendPerWeek = ((startingValue.Value - amountDue) / weekDivisder ),
                 Remaining = startingValue.Value - amountDue
             }, "Success");
         }
