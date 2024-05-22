@@ -4,6 +4,6 @@ using Moneyman.Domain;
 namespace Moneyman.Interfaces
 {
     public interface ITransactionRepository : IRepository<Transaction>
-    { 
+    {
     }
 }

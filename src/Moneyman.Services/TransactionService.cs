@@ -14,12 +14,14 @@ namespace Moneyman.Services
 	public class TransactionService : ITransactionService
 	{
 		private readonly ITransactionRepository _transactionRepository;
+    private readonly IPlanDateRepository planDateRepository;
     private readonly ILogger<TransactionService> logger;
 
     private readonly IMapper mapper;
 
 		public TransactionService(
       ITransactionRepository transactionRepository,
+      IPlanDateRepository planDateRepository,
       ILogger<TransactionService> logger,
       IMapper mapper
     )
@@ -31,11 +33,11 @@ namespace Moneyman.Services
 
     public int Update(Transaction model)
     {
-       
+
       _transactionRepository.Update(model);
       logger.LogInformation("Saving transaction {TransactionName}", model.Name);
       _transactionRepository.Save();
-     
+
 
       return model.Id;
     }
@@ -71,7 +73,7 @@ namespace Moneyman.Services
 
     public async Task<ApiResponse<int>> Create(TransactionDto trans)
     {
-		
+
       TransactionDtoValidator transactionValidator = new TransactionDtoValidator();
       logger.LogInformation("Validation transaction {TransactionName}", trans.Name);
       var validationResult = transactionValidator.Validate(trans);
@@ -94,7 +96,7 @@ namespace Moneyman.Services
 		    return ApiResponse.ValidationError<int>("Validation error");
       }
 
-      
+
       return ApiResponse.Success<int>(transaction.Id, "Successfully created transaction");
     }
   }
