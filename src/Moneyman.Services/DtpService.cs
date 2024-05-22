@@ -56,6 +56,7 @@ namespace Moneyman.Services
             planDates.AddRange(GenerateMonthly(transactionId));
             planDates.AddRange(GenerateWeekly(transactionId));
             planDates.AddRange(GenerateYearly(transactionId));
+            planDates.AddRange(GenerateAnticipated(transactionId));
             planDates.AddRange(GenerateDaily(transactionId));
             foreach(var planDate in planDates)
             {
@@ -107,6 +108,9 @@ namespace Moneyman.Services
                 case GenerationStrategy.Daily:
                     generationStrategy = generationStrategyFactory.Create(Frequency.Daily);
                     break;
+                case GenerationStrategy.Anticipated:
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Anticipated);
+                    break;
                 default:
                     generationStrategy = generationStrategyFactory.Create(Frequency.Monthly);
                     break;
@@ -152,6 +156,11 @@ namespace Moneyman.Services
         public List<PlanDate> GenerateYearly(int? transactionId)
         {
             return GetGenerationStrategy(GenerationStrategy.Yearly).Generate(transactionId, Frequency.Yearly);
+        }
+
+        public List<PlanDate> GenerateAnticipated(int? transactionId)
+        {
+            return GetGenerationStrategy(GenerationStrategy.Anticipated).Generate(transactionId, Frequency.Anticipated);
         }
 
         public List<PlanDate> GenerateMonthly(int? transactionId)
