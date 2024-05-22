@@ -25,7 +25,7 @@ namespace Moneyman.Services
             IOffsetCalculationService offsetCalculationService,
             IPaydayService paydayService,
             ILogger<DtpService> logger
-        ) 
+        )
         {
             this.transactionRepository = transactionRepository;
             this.planDateRepository = planDateRepository;
@@ -43,17 +43,18 @@ namespace Moneyman.Services
             }
             logger.LogInformation("Removing existing plan dates");
             transactionRepository.RemoveAll("PlanDates");
-            
+
             List<PlanDate> planDates = new();
             planDates.AddRange(GenerateMonthly(transactionId));
             planDates.AddRange(GenerateWeekly(transactionId));
             planDates.AddRange(GenerateYearly(transactionId));
+            planDates.AddRange(GenerateAnticipated(transactionId));
             planDates.AddRange(GenerateDaily(transactionId));
             foreach(var planDate in planDates)
             {
-                planDateRepository.Add(planDate);                
+                planDateRepository.Add(planDate);
             }
-            
+
             try
             {
                 planDateRepository.Save(); //TODO - Try moving this out so we run batches
@@ -61,7 +62,7 @@ namespace Moneyman.Services
             catch(Exception err)
             {
                 logger.LogError("Failed saving plandates {ExceptionText}", err.ToString());
-                
+
             }
             return ApiResponse.Success<List<PlanDate>>(planDates, "Successfully generated plandates");
         }
@@ -99,11 +100,14 @@ namespace Moneyman.Services
                 case GenerationStrategy.Daily:
                     generationStrategy = generationStrategyFactory.Create(Frequency.Daily);
                     break;
+                case GenerationStrategy.Anticipated:
+                    generationStrategy = generationStrategyFactory.Create(Frequency.Anticipated);
+                    break;
                 default:
                     generationStrategy = generationStrategyFactory.Create(Frequency.Monthly);
                     break;
             }
-            
+
             return generationStrategy;
         }
 
@@ -114,8 +118,8 @@ namespace Moneyman.Services
             if(transactionId.HasValue)
             {
                 transactions = transactions.Where(x => x.Id == transactionId);
-            }   
-            
+            }
+
             List<PlanDate> planDates = new List<PlanDate>();
             foreach(var transaction in transactions)
             {
@@ -125,9 +129,9 @@ namespace Moneyman.Services
                     {
                         DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan of the current year
                         DateTime dateOffset = startDate.AddDays(7*i);
-                        
+
                         DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
-                        
+
                         var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
 
                         planDates.Add(factory.Create());
@@ -144,6 +148,11 @@ namespace Moneyman.Services
         public List<PlanDate> GenerateYearly(int? transactionId)
         {
             return GetGenerationStrategy(GenerationStrategy.Yearly).Generate(transactionId, Frequency.Yearly);
+        }
+
+        public List<PlanDate> GenerateAnticipated(int? transactionId)
+        {
+            return GetGenerationStrategy(GenerationStrategy.Anticipated).Generate(transactionId, Frequency.Anticipated);
         }
 
         public List<PlanDate> GenerateMonthly(int? transactionId)
