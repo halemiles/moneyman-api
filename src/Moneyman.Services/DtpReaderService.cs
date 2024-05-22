@@ -60,8 +60,8 @@ namespace Moneyman.Services
             
             var planDates = planDateRepository 
                                .GetAll()
-                               .Where(x => x.Date > startDate && x.Date < endDate)
-                               .ToList();
+                               .Where(x => x.Date > startDate && x.Date < endDate && x.Transaction.Active)
+                               .ToList().OrderBy(x => x.Date);
             var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
             return ApiResponse.Success<DtpDto>( new DtpDto{
                 PlanDates = mappedPlanDates,
