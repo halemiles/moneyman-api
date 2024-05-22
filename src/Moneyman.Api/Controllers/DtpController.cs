@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moneyman.Domain;
 using Moneyman.Domain.Models;
+using Moneyman.Domain.Models.Dtos;
 using Moneyman.Interfaces;
 using Moneyman.Models.Dtos;
 using Moneyman.Services.Interfaces;
@@ -17,35 +18,32 @@ namespace Moneyman.Api.Controllers
     public class DtpController : ControllerBase
     {
         private readonly IDtpService dtpService;
-        private readonly IDtpReaderService dtpReaderService;
         private readonly ILogger _logger;
 
         public DtpController(
             ILogger logger,
-            IDtpService dtpService,
-            IDtpReaderService dtpReaderService
+            IDtpService dtpService
         )
         {
             _logger = logger;
             this.dtpService = dtpService;
-            this.dtpReaderService = dtpReaderService;
         }
 
-        
-        [HttpGet("current")]
-        public IActionResult GetCurrentPeriod()
+
+        [HttpPost("current")]
+        public IActionResult GetCurrentPeriod(DtpRequestDto startingValue)
         {
             _logger.Information("GET all current");
-            var planDateDto = dtpReaderService.GetCurrent();
-            return Ok(planDateDto);            
+            var planDateDto = dtpService.GetCurrent(startingValue.StartingValue);
+            return Ok(planDateDto);
         }
 
-        [HttpGet("full")]
-        public IActionResult GetOffsetPeriod(int? monthOffset)
+        [HttpPost("full")]
+        public IActionResult GetOffsetPeriod(DtpRequestDto startingValue)
         {
             _logger.Information("GET all DTP");
-            var planDateDto = dtpReaderService.GetOffset(monthOffset ?? 0);
-            return Ok(planDateDto);            
+            var planDateDto = dtpService.GetOffset(0);
+            return Ok(planDateDto);
         }
 
         [HttpGet("generate")]
@@ -64,6 +62,6 @@ namespace Moneyman.Api.Controllers
                 return Ok(new DtpHttpResponse{RecordCount = 0, Message = "Missing Paydays"});
             }
         }
-        
+
     }
 }

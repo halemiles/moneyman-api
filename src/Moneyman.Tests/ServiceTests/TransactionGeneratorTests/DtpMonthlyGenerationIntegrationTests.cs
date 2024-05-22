@@ -14,18 +14,13 @@ using Snapper;
 using Snapper.Core;
 using Microsoft.Extensions.Logging;
 using Moneyman.Services.Interfaces;
+using AutoMapper;
 
 namespace Moneyman.Tests
 {
     [TestClass]
     public class DtpMonthlyGenerationIntegrationTests
     {
-        private Mock<ITransactionService> mockTransactionService;
-        private Mock<ITransactionRepository> mockTransactionRepository;
-        private Mock<IPlanDateRepository> mockPlanDateRepository;
-        private Mock<IPaydayService> mockPaydayService;
-        private Mock<ILogger<DtpService>> mockLogger;
-
         private readonly List<string> holidays = new List<string>
         {
                 "03-01-2022",
@@ -48,23 +43,33 @@ namespace Moneyman.Tests
                 mockHolidayService.Object
             );
 
-        private DtpService NewDtpGenerationService() =>
+        private Mock<ITransactionRepository> mockTransactionRepository;
+        private Mock<IPlanDateRepository> mockPlanDateRepository;
+        private Mock<IOffsetCalculationService> mockOffsetCalculationService;
+        private Mock<IPaydayService> mockPaydayService;
+        private Mock<IDateTimeProvider> mockDateTimeProvider;
+        private IMapper mockMapper;
+        private Mock<ILogger<DtpService>> mockLogger;
+
+        private DtpService NewDtpService() =>
             new DtpService(
                     mockTransactionRepository.Object,
                     mockPlanDateRepository.Object,
-                    NewOffsetCalculationService(),
+                    mockOffsetCalculationService.Object,
                     mockPaydayService.Object,
+                    mockMapper,
+                    mockDateTimeProvider.Object,
                     mockLogger.Object
             );
 
         [TestInitialize]
         public void SetUp()
         {
-            mockTransactionService = new Mock<ITransactionService>();
-            mockTransactionRepository = new Mock<ITransactionRepository>();
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
-            var mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+            mockTransactionRepository = new Mock<ITransactionRepository>();
+            mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
             mockPaydayService = new Mock<IPaydayService>();
+            mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
 
             mockHolidayService = new Mock<IHolidayService>();
@@ -87,8 +92,8 @@ namespace Moneyman.Tests
             // Arrange
             List<int> expectedDayValues = new() {day1,day2,day3,day4,day5,day6,day7,day8,day9,day10,day11,day12};
             var startDate = DateTime.Parse(startDateString);
-            var sut = NewDtpGenerationService();
-            
+            var sut = NewDtpService();
+
             IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction

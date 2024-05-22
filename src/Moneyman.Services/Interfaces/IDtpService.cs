@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Moneyman.Domain;
 using Moneyman.Domain.Models;
+using Moneyman.Models.Dtos;
 
 namespace Moneyman.Services.Interfaces
 {
@@ -17,5 +18,8 @@ namespace Moneyman.Services.Interfaces
         List<PlanDate> GenerateDaily(int? transactionId);
 
         List<PlanDate> GenerateYearly(int? transactionId);
+        ApiResponse<DtpDto> GetCurrent(int? startingValue);
+        DtpDto GetOffset(int? monthOffset);
+
     }
 }

@@ -9,36 +9,40 @@ using System.Linq;
 using System;
 using Microsoft.Extensions.Logging;
 using Moneyman.Services.Interfaces;
+using AutoMapper;
 
 namespace Moneyman.Tests
 {
     [TestClass]
     public class DtpGenerationTests
     {
-        private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
+        private Mock<IDateTimeProvider> mockDateTimeProvider;
+        private IMapper mockMapper;
         private Mock<ILogger<DtpService>> mockLogger;
 
-        private DtpService NewDtpGenerationService() =>
+        private DtpService NewDtpService() =>
             new DtpService(
-                mockTransactionRepository.Object,
-                mockPlanDateRepository.Object,
-                mockOffsetCalculationService.Object,
-                mockPaydayService.Object,
-                mockLogger.Object
+                    mockTransactionRepository.Object,
+                    mockPlanDateRepository.Object,
+                    mockOffsetCalculationService.Object,
+                    mockPaydayService.Object,
+                    mockMapper,
+                    mockDateTimeProvider.Object,
+                    mockLogger.Object
             );
 
         [TestInitialize]
         public void SetUp()
         {
-            mockTransactionService = new Mock<ITransactionService>();
-            mockTransactionRepository = new Mock<ITransactionRepository>();
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
+            mockTransactionRepository = new Mock<ITransactionRepository>();
             mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
             mockPaydayService = new Mock<IPaydayService>();
+            mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
@@ -52,7 +56,7 @@ namespace Moneyman.Tests
         public void Generate_WithValidMonthlyTransaction_ReturnsSuccess()
         {
             // Arrange
-            var sut = NewDtpGenerationService();
+            var sut = NewDtpService();
             IEnumerable<Transaction> trans = new List<Transaction>
             {
                 new Transaction
