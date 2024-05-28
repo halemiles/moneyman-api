@@ -41,3 +41,45 @@ test('anticipated transaction shows in dtp', async ({ request }) => {
  await expect(await deletedTransactionJson.status).toBe(404);
 });
 
+test('anticipated transactions returned', async ({ request }) => {
+  const newAnticipatedTransaction1 = await request.post('/transaction', {
+    data: {
+      "Name":"TestAnticipatedTransaction1",
+      "Amount":34,
+      "StartDate":"2024-06-17",
+      "Frequency":1,
+      "IsAnticipated":true,
+      "Active": true
+  }});
+
+  const newAnticipatedTransaction2 = await request.post('/transaction', {
+    data: {
+      "Name":"TestAnticipatedTransaction2",
+      "Amount":34,
+      "StartDate":"2024-06-17",
+      "Frequency":1,
+      "IsAnticipated":true,
+      "Active": true
+  }});
+
+  const newAnticipatedTransaction3 = await request.post('/transaction', {
+    data: {
+      "Name":"TestAnticipatedTransaction3",
+      "Amount":34,
+      "StartDate":"2024-06-17",
+      "Frequency":1,
+      "IsAnticipated":false,
+      "Active": true
+  }});
+
+  await expect(newAnticipatedTransaction1.ok()).toBeTruthy();
+  await expect(newAnticipatedTransaction2.ok()).toBeTruthy();
+  await expect(newAnticipatedTransaction3.ok()).toBeTruthy();
+
+  var transactionResponse = await request.get('/transaction/anticipated');
+  var response = await transactionResponse.json();
+
+  await expect(response.some(transaction => transaction.name === "TestAnticipatedTransaction1")).toBeTruthy();
+  await expect(response.some(transaction => transaction.name === "TestAnticipatedTransaction2")).toBeTruthy();
+  await expect(response.some(transaction => transaction.name === "TestAnticipatedTransaction3")).toBeFalsy();
+});
