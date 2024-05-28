@@ -1,3 +1,7 @@
+export class dtpResponse {
+   payload: dtp;
+}
+
 export class dtp {
     planDates: Array<planDate>;
     amountDue: number;
