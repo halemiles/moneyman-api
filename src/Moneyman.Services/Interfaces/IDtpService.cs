@@ -18,7 +18,7 @@ namespace Moneyman.Services.Interfaces
         List<PlanDate> GenerateDaily(int? transactionId);
 
         List<PlanDate> GenerateYearly(int? transactionId);
-        ApiResponse<DtpDto> GetCurrent(int? startingValue);
+        ApiResponse<DtpDto> GetCurrent(int? startingValue, int? accountId);
         DtpDto GetOffset(int? monthOffset);
 
     }
