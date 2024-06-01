@@ -87,7 +87,7 @@ namespace Moneyman.Tests
             mockPaydayService.Setup(x => x.GetNext()).Returns(new Payday{Date = new DateTime(2022,12,1)});
 
             // Act
-            var result = sut.GetCurrent(null);
+            var result = sut.GetCurrent(null, null);
 
             // Assert
             result.Payload.PlanDates.Count().Should().Be(2);
