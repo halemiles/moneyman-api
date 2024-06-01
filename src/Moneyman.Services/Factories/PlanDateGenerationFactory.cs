@@ -49,6 +49,13 @@ namespace Moneyman.Services.Factories
                         offsetCalculationService,
                         logger
                     );
+                case Frequency.Anticipated:
+                    return new AnticipatedPlanDateGenerationStrategy(
+                        transactionRepository,
+                        planDateRepository,
+                        offsetCalculationService,
+                        logger
+                    );
                 default:
                     throw new ArgumentException($"Unsupported frequency: {frequency}");
             }
