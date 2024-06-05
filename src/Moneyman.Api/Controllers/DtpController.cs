@@ -34,7 +34,7 @@ namespace Moneyman.Api.Controllers
         public IActionResult GetCurrentPeriod(DtpRequestDto startingValue)
         {
             _logger.Information("GET all current");
-            var planDateDto = dtpService.GetCurrent(startingValue.StartingValue, startingValue.AccountId);
+            var planDateDto = dtpService.GetCurrent(startingValue.StartingValue, startingValue.BankAccountId);
             return Ok(planDateDto);
         }
 

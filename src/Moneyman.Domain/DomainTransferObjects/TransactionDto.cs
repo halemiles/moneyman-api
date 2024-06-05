@@ -13,7 +13,7 @@ namespace Moneyman.Domain
         public Frequency? Frequency { get; set; }
         public bool? IsAnticipated {get; set;}
         public PaymentType? PaymentType { get; set; }
-        public int AccountId { get; set; }
+        public int BankAccountId { get; set; }
 
         public string PaymentTypeDesc => PaymentType.ToString();
         public CategoryType? CategoryType {get; set;}

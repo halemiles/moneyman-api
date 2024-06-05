@@ -168,7 +168,7 @@ namespace Moneyman.Services
             return GetGenerationStrategy(GenerationStrategy.Monthly).Generate(transactionId, Frequency.Monthly);
         }
 
-        public ApiResponse<DtpDto> GetCurrent(int? startingValue, int? accountId)
+        public ApiResponse<DtpDto> GetCurrent(int? startingValue, int? bankAccountId)
         {
             var startDate = dateTimeProvider.GetToday();
             DateTime endDate = DateTime.MinValue;
@@ -190,7 +190,7 @@ namespace Moneyman.Services
 
             var planDates = planDateRepository
                                .GetAll()
-                               .Where(x => x.Date > startDate && x.Date < endDate && (!accountId.HasValue || accountId == 0 || (x.Transaction.AccountId == accountId ) ))
+                               .Where(x => x.Date > startDate && x.Date < endDate && (!bankAccountId.HasValue || bankAccountId == 0 || (x.Transaction.BankAccountId == bankAccountId ) ))
                                .ToList();
             var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
             var amountDue = mappedPlanDates.Sum(x => x.Amount);
