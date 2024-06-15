@@ -11,6 +11,6 @@ namespace Moneyman.Domain
 
         public DateTime StartDate { get; set; }
 
-        public int AccountId { get; set; }
+        public int BankAccountId { get; set; }
     }
 }

@@ -24,26 +24,29 @@ namespace Tests
     public class TransactionServiceTests
     {
         private Mock<ITransactionRepository> _transRepoMock;
+        private Mock<IPlanDateRepository> _planDateRepoMock;
         private Mock<ILogger<TransactionService>> mockLogger;
         private IMapper mockMapper;
         private TransactionService NewTransactionService() =>
             new TransactionService(
                 _transRepoMock.Object,
+                _planDateRepoMock.Object,
                 mockLogger.Object,
                 mockMapper
             );
-        
+
         [TestInitialize]
         public void SetUp()
         {
             _transRepoMock = new Mock<ITransactionRepository>();
+            _planDateRepoMock = new Mock<IPlanDateRepository>();
             mockLogger = new Mock<ILogger<TransactionService>>();
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new TransactionProfile());
             });
-            
+
             IMapper mapper = mappingConfig.CreateMapper();
             mockMapper = mapper;
         }
@@ -52,9 +55,9 @@ namespace Tests
         public void GetAll_WhenNoResults_ReturnsEmptyList()
         {
             _transRepoMock.Setup(x => x.GetAll()).Returns(new List<Transaction>());
-            
+
             var service = NewTransactionService();
-            var result = service.GetAll();               
+            var result = service.GetAll();
             result.Count().Should().Be(0);
         }
 
@@ -62,9 +65,9 @@ namespace Tests
         public void GetById_WhenNoResults_ReturnsEmptyList()
         {
             _transRepoMock.Setup(x => x.Get(It.IsAny<int>())).Returns(new Transaction());
-            
+
             var service = NewTransactionService();
-            var result = service.GetById(0);               
+            var result = service.GetById(0);
             result.Should().NotBeNull();
         }
 
@@ -81,10 +84,10 @@ namespace Tests
 
             _transRepoMock.Setup(x => x.Update(It.IsAny<Transaction>()))
                 .Returns(true);
-            
+
             var service = NewTransactionService();
-            var result = service.Update(newTransaction);               
-            
+            var result = service.Update(newTransaction);
+
             _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
             result.Should().Be(0);
@@ -101,8 +104,8 @@ namespace Tests
                 Frequency = Frequency.Weekly
             };
             var service = NewTransactionService();
-            var result = await service.Create(newTransaction);   
-                                                
+            var result = await service.Create(newTransaction);
+
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
         }
@@ -126,10 +129,10 @@ namespace Tests
                 Frequency = Frequency.Weekly
             };
 
-            
+
             var service = NewTransactionService();
-            var result = await service.Create(newTransaction);               
-                        
+            var result = await service.Create(newTransaction);
+
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Never());
             _transRepoMock.Verify(x => x.Save(), Times.Never());
             result.Payload.Should().Be(default);
@@ -138,10 +141,10 @@ namespace Tests
         [TestMethod]
         public void Delete_WhenObjectDoesntExist_ReturnsSuccess()
         {
-            
+
             var service = NewTransactionService();
-            service.Delete(0);               
-            
+            service.Delete(0);
+
             _transRepoMock.Verify(x => x.Remove(It.IsAny<int>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
         }
@@ -161,10 +164,10 @@ namespace Tests
 
             _transRepoMock.Setup(x => x.Update(It.IsAny<Transaction>()))
                 .Returns(true);
-            
+
             var service = NewTransactionService();
-            service.Update(newTransactions);               
-            
+            service.Update(newTransactions);
+
             _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Exactly(4));
             _transRepoMock.Verify(x => x.Update(transactionForUpdate), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());

@@ -64,6 +64,8 @@ namespace Moneyman.Api
             services.AddScoped<IDtpService, DtpService>();
             services.AddScoped<IOffsetCalculationService, OffsetCalculationService>();
             services.AddScoped<IPlanDateService, PlanDateService>();
+            services.AddScoped<IBankAccountService, BankAccountService>();
+            services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
@@ -72,6 +74,7 @@ namespace Moneyman.Api
                 cfg.AddProfile<TransactionProfile>();
                 cfg.AddProfile<TransactionDtoToTransactionProfile>();
                 cfg.AddProfile<PlanDateDtoProfile>();
+                cfg.AddProfile<BankAccountProfile>();
             });
 
             services.AddSingleton(config);

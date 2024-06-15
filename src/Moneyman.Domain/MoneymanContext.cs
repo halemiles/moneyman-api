@@ -14,6 +14,7 @@ namespace Moneyman.Domain
         public DbSet<Transaction> Transactions {get; set;}
         public DbSet<Payday> Paydays {get; set;}
         public DbSet<PlanDate> PlanDates {get; set;}
-       
+        public DbSet<BankAccount> BankAccounts {get; set;}
+
     }
 }

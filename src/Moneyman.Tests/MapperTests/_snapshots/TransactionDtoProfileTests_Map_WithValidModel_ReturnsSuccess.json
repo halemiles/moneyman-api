@@ -7,6 +7,7 @@
   "Frequency": 1,
   "IsAnticipated": false,
   "PaymentType": 0,
+  "BankAccountId": 0,
   "PaymentTypeDesc": "MANUAL",
   "CategoryType": 0,
   "CategoryTypeDesc": "OTHER",
