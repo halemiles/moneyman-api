@@ -8,5 +8,6 @@
   "Amount": 1234.0,
   "Active": true,
   "StartDate": "2022-01-01T00:00:00",
+  "BankAccountId": 0,
   "Id": 999
 }

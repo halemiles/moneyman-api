@@ -12,6 +12,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -34,6 +35,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -56,6 +58,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -78,6 +81,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -100,6 +104,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -122,6 +127,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -144,6 +150,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -166,6 +173,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -188,6 +196,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -210,6 +219,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -232,6 +242,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
@@ -254,6 +265,7 @@
         "Amount": 100.0,
         "Active": true,
         "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
         "Id": 0
       },
       "Date": "0001-01-01T00:00:00",
