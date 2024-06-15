@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Moneyman.Interfaces
 {
-    public interface IRepository<T> 
+    public interface IRepository<T>
     {
         void Add(T newObject);
         T Get(int id);

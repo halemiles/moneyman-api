@@ -14,6 +14,13 @@ namespace Moneyman.Persistence
         {
         }
 
+        public override void Remove(int id)
+        {
+            var planDates = _context.PlanDates.Where(p => p.Transaction.Id == id);
+            _context.RemoveRange(planDates);
+            base.Remove(id);
+        }
+
         public override bool Update(Transaction newObject)
         {
             IEntity entity = (IEntity)newObject;
@@ -38,6 +45,6 @@ namespace Moneyman.Persistence
             int recordCount = _context.SaveChanges();
             return recordCount > 0;
         }
-        
+
     }
 }

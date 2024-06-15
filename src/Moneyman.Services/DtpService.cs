@@ -211,7 +211,7 @@ namespace Moneyman.Services
             return (end - start).Days / 7;
         }
 
-        public DtpDto GetOffset(int? monthOffset )
+        public ApiResponse<DtpDto>  GetOffset(int? monthOffset )
         {
             var offset = monthOffset ?? 0;
             var startDateRaw = paydayService.GetPrevious();
@@ -229,11 +229,11 @@ namespace Moneyman.Services
                                .Where(x => x.Date > startDate && x.Date < endDate)
                                .ToList();
             var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
-            return new DtpDto{
+            return ApiResponse.Success<DtpDto>( new DtpDto{
                 PlanDates = mappedPlanDates,
                 StartDate = startDate,
                 EndDate = endDate
-            };
+            }, "Success");
         }
     }
 }

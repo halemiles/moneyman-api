@@ -97,5 +97,13 @@ namespace Moneyman.Api.Controllers
             return Ok();
         }
 
+        [HttpGet("anticipated")]
+        public IActionResult Anticipated()
+        {
+            _logger.Information("Get Anticipated Transactions");
+            var transactions = transactionService.GetAnticipated();
+            return Ok(transactions);
+        }
+
     }
 }

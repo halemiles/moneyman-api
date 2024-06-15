@@ -32,7 +32,7 @@ namespace Moneyman.Services
         {
             logger.LogInformation("Generating anticipated");
 
-            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Anticipated);
+            var transactions = transactionRepository.GetAll().Where(x => x.IsAnticipated);
             if(transactionId.HasValue)
             {
                 transactions = transactions.Where(x => x.Id == transactionId);
@@ -45,7 +45,7 @@ namespace Moneyman.Services
             {
                 try
                 {
-                    DateTime startDate = new DateTime(transaction.StartDate.Year, 1, transaction.StartDate.Day); //Start at Jan
+                    DateTime startDate = new DateTime(transaction.StartDate.Year, transaction.StartDate.Month, transaction.StartDate.Day); //Start at Jan
                     DateTime dateOffset = startDate;
 
                     DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
