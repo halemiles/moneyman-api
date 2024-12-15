@@ -31,7 +31,7 @@ namespace Moneyman.Services
         public List<PlanDate> Generate(int? transactionId, Frequency frequency)
         {
             logger.LogInformation("Generating monthly");
-            
+
             var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Monthly && !x.IsAnticipated);
             if(transactionId.HasValue)
             {
@@ -43,15 +43,15 @@ namespace Moneyman.Services
 
             foreach(var transaction in transactions)
             {
+                DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan
                 for(int i=0;i<loopCount;i++)
                 {
                     try
                     {
-                        DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan
                         DateTime dateOffset = startDate.AddMonths(i);
-                        
+
                         DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
-                        
+
                         var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
 
                         planDates.Add(factory.Create());
@@ -62,7 +62,7 @@ namespace Moneyman.Services
                     }
                 }
             }
-            
+
             return planDates;
         }
     }
