@@ -35,10 +35,11 @@ namespace Moneyman.Services
 		{
 			_paydayRepository.RemoveAll("Paydays");
 			List<Payday> payDates = new List<Payday>(); //TODO - Refactor this so we don't have to intialise
-			int year = DateTime.Now.Month == 12 ? DateTime.Now.Year+1 : DateTime.Now.Year;
-			for(int i=0;i<12;i++)
+			int year = DateTime.Now.Year; // == 12 ? DateTime.Now.Year+1 : DateTime.Now.Year;
+			for(int i=0;i<24;i++)
 			{
-				var plannedDate = new DateTime(year,i+1,dayOfMonth);
+				var plannedDate = new DateTime(year,1,dayOfMonth);
+				plannedDate = plannedDate.AddMonths(i);
 				var offsetDate = _offsetCalculationService.CalculateOffset(plannedDate).PlanDate;
 				Payday pd = new Payday
 				{
@@ -48,7 +49,7 @@ namespace Moneyman.Services
 				_paydayRepository.Add(pd);
 				_paydayRepository.Save();
 			}
-			
+
 			return payDates;
 		}
 
