@@ -39,7 +39,7 @@ namespace Moneyman.Services
             }
 
             List<PlanDate> planDates = new();
-            int loopCount = frequency.ToFrequencyCount();
+            int loopCount = 24; //frequency.ToFrequencyCount();
 
             foreach(var transaction in transactions)
             {
