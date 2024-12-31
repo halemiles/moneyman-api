@@ -5,6 +5,7 @@ using Moneyman.Domain;
 using AutoMapper;
 using Moneyman.Services.Interfaces;
 using System.Linq;
+using Moneyman.Services.Extentions;
 
 namespace Moneyman.Services
 {
@@ -13,6 +14,7 @@ namespace Moneyman.Services
 		private readonly IPaydayRepository _paydayRepository;
 		private readonly IOffsetCalculationService _offsetCalculationService;
 		private readonly IDateTimeProvider _dateTimeProvider;
+		private const int TotalPaydayMonths = 24; // How many years we should generate dates for
 
 		public PaydayService(
 			IPaydayRepository paydayRepository,
@@ -35,10 +37,9 @@ namespace Moneyman.Services
 		{
 			_paydayRepository.RemoveAll("Paydays");
 			List<Payday> payDates = new List<Payday>(); //TODO - Refactor this so we don't have to intialise
-			int year = DateTime.Now.Year; // == 12 ? DateTime.Now.Year+1 : DateTime.Now.Year;
-			for(int i=0;i<24;i++)
+			for(int i=0;i<TotalPaydayMonths;i++)
 			{
-				var plannedDate = new DateTime(year,1,dayOfMonth);
+				var plannedDate = new DateTime(DateTime.Now.Year,1,dayOfMonth);
 				plannedDate = plannedDate.AddMonths(i);
 				var offsetDate = _offsetCalculationService.CalculateOffset(plannedDate).PlanDate;
 				Payday pd = new Payday

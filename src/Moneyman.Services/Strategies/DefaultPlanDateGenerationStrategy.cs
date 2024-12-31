@@ -15,6 +15,7 @@ namespace Moneyman.Services
         private readonly IPlanDateRepository planDateRepository;
         private readonly IOffsetCalculationService offsetCalculationService;
         private readonly ILogger<DtpService> logger;
+        private const int TotalPlanDateYears = 2;
         public DefaultPlanDateGenerationStrategy(
             ITransactionRepository transactionRepository,
             IPlanDateRepository planDateRepository,
@@ -39,12 +40,12 @@ namespace Moneyman.Services
             }
 
             List<PlanDate> planDates = new();
-            int loopCount = 24; //frequency.ToFrequencyCount();
+            int totalMonthCount = frequency.ToFrequencyCount() * TotalPlanDateYears;
 
             foreach(var transaction in transactions)
             {
                 DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan
-                for(int i=0;i<loopCount;i++)
+                for(int i=0;i<totalMonthCount;i++)
                 {
                     try
                     {
