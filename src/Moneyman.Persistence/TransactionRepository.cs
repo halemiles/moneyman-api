@@ -34,7 +34,9 @@ namespace Moneyman.Persistence
             _mapper.Map(newObject, existing);
 
             //TODO - Update this in the mapping profile
-            newObject.Name = existing.Name;
+            newObject.Name = newObject.Name ?? existing.Name;
+            newObject.Amount = newObject.Amount == 0 ? existing.Amount : newObject.Amount;
+            newObject.Frequency = (int)newObject.Frequency == -1 ? existing.Frequency : newObject.Frequency; //TODO: Update this so that we can have an undefined frequency. So then we can revert back to existing value
 
             if(newObject.StartDate == System.DateTime.MinValue)
             {

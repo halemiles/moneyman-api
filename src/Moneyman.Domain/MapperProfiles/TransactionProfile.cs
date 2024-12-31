@@ -9,6 +9,8 @@ namespace Moneyman.Domain.MapperProfiles
         {
             CreateMap<Transaction,TransactionDto>()
             .ForMember(a => a.StartDate, b => b.MapFrom(c => c.StartDate))
+            .ForMember(a => a.Name, b => b.MapFrom(c => c.Name))
+            .ForMember(a => a.Frequency, b => b.NullSubstitute(-1))
             .ReverseMap();
         }
     }
