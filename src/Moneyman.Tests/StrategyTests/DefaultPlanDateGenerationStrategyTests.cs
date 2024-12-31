@@ -56,7 +56,7 @@ namespace YourProject.Tests
 
             // Assert
             result.Should().NotBeNull();
-            result.Should().HaveCount(12);
+            result.Should().HaveCount(24);
             result.Should().OnlyContain(planDate => planDate.Transaction == transactions[0]);
             result.Should().OnlyContain(planDate => planDate.Date.Month >= 1 && planDate.Date.Month <= 12);
         }

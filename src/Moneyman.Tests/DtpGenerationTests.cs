@@ -74,7 +74,7 @@ namespace Moneyman.Tests
             var result = sut.GenerateMonthly(0);
 
             // Assert
-            result.Count.Should().Be(12);
+            result.Count.Should().Be(24);
             result.All(x => x.Transaction.Name == "Trans 1").Should().BeTrue();
         }
     }

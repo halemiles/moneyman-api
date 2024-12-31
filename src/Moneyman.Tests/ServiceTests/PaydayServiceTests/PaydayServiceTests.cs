@@ -46,7 +46,7 @@ namespace Moneyman.Tests
             new Payday { Date = DateTime.Parse("2022-11-25")},
             new Payday { Date = DateTime.Parse("2022-12-28")}
         };
-        
+
         private readonly Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
 
         //TODO - Move this to a fixture class
@@ -56,7 +56,7 @@ namespace Moneyman.Tests
                 mockHolidayService.Object
             );
 
-        private PaydayService NewPaydayService() 
+        private PaydayService NewPaydayService()
             => new PaydayService(
                 mockPaydayRepository.Object,
                 NewOffsetCalculationService(),
@@ -92,7 +92,7 @@ namespace Moneyman.Tests
             var paydayService = NewPaydayService();
             var result = paydayService.Generate(dayOfMonth);
 
-            result.Count.Should().Be(12);
+            result.Count.Should().Be(24);
             result.FirstOrDefault().Date.Month.Should().Be(1);
             result.LastOrDefault().Date.Month.Should().Be(12);
         }

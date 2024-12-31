@@ -17,22 +17,22 @@ namespace Moneyman.Services
             _weekdayService = weekdayService;
             _holidayService = holidayService;
         }
-        
-        
+
+
         public CalculatedPlanDate CalculateOffset(DateTime dte)
         {
             var holidays = _holidayService.GenerateHolidays();
             var returnObject = new CalculatedPlanDate
             {
                 OriginalPlanDate = dte
-            };        
+            };
 
             int offsetby = 0;
             bool found = false;
             int foundLoopCount = 0;
 
-            if(dte.Month == 12)
-                dte = dte.AddYears(1);
+            // if(dte.Month == 12)
+            //     dte = dte.AddYears(1);
 
             //Iterate until we have found a suitable date
             while (!found)
@@ -40,11 +40,11 @@ namespace Moneyman.Services
                 //Check if this current iteration is on a weekend, monday or a bank holiday
                 bool isWeekday = dte.IsWeekday();
                 bool isBankHoliday = holidays.IsBankHoliday(dte);
-                
+
                 //If we have found a valid day (Tue-Fri and not on bank holiday)
                 if(isWeekday && !isBankHoliday )
                 {
-                    
+
                     returnObject.PlanDate = dte;
                     returnObject.IsBankHoliday = isBankHoliday;
                     returnObject.IsValid = true;
@@ -59,9 +59,9 @@ namespace Moneyman.Services
                     offsetby += 1;
 
                     returnObject.OffsetBy = offsetby;
-                    returnObject.Reason = "On bank holiday or weekend";  
+                    returnObject.Reason = "On bank holiday or weekend";
                     returnObject.PlanDate = dte;
-                    
+
                 }
 
                 //This is to prevent infinate loops
@@ -70,11 +70,11 @@ namespace Moneyman.Services
                 {
                     found  = true;
                 }
-                                
+
                 foundLoopCount ++;
-                
+
             }
             return returnObject;
-        } 
+        }
     }
 }

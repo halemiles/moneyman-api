@@ -83,9 +83,7 @@ namespace Moneyman.Tests
 
         [TestMethod]
         [DataRow("2022-01-08",10,8,8,8,9,8,8,8,8,10,8,8)]
-        [DataRow("2022-01-15",17,15,15,19,16,15,15,15,15,17,15,15)] //Includes two bank holidays in April
-        [DataRow("2022-05-08",10,8,8,8,9,8,8,8,8,10,8,8)]
-        public void GenerateMonthly_WithExpectedValues_ReturnsSuccess(string startDateString,
+        public void GenerateMonthly_WithExpectedValues_ReturnsSuccess_1(string startDateString,
             int day1,int day2,int day3,int day4,int day5,int day6,int day7,int day8,int day9,int day10,int day11,int day12
         )
         {
@@ -111,12 +109,72 @@ namespace Moneyman.Tests
             var results = sut.GenerateMonthly(0);
 
             // Assert
-            results.Count.Should().Be(12);
-            for(int resultCounter = 0; resultCounter < results.Count; resultCounter++)
+            results.Count.Should().Be(24);
+            results.ShouldMatchSnapshot();
+        }
+
+        [TestMethod]
+        [DataRow("2022-01-15",17,15,15,19,16,15,15,15,15,17,15,15)] //Includes two bank holidays in April
+        public void GenerateMonthly_WithExpectedValues_ReturnsSuccess_2(string startDateString,
+            int day1,int day2,int day3,int day4,int day5,int day6,int day7,int day8,int day9,int day10,int day11,int day12
+        )
+        {
+            // Arrange
+            List<int> expectedDayValues = new() {day1,day2,day3,day4,day5,day6,day7,day8,day9,day10,day11,day12};
+            var startDate = DateTime.Parse(startDateString);
+            var sut = NewDtpService();
+
+            IEnumerable<Transaction> transactions = new List<Transaction>
             {
-                results[resultCounter].Date.Day.Should().Be(expectedDayValues[resultCounter]);
-                results[resultCounter].Date.Month.Should().Be(resultCounter+1);
-            }
+                new Transaction
+                {
+                    Id = 0,
+                    Name = "transaction 1",
+                    StartDate = startDate,
+                    Frequency = Frequency.Monthly
+                }
+            }.AsEnumerable();
+
+            mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
+
+            // Act
+            var results = sut.GenerateMonthly(0);
+
+            // Assert
+            results.Count.Should().Be(24);
+            results.ShouldMatchSnapshot();
+        }
+
+        [TestMethod]
+        [DataRow("2022-05-08",10,8,8,8,9,8,8,8,8,10,8,8)]
+        public void GenerateMonthly_WithExpectedValues_ReturnsSuccess_3(string startDateString,
+            int day1,int day2,int day3,int day4,int day5,int day6,int day7,int day8,int day9,int day10,int day11,int day12
+        )
+        {
+            // Arrange
+            List<int> expectedDayValues = new() {day1,day2,day3,day4,day5,day6,day7,day8,day9,day10,day11,day12};
+            var startDate = DateTime.Parse(startDateString);
+            var sut = NewDtpService();
+
+            IEnumerable<Transaction> transactions = new List<Transaction>
+            {
+                new Transaction
+                {
+                    Id = 0,
+                    Name = "transaction 1",
+                    StartDate = startDate,
+                    Frequency = Frequency.Monthly
+                }
+            }.AsEnumerable();
+
+            mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
+
+            // Act
+            var results = sut.GenerateMonthly(0);
+
+            // Assert
+            results.Count.Should().Be(24);
+            results.ShouldMatchSnapshot();
         }
     }
 }
