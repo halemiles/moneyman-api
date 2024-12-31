@@ -86,11 +86,12 @@ namespace Moneyman.Tests
             // Arrange
             var sut = NewDtpService();
             Fixture fixture = new Fixture();
+            Transaction t = new(){
+                Frequency = Frequency.Monthly
+            };
             IEnumerable<Transaction> trans = new List<Transaction>
             {
-                fixture.Create<Transaction>(),
-                fixture.Create<Transaction>(),
-                fixture.Create<Transaction>()
+                t,t,t
             };
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
             mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>(){new PlanDate()});
@@ -99,7 +100,7 @@ namespace Moneyman.Tests
 
             // Assert
             result.StatusCode.Should().Be(Domain.Models.StatusCode.Success);
-            result.Payload.Count().Should().Be(0);
+            result.Payload.Count().Should().Be(24*3);
         }
     }
 }

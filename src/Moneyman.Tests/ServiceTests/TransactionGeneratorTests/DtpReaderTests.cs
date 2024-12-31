@@ -70,7 +70,10 @@ namespace Moneyman.Tests
                 {
                     Date = new DateTime(2022,11,1),
                     Transaction = new Transaction{
-                        Amount = 100
+                        Amount = 100,
+                        Frequency = Frequency.Monthly,
+                        BankAccountId = 0,
+                        Active = true
                     }
                 },
                 new PlanDate
@@ -78,6 +81,9 @@ namespace Moneyman.Tests
                     Date = new DateTime(2022,11,1),
                     Transaction = new Transaction{
                         Amount = 100,
+                        Frequency = Frequency.Monthly,
+                        BankAccountId = 0,
+                        Active = true
 
                     }
                 }

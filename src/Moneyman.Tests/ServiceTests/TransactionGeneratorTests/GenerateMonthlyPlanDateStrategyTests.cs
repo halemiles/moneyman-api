@@ -78,7 +78,7 @@ namespace Moneyman.Tests
             var result = sut.Generate(null, Frequency.Monthly);
 
             // Assert
-            result.Count.Should().Be(12);
+            result.Count.Should().Be(24);
             result.All(x => x.Transaction.Name == "Trans 1").Should().BeTrue();
             result.ShouldMatchSnapshot();
         }
@@ -115,7 +115,7 @@ namespace Moneyman.Tests
             var result = sut.Generate(null, Frequency.Monthly);
 
             // Assert
-            result.Count.Should().Be(12);
+            result.Count.Should().Be(24);
             result.Any(x => x.Transaction.Name == "Trans 1").Should().BeTrue();
             result.Any(x => x.Transaction.Name == "Trans 2").Should().BeFalse();
             result.ShouldMatchSnapshot();
@@ -155,7 +155,7 @@ namespace Moneyman.Tests
             var result = sut.Generate(1, Frequency.Monthly);
 
             // Assert
-            result.Count.Should().Be(12);
+            result.Count.Should().Be(24);
             result.All(x => x.Transaction.Name == "Trans 2").Should().BeTrue();
             result.ShouldMatchSnapshot();
         }

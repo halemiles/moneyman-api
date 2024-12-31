@@ -189,21 +189,24 @@ namespace Moneyman.Services
             );
 
             var planDates = planDateRepository
-                               .GetAll()
+                               .GetAll();
+
+            planDates = planDates
                                .Where(x => x.Transaction.Active && x.Date > startDate && x.Date < endDate && (!bankAccountId.HasValue || bankAccountId == 0 || (x.Transaction.BankAccountId == bankAccountId ) ))
                                .ToList();
             var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
             var amountDue = mappedPlanDates.Sum(x => x.Amount);
             var weeksRemaining = WeeksRemaining(startDate, endDate);
             var weekDivisder = weeksRemaining == 0 ? 1 : weeksRemaining;
+            var startValue = startingValue ?? 0;
             return ApiResponse.Success<DtpDto>( new DtpDto{
                 PlanDates = mappedPlanDates,
                 StartDate = startDate,
                 EndDate = endDate,
                 WeeksRemaining = weekDivisder,
                 AmountDue = amountDue,
-                SpendPerWeek = ((startingValue.Value - amountDue) / weekDivisder ),
-                Remaining = startingValue.Value - amountDue
+                SpendPerWeek = ((startValue - amountDue) / weekDivisder ),
+                Remaining = startValue - amountDue
             }, "Success");
         }
 

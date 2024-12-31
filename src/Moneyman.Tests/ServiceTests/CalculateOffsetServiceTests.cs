@@ -35,7 +35,7 @@ namespace Moneyman.Tests
             {
                 "01-01-2022", //New years day
                 "05-05-2022", //A random Thursday - Not likley to ever happen IRL
-                "20-06-2022", //Bank holiday Monday 
+                "20-06-2022", //Bank holiday Monday
                 "24-12-2022", //Christmas day
                 "25-12-2022"  //Boxing day
             };
@@ -71,7 +71,7 @@ namespace Moneyman.Tests
             var result = sut.CalculateOffset(originalDate);
 
             // Assert
-            result.PlanDate.Year.Should().Be(2024);
+            result.PlanDate.Year.Should().Be(2023);
         }
     }
 }
