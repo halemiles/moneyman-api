@@ -39,7 +39,7 @@ namespace Moneyman.Services
 			List<Payday> payDates = new List<Payday>(); //TODO - Refactor this so we don't have to intialise
 			for(int i=0;i<TotalPaydayMonths;i++)
 			{
-				var plannedDate = new DateTime(DateTime.Now.Year,1,dayOfMonth);
+				var plannedDate = new DateTime(_dateTimeProvider.GetNow().Year,1,dayOfMonth);
 				plannedDate = plannedDate.AddMonths(i);
 				var offsetDate = _offsetCalculationService.CalculateOffset(plannedDate).PlanDate;
 				Payday pd = new Payday

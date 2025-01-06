@@ -31,73 +31,15 @@ namespace Moneyman.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry();
-
-            try
-            {
-                services.AddDbContext<MoneymanContext>(
-                    options => options.UseSqlite(
-                        new SqliteConnection(Configuration.GetConnectionString("WebApiDatabase")),
-                        x => x.MigrationsAssembly("Moneyman.Api")
-                    )
-
-                );
-            }
-            catch(Exception err)
-            {
-                Console.WriteLine(err.ToString());
-            }
-
+            services.SetupContexts(Configuration);
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Moneyman.Api", Version = "v1" });
-            });
-
-            //TODO: Move to seperate service creation file
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
-            services.AddScoped<ITransactionService, TransactionService>();
-            services.AddScoped<IPaydayRepository, PaydayRepository>();
-            services.AddScoped<IPlanDateRepository, PlanDateRepository>();
-            services.AddScoped<IPaydayService, PaydayService>();
-            services.AddScoped<IWeekdayService, WeekdayService>();
-            services.AddScoped<IHolidayService, HolidayService>();
-            services.AddScoped<IDtpService, DtpService>();
-            services.AddScoped<IOffsetCalculationService, OffsetCalculationService>();
-            services.AddScoped<IPlanDateService, PlanDateService>();
-            services.AddScoped<IBankAccountService, BankAccountService>();
-            services.AddScoped<IBankAccountRepository, BankAccountRepository>();
-
-            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
-
-            AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<TransactionProfile>();
-                cfg.AddProfile<TransactionDtoToTransactionProfile>();
-                cfg.AddProfile<PlanDateDtoProfile>();
-                cfg.AddProfile<BankAccountProfile>();
-            });
-
-            services.AddSingleton(config);
-            services.AddScoped<IMapper, Mapper>();
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "AllowAnyOrigin",
-                    builder => {
-                        builder
-                        .AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                    });
-            });
-
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .WriteTo.Seq("http://localhost:5341")
-                .CreateLogger();
-
-            services.AddSingleton(Log.Logger);
-            services.Configure<HolidayOptions>(Configuration.GetSection("HolidayOptions"));
+            services.SetupSwagger();
+            services.AddRepositories();
+            services.AddServices();
+            services.AddAutomapperProfiles();
+            services.SetupCors();
+            services.SetupLogger();
+            services.SetupHolidays(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
