@@ -80,6 +80,7 @@ namespace Moneyman.Tests
         {
             int dayOfMonth = 25;
             var paydayService = NewPaydayService();
+            mockDateTimeProvider.Setup(x => x.GetNow()).Returns(new DateTime(2024, 1, dayOfMonth));
             var result = paydayService.Generate(dayOfMonth);
 
             result.ShouldMatchSnapshot();
