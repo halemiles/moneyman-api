@@ -36,7 +36,7 @@ namespace Moneyman.Api
             services.SetupSwagger();
             services.AddRepositories();
             services.AddServices();
-            services.AddProfiles();
+            services.AddAutomapperProfiles();
             services.SetupCors();
             services.SetupLogger();
             services.SetupHolidays(Configuration);

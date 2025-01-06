@@ -39,7 +39,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    public static void AddProfiles(this IServiceCollection services)
+    public static void AddAutomapperProfiles(this IServiceCollection services)
     {
         AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
             {
@@ -73,7 +73,6 @@ public static class ServiceCollectionExtensions
                     new SqliteConnection(configuration.GetConnectionString("WebApiDatabase")),
                     x => x.MigrationsAssembly("Moneyman.Api")
                 )
-
             );
         }
         catch(Exception err)
