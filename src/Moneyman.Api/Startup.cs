@@ -54,18 +54,8 @@ namespace Moneyman.Api
             });
 
             //TODO: Move to seperate service creation file
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
-            services.AddScoped<ITransactionService, TransactionService>();
-            services.AddScoped<IPaydayRepository, PaydayRepository>();
-            services.AddScoped<IPlanDateRepository, PlanDateRepository>();
-            services.AddScoped<IPaydayService, PaydayService>();
-            services.AddScoped<IWeekdayService, WeekdayService>();
-            services.AddScoped<IHolidayService, HolidayService>();
-            services.AddScoped<IDtpService, DtpService>();
-            services.AddScoped<IOffsetCalculationService, OffsetCalculationService>();
-            services.AddScoped<IPlanDateService, PlanDateService>();
-            services.AddScoped<IBankAccountService, BankAccountService>();
-            services.AddScoped<IBankAccountRepository, BankAccountRepository>();
+            services.AddRepositories();
+            services.AddServices();
 
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
