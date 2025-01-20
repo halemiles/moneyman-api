@@ -40,5 +40,5 @@ jobs:
     - name: Build and push Docker image
       working-directory: src
       run: |
-        docker build -t ghcr.io/${{ github.repository }}/moneyman:latest -f src/Dockerfile .
+        docker build -t ghcr.io/${{ github.repository }}/moneyman:latest -f Dockerfile .
         docker push ghcr.io/${{ github.repository }}/moneyman:latest
