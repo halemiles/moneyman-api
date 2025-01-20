@@ -35,11 +35,9 @@ jobs:
       with:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
         coverage-reports: src/Moneyman.Tests/cobertura.xml
-    - name: Push to GitHub
+    - name: Log in to GitHub Docker Registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    - name: Build and push Docker image
       run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add .
-        git commit -m "Automated commit from GitHub Actions"
-        git push
-
+        docker build -t ghcr.io/${{ github.repository }}/moneyman:latest .
+        docker push ghcr.io/${{ github.repository }}/moneyman:latest
