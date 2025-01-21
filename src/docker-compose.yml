@@ -9,3 +9,4 @@ services:
       - ./Moneyman.Api/LocalDatabase.db:/app/LocalDatabase.db
     environment:
       ASPNETCORE_ENVIRONMENT: Staging
+    restart: always
