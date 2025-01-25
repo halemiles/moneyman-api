@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moneyman.Domain.Models;
 using Moq;
 
-namespace Moneyman.UnitTests
+namespace Moneyman.Tests.DomainTests
 {
     [TestClass]
     public class ApiResponseTests

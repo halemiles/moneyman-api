@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Moneyman.Extensions
+namespace Moneyman.Extentions
 {
     public static class DateVerificationExtensions
     {

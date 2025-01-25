@@ -11,7 +11,7 @@ using Snapper;
 using Microsoft.Extensions.Logging;
 using AutoFixture;
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.ServiceTests.TransactionGeneratorTests
 {
     [TestClass]
     public class DtpMonthlyGenerationTests

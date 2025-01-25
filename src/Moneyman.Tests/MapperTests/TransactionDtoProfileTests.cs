@@ -5,11 +5,11 @@ using Snapper;
 using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.MapperTests
 {
     [TestClass]
     public class TransactionDtoProfileTests
-    {       
+    {
         private MapperConfiguration mapperConfig;
         private IMapper mapper;
 
@@ -19,9 +19,9 @@ namespace Moneyman.Tests
             mapperConfig = new MapperConfiguration(cfg => {
                 cfg.AddProfile<TransactionDtoToTransactionProfile>();
             });
-            
+
             mapper = mapperConfig.CreateMapper();
-            
+
         }
 
         [TestMethod]

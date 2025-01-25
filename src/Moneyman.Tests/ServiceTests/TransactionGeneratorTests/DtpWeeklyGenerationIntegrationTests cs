@@ -13,14 +13,14 @@ using Moneyman.Tests.Extensions;
 using Snapper;
 using Microsoft.Extensions.Logging;
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.ServiceTests.TransactionGeneratorTests
 {
     [TestClass]
     public class DtpWeeklyGenerationIntegrationTests
     {
         private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
-        private Mock<IPlanDateRepository> mockPlanDateRepository;        
+        private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IHolidayService> mockHolidayService;
         private Mock<ILogger<DtpService>> mockLogger;
 
@@ -72,8 +72,8 @@ namespace Moneyman.Tests
         [TestMethod]
         public void GenerateWeekly_WhenThursday_ReturnsSuccess()
         {
-            // Arrange            
-            var startDate = new DateTime(2022,1,6); //Thursday 6th Jan            
+            // Arrange
+            var startDate = new DateTime(2022,1,6); //Thursday 6th Jan
             var sut = NewDtpGenerationService();
 
             IEnumerable<Transaction> transactions = new List<Transaction>
@@ -101,10 +101,10 @@ namespace Moneyman.Tests
         [TestMethod]
         public void GenerateWeekly_WhenWeekend_ReturnsSuccess()
         {
-            // Arrange            
-            var startDate = new DateTime(2022,1,2); //Sunday 2nd Jan            
+            // Arrange
+            var startDate = new DateTime(2022,1,2); //Sunday 2nd Jan
             var sut = NewDtpGenerationService();
-        
+
             IEnumerable<Transaction> transactions = new List<Transaction>
             {
                 new Transaction

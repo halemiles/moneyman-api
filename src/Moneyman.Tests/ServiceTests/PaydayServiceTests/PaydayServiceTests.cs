@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using Moneyman.Domain;
 using System;
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.ServiceTests.PaydayServiceTests
 {
     [TestClass]
     public class PaydayServiceTests

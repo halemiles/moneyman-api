@@ -9,7 +9,7 @@ using Moneyman.Services;
 using Moneyman.Domain;
 using System;
 
-namespace YourProject.Tests
+namespace YourProject.Tests.StrategyTests
 {
     [TestClass]
     public class DailyPlanDateGenerationStrategyTests

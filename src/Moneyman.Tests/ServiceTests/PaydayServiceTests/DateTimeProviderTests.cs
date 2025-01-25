@@ -11,18 +11,18 @@ using Moneyman.Domain;
 using System;
 using FluentAssertions.Extensions;
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.ServiceTests.PaydayServiceTests
 {
     [TestClass]
     public class DateTimeProviderTests
     {
         private Mock<IDateTimeProvider> mockDateTimeProvider;
-        private DateTimeProvider NewDateTimeProvider() 
+        private DateTimeProvider NewDateTimeProvider()
             => new DateTimeProvider();
 
         [TestInitialize]
         public void SetUp()
-        {            
+        {
             mockDateTimeProvider = new Mock<IDateTimeProvider>();
         }
 

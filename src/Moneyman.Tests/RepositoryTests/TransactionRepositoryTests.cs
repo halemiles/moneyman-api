@@ -16,27 +16,27 @@ using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 using Snapper;
 
-namespace Tests
+namespace Moneyman.Tests.RepositoryTests
 {
     [TestClass]
     public class TransactionRepositoryTests
     {
         private Mock<DbSet<Transaction>> _dbSetMock;
-        private Mock<MoneymanContext> _contextMock;   
-        private Mock<TransactionRepository> _transRepoMock;    
+        private Mock<MoneymanContext> _contextMock;
+        private Mock<TransactionRepository> _transRepoMock;
         private Mock<IRepository<Transaction>> _genericRepositoryMock;
         private IMapper _mapper;
         private TransactionRepository NewTransactionRepository() =>
             new TransactionRepository(_contextMock.Object, _mapper);
-        
+
         [TestInitialize]
         public void SetUp()
         {
             _dbSetMock = new  Mock<DbSet<Transaction>>();
-            _contextMock = new  Mock<MoneymanContext>();     
+            _contextMock = new  Mock<MoneymanContext>();
             _transRepoMock = new Mock<TransactionRepository>();
-            _genericRepositoryMock = new Mock<IRepository<Transaction>>();   
-            
+            _genericRepositoryMock = new Mock<IRepository<Transaction>>();
+
             var _transactions = new List<Transaction>
             {
                 new Transaction {Name = "Transaction 1"},
@@ -44,13 +44,13 @@ namespace Tests
             }.AsQueryable().BuildMockDbSet();
 
             _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
-            
+
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new TransactionDtoToTransactionProfile());
                 mc.AddProfile(new TransactionProfile());
             });
-            
+
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
         }
@@ -60,7 +60,7 @@ namespace Tests
         {
             _contextMock.Setup(x => x.Set<Transaction>()).Returns(new List<Transaction>{}.AsQueryable().BuildMockDbSet().Object);
             var repository = NewTransactionRepository();
-            var result = repository.GetAll();               
+            var result = repository.GetAll();
             result.Count().Should().Be(0);
         }
 
@@ -74,7 +74,7 @@ namespace Tests
                 .WithFrequency(Frequency.Monthly)
                 .WithStartDate(new DateTime(2021,1,1))
                 .Build();
-                
+
             Transaction existingTransaction = null;
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
@@ -117,15 +117,15 @@ namespace Tests
                 var transactionRepository = new TransactionRepository(context, _mapper);
                 transactionRepository.Add(existingTransaction);
                 await transactionRepository.Save();
-                
+
                 transactionRepository.Update(transactionUpdate);
                 await transactionRepository.Save();
-                
+
                 updatedTransaction = context.Transactions.FirstOrDefault();
             }
 
             updatedTransaction.Should().NotBeNull();
-            
+
             var snapshot = new {
                 Id = updatedTransaction.Id,
                 Amount = updatedTransaction.Amount,

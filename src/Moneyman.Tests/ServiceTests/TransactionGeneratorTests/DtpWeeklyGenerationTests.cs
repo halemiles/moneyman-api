@@ -13,7 +13,7 @@ using AutoFixture;
 using Moneyman.Services.Interfaces;
 using AutoMapper;
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.ServiceTests.TransactionGeneratorTests
 {
     [TestClass]
     public class DtpWeeklyGenerationTests

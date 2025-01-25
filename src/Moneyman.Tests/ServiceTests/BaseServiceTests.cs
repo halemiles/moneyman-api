@@ -4,7 +4,7 @@ using Moneyman.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Moneyman.Tests.Services
+namespace Moneyman.Tests.ServiceTests
 {
     [TestClass]
     public class BaseServiceTests

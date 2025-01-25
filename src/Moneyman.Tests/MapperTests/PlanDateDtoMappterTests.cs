@@ -6,11 +6,11 @@ using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 using Moneyman.Models.Dtos;
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.MapperTests
 {
     [TestClass]
     public class PlanDateDtoMappterTests
-    {       
+    {
         private MapperConfiguration mapperConfig;
         private IMapper mapper;
 
@@ -20,9 +20,9 @@ namespace Moneyman.Tests
             mapperConfig = new MapperConfiguration(cfg => {
                 cfg.AddProfile<PlanDateDtoProfile>();
             });
-            
+
             mapper = mapperConfig.CreateMapper();
-            
+
         }
 
         [TestMethod]

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moneyman.Domain;
 using Moneyman.Services.Validators;
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.ValidationTests
 {
 
     [TestClass]

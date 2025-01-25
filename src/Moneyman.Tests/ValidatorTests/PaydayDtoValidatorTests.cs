@@ -4,7 +4,7 @@ using Moneyman.Models;
 using Moneyman.Services.Validators;
 
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.ValidationTests
 {
     [TestClass]
     public class PaydayDtoValidatorTests

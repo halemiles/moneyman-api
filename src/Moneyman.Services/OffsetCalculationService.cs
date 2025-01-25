@@ -1,7 +1,7 @@
 using System;
 using Moneyman.Interfaces;
 using Moneyman.Domain;
-using Moneyman.Extensions;
+using Moneyman.Extentions;
 
 namespace Moneyman.Services
 {

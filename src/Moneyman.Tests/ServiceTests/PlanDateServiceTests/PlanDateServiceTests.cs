@@ -18,7 +18,7 @@ using Snapper;
 using Microsoft.Extensions.Logging;
 using AutoFixture;
 
-namespace Tests
+namespace Moneyman.Tests.ServiceTests.PlanDateServiceTests
 {
     [TestClass]
     public class planDateServiceTests

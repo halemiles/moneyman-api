@@ -13,7 +13,7 @@ using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 using Microsoft.Extensions.Logging;
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.ServiceTests.TransactionGeneratorTests
 {
     [TestClass]
     public class DtpReaderTests

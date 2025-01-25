@@ -9,7 +9,7 @@ using System.Linq;
 using System;
 using Snapper;
 
-namespace Moneyman.Tests
+namespace Moneyman.Tests.ServiceTests
 {
     [TestClass]
     public class CalculateOffsetServiceTests //TODO - Rename this
