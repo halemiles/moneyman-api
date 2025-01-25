@@ -55,8 +55,8 @@ namespace Moneyman.Services
                     //Move forward by 1 day
                     //Note: Direct debits typically come out Mondays or Tuesdays
                     //      if they fall on a weekend or a bank holiday
-                    dte = dte.AddDays(1);
-                    offsetby += 1;
+                    dte = dte.AddDays(-1);
+                    offsetby += -1;
 
                     returnObject.OffsetBy = offsetby;
                     returnObject.Reason = "On bank holiday or weekend";

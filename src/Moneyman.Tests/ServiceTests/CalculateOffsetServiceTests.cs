@@ -51,7 +51,7 @@ namespace Moneyman.Tests
             // Arrange
             var sut = NewOffsetCalculationService();
             var originalDate = DateTime.Parse(testValue);
-            var expectedDate = new DateTime(2022,6,21);
+            var expectedDate = new DateTime(2022,6,17);
             // Act
             var result = sut.CalculateOffset(originalDate);
 
