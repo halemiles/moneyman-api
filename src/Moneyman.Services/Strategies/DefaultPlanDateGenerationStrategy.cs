@@ -33,7 +33,7 @@ namespace Moneyman.Services
         {
             logger.LogInformation("Generating monthly");
 
-            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Monthly && !x.IsAnticipated);
+            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == frequency && !x.IsAnticipated);
             if(transactionId.HasValue)
             {
                 transactions = transactions.Where(x => x.Id == transactionId);
