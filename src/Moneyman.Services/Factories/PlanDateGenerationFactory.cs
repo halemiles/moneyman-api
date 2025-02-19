@@ -25,40 +25,12 @@ namespace Moneyman.Services.Factories
         }
         public IPlanDateGenerationStrategy Create(Frequency frequency)
         {
-            switch (frequency)
-            {
-                case Frequency.Weekly:
-                case Frequency.Monthly:
-                    return new DefaultPlanDateGenerationStrategy(
-                        transactionRepository,
-                        planDateRepository,
-                        offsetCalculationService,
-                        logger
-                    );
-                case Frequency.Yearly:
-                    return new YearlyPlanDateGenerationStrategy(
-                        transactionRepository,
-                        planDateRepository,
-                        offsetCalculationService,
-                        logger
-                    );
-                case Frequency.Daily:
-                    return new DailyPlanDateGenerationStrategy(
-                        transactionRepository,
-                        planDateRepository,
-                        offsetCalculationService,
-                        logger
-                    );
-                case Frequency.Anticipated:
-                    return new AnticipatedPlanDateGenerationStrategy(
-                        transactionRepository,
-                        planDateRepository,
-                        offsetCalculationService,
-                        logger
-                    );
-                default:
-                    throw new ArgumentException($"Unsupported frequency: {frequency}");
-            }
+            return new DefaultPlanDateGenerationStrategy(
+                transactionRepository,
+                planDateRepository,
+                offsetCalculationService,
+                logger
+            );
         }
     }
 }

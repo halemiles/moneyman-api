@@ -20,6 +20,8 @@ namespace YourProject.Tests
         private readonly DefaultPlanDateGenerationStrategy _generator;
         private readonly Mock<IPlanDateRepository> mockPlanDateRepository;
 
+        private const int TotalPlanDateYears = 2;
+
         public DefaultPlanDateGenerationStrategyTests()
         {
             _mockLogger = new Mock<ILogger<DtpService>>();
@@ -35,15 +37,18 @@ namespace YourProject.Tests
         }
 
         [TestMethod]
-        public void Generate_WithValidInput_ReturnsPlanDates()
+        [DataRow(Frequency.Monthly, 24)]
+        [DataRow(Frequency.Yearly, 2)]
+        [DataRow(Frequency.Weekly, 104)]
+        [DataRow(Frequency.Daily,730)]
+        public void Generate_WhenMonthly_WithValidInput_ReturnsPlanDates(Frequency frequency, int expectedRecordCount)
         {
             // Arrange
             int? transactionId = 1;
-            Frequency frequency = Frequency.Monthly;
 
             var transactions = new List<Transaction>
             {
-                new Transaction { Id = 1, Frequency = Frequency.Monthly, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" }
+                new Transaction { Id = 1, Frequency = frequency, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" }
             };
 
             _mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
@@ -56,7 +61,7 @@ namespace YourProject.Tests
 
             // Assert
             result.Should().NotBeNull();
-            result.Should().HaveCount(24);
+            result.Should().HaveCount(expectedRecordCount);
             result.Should().OnlyContain(planDate => planDate.Transaction == transactions[0]);
             result.Should().OnlyContain(planDate => planDate.Date.Month >= 1 && planDate.Date.Month <= 12);
         }
