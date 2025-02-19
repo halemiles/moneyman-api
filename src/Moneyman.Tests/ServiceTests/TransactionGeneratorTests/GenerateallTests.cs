@@ -100,7 +100,7 @@ namespace Moneyman.Tests
 
             // Assert
             result.StatusCode.Should().Be(Domain.Models.StatusCode.Success);
-            result.Payload.Count().Should().Be(24*2);
+            result.Payload.Count().Should().Be(24*3);
         }
     }
 }
