@@ -1,5 +1,5 @@
 export class dtpResponse {
-   payload: dtp;
+    payload: dtp;
 }
 
 export class dtp {
