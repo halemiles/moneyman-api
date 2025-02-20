@@ -31,7 +31,7 @@ namespace Tests
         private IMapper mockMapper;
         private PlanDateService NewPlanDateService() =>
             new PlanDateService(
-                _planDateRepoMock.Object,
+            _planDateRepoMock.Object,
                 mockLogger.Object
             );
 
@@ -88,16 +88,6 @@ namespace Tests
             var result = service.GetAll();
             result.Count().Should().Be(5);
         }
-
-        // [TestMethod]
-        // public void Search_WhenNoResults_ReturnsEmptyList()
-        // {
-        //     _planDateRepoMock.Setup(x => x.Search(It.IsAny<string>())).Returns(new List<PlanDate>());
-
-        //     var service = NewPlanDateService();
-        //     var result = service.Search(string.Empty);
-        //     result.Count().Should().Be(0);
-        // }
 
         [TestMethod]
         public void Search_WhenObjectDoesntExist_ReturnsSuccess()
@@ -166,7 +156,7 @@ namespace Tests
 
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Never());
             _transRepoMock.Verify(x => x.Save(), Times.Never());
-            result.Should().Be(false);
+            result.Success.Should().Be(false);
         }
 
         [TestMethod]

@@ -64,7 +64,7 @@ namespace Moneyman.Tests
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new CalculatedPlanDate());
 
-            mockPaydayService.Setup(x => x.GetAll()).Returns(new List<Payday>(){new Payday()});
+            mockPaydayService.Setup(x => x.GetAll()).Returns(new List<Payday>{new Payday()});
         }
 
         [TestMethod]
@@ -85,7 +85,6 @@ namespace Moneyman.Tests
         {
             // Arrange
             var sut = NewDtpService();
-            Fixture fixture = new Fixture();
             Transaction t = new(){
                 Frequency = Frequency.Monthly
             };
@@ -94,7 +93,7 @@ namespace Moneyman.Tests
                 t,t,t
             };
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
-            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>(){new PlanDate()});
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>{new PlanDate()});
             // Act
             var result = sut.GenerateAll(null);
 

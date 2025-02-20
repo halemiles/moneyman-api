@@ -31,9 +31,6 @@ namespace Moneyman.Services
             bool found = false;
             int foundLoopCount = 0;
 
-            // if(dte.Month == 12)
-            //     dte = dte.AddYears(1);
-
             //Iterate until we have found a suitable date
             while (!found)
             {

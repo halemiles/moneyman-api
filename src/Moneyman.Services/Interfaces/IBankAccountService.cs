@@ -7,11 +7,10 @@ namespace Moneyman.Interfaces
 {
 	public interface IBankAccountService
 	{
-		//Task<ApiResponse<int>> Create(TransactionDto trans);
+		/// <summary>
+		/// Get all bank accounts
+		/// </summary>
+		/// <returns></returns>
 		List<BankAccountDto> GetAll();
-		// Transaction GetById(int id);
-		// int Update(Transaction model);
-		// void Update(List<Transaction> model);
-    	// void Delete(int id);
 	}
 }

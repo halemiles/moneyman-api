@@ -104,7 +104,7 @@ namespace Tests
                 Frequency = Frequency.Weekly
             };
             var service = NewTransactionService();
-            var result = await service.Create(newTransaction);
+            _ = await service.Create(newTransaction);
 
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
