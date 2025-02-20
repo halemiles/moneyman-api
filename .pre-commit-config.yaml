@@ -3,3 +3,5 @@ repos:
     rev: v2.3.0
     hooks:
     -   id: check-json
+    -   id: pretty-format-json
+        args: [--autofix, --no-sort-keys]
