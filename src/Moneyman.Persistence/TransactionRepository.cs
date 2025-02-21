@@ -5,6 +5,7 @@ using System.Linq;
 using Moneyman.Domain;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Moneyman.Domain.Interfaces;
 
 namespace Moneyman.Persistence
 {

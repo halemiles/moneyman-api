@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Moneyman.Domain.Interfaces;
 
 namespace Moneyman.Domain
 {

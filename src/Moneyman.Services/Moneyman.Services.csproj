@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Moneyman.Domain\Moneyman.Domain.csproj" />
     <ProjectReference Include="..\Moneyman.Persistence\Moneyman.Persistence.csproj" />
+    <ProjectReference Include="..\Moneyman.Extensions\Moneyman.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

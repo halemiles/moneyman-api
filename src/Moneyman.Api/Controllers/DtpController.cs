@@ -46,22 +46,5 @@ namespace Moneyman.Api.Controllers
             return Ok(planDateDto);
         }
 
-        [HttpGet("generate")]
-        public IActionResult Generate([FromQuery]int? transactionId)
-        {
-            _logger.Information("GET generate DTP {TransactionId}", transactionId ?? 0);
-
-            try
-            {
-                var planDates = dtpService.GenerateAll(transactionId);
-                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count(), Message = "Success"});
-            }
-            catch(Exception err)
-            {
-                _logger.Fatal(err.ToString());
-                return Ok(new DtpHttpResponse{RecordCount = 0, Message = "Missing Paydays"});
-            }
-        }
-
     }
 }
