@@ -44,7 +44,7 @@ public static class ServiceCollectionExtensions
         AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<TransactionProfile>();
-                cfg.AddProfile<TransactionDtoToTransactionProfile>();
+                cfg.AddProfile<TransactionDtoProfile>();
                 cfg.AddProfile<PlanDateDtoProfile>();
                 cfg.AddProfile<BankAccountProfile>();
             });

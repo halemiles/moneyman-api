@@ -31,17 +31,17 @@ namespace Moneyman.Persistence
                 return false;
             }
 
-            _mapper.Map(newObject, existing);
+            var mapped = _mapper.Map(newObject,existing);
 
             //TODO - Update this in the mapping profile
-            newObject.Name = existing.Name;
+            // newObject.Name = existing.Name;
 
-            if(newObject.StartDate == System.DateTime.MinValue)
-            {
-                newObject.StartDate = existing.StartDate;
-            }
+            // if(newObject.StartDate == System.DateTime.MinValue)
+            // {
+            //     newObject.StartDate = existing.StartDate;
+            // }
 
-            _context.Update(newObject);
+            _context.Update(mapped);
             int recordCount = _context.SaveChanges();
             return recordCount > 0;
         }
