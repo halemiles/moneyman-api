@@ -10,8 +10,8 @@ NC="\033[0m"  # No color
 echo "${YELLOW}Installing .NET SDK... ${NC}"
 wget -q https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
 chmod +x dotnet-install.sh
-./dotnet-install.sh --install-dir $HOME/.dotnet --version latest --channel STS > /dev/null 2>&1
-rm -f dotnet-install.sh  # Clean up the install script
+./dotnet-install.sh --channel latest --channel STS > /dev/null 2>&1
+#rm -f dotnet-install.sh  # Clean up the install script
 echo  "${GREEN}✔ Completed.${NC}"
 
 echo  "${YELLOW}Installing Python pipx for pre-commit... ${NC}"
