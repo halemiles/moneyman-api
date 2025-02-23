@@ -18,7 +18,7 @@ using Snapper;
 using Microsoft.Extensions.Logging;
 using AutoFixture;
 
-namespace Tests
+namespace Moneyman.Tests
 {
     [TestClass]
     public class TransactionServiceTests
@@ -104,7 +104,7 @@ namespace Tests
                 Frequency = Frequency.Weekly
             };
             var service = NewTransactionService();
-            var result = await service.Create(newTransaction);
+            _ = await service.Create(newTransaction);
 
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
@@ -171,6 +171,34 @@ namespace Tests
             _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Exactly(4));
             _transRepoMock.Verify(x => x.Update(transactionForUpdate), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
+        }
+
+        [TestMethod]
+        public void Update_WithNullResults_ReturnsEmptyList()
+        {
+            _transRepoMock.Setup(x => x.Get(It.IsAny<int>())).Returns(new Transaction
+            {
+                Id = 1,
+                Name = "Transaction Test",
+                StartDate = new DateTime(2025,1,1),
+                Amount = 100,
+                Frequency = Frequency.Weekly
+            });
+
+            var service = NewTransactionService();
+            var result = service.Update(new Transaction{
+                Id = 1
+            });
+
+            var updatedTransaction = new Transaction{
+                 Id = 1,
+                Name = "Transaction Test",
+                StartDate = new DateTime(2025,1,1),
+                Amount = 100,
+                Frequency = Frequency.Weekly
+            };
+
+            _transRepoMock.Verify(x => x.Update(updatedTransaction), Times.Once());
         }
     }
 }

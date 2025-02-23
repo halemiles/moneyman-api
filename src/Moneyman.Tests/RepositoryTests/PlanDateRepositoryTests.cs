@@ -17,7 +17,7 @@ using Moneyman.Domain.MapperProfiles;
 using Snapper;
 using AutoFixture;
 
-namespace Tests
+namespace Moneyman.Tests
 {
     [TestClass]
     public class PlanDateRepositoryTests
@@ -27,11 +27,11 @@ namespace Tests
         private List<PlanDate> _planDates;
         private PlanDateRepository NewPlanDateRepository() =>
             new PlanDateRepository(_contextMock.Object, _mapper);
-        
+
         [TestInitialize]
         public void SetUp()
         {
-            _contextMock = new  Mock<MoneymanContext>(); 
+            _contextMock = new  Mock<MoneymanContext>();
             var fixture = new Fixture();
 
             var transaction1 = new Transaction
@@ -89,36 +89,36 @@ namespace Tests
                 planDate1,
                 planDate2
             };
-            
+
             var planDateMockDbSet = _planDates.AsQueryable().BuildMockDbSet();
 
-            _contextMock.Setup(x => x.Set<PlanDate>()).Returns(planDateMockDbSet.Object); 
+            _contextMock.Setup(x => x.Set<PlanDate>()).Returns(planDateMockDbSet.Object);
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new TransactionDtoToTransactionProfile());
                 mc.AddProfile(new TransactionProfile());
             });
-            
+
             IMapper mapper = mappingConfig.CreateMapper();
-            _mapper = mapper;           
+            _mapper = mapper;
         }
 
         [TestMethod]
         public void GetAll_WhenNoResults_ReturnsEmptyList()
         {
             List<PlanDate> updatedPlanDates = null;
-            
+
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
                 var planDateRepository = new PlanDateRepository(context, _mapper);
-                updatedPlanDates = planDateRepository.GetAll().ToList(); 
+                updatedPlanDates = planDateRepository.GetAll().ToList();
             }
-                          
+
             updatedPlanDates.Count().Should().Be(0);
         }
 
-        [TestMethod]        
+        [TestMethod]
         public void GetAll_WhenOneResult_ReturnsOneResult()
         {
             List<PlanDate> updatedPlanDates = null;
@@ -129,15 +129,15 @@ namespace Tests
                 planDateRepository.Add(fixture.Create<PlanDate>());
                 planDateRepository.Add(fixture.Create<PlanDate>());
                 planDateRepository.Save();
-                updatedPlanDates = planDateRepository.GetAll().ToList(); 
-                
-            }         
+                updatedPlanDates = planDateRepository.GetAll().ToList();
+
+            }
             updatedPlanDates.Count().Should().Be(2);
         }
 
         [TestMethod]
         public async Task Add_WithMultiplePaydays_ReturnsSuccess()
-        {                
+        {
             List<PlanDate> updatedPlanDates = null;
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
@@ -147,13 +147,13 @@ namespace Tests
                     planDateRepository.Add(planDate);
                 }
                 await planDateRepository.Save();
-                
+
                 updatedPlanDates = context.PlanDates.ToList();
             }
 
             updatedPlanDates.Should().NotBeNull();
             updatedPlanDates.Count.Should().Be(_planDates.Count);
-            
+
             updatedPlanDates.ShouldMatchSnapshot();
         }
 

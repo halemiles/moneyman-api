@@ -8,6 +8,8 @@ using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain.Models;
+using Moneyman.Domain.Interfaces;
+using Moneyman.Persistence;
 
 namespace Moneyman.Services
 {
@@ -33,14 +35,41 @@ namespace Moneyman.Services
 
     public int Update(Transaction model)
     {
+        var existing = _transactionRepository.Get(model.Id); // _context.Set<Transaction>().AsNoTracking().FirstOrDefault(x => x.Id == entity.Id);
 
-      _transactionRepository.Update(model);
-      logger.LogInformation("Saving transaction {TransactionName}", model.Name);
-      _transactionRepository.Save();
+        if (existing == null)
+        {
+            return 0;
+        }
 
+        //mapper.Map(model, existing);
 
-      return model.Id;
-    }
+        //TODO - Update this in the mapping profile
+
+        if(model.Name != existing.Name && !string.IsNullOrEmpty(model.Name))
+        {
+            existing.Name = model.Name;
+        }
+
+        if(model.Amount != existing.Amount && model.Amount > 0)
+        {
+            existing.Amount = model.Amount;
+        }
+
+        if(model.StartDate != existing.StartDate && model.StartDate != DateTime.MinValue)
+        {
+            existing.StartDate = model.StartDate;
+        }
+
+        if(model.Frequency != existing.Frequency)
+        {
+            existing.Frequency = model.Frequency;
+        }
+
+        _transactionRepository.Update(existing);
+        logger.LogInformation("Saving transaction {TransactionName}", model.Name);
+        return 1;
+      }
 
     public void Update(List<Transaction> model)
     {
