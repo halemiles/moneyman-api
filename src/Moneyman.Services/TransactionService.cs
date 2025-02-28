@@ -8,7 +8,6 @@ using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain.Models;
-using Moneyman.Domain.Interfaces;
 using Moneyman.Persistence;
 
 namespace Moneyman.Services
