@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Moneyman.Domain;
 using Moneyman.Domain.Models;
-using Moneyman.Domain.Models.Dtos;
-using Moneyman.Interfaces;
-using Moneyman.Models.Dtos;
 using Moneyman.Services.Interfaces;
 using Serilog;
 
@@ -46,5 +40,21 @@ namespace Moneyman.Api.Controllers
             return Ok(planDateDto);
         }
 
+        [HttpPost("generate")]
+        public IActionResult Generate([FromQuery]int? transactionId)
+        {
+            _logger.Information("POST generate DTP {TransactionId}", transactionId ?? 0);
+
+            try
+            {
+                var planDates = dtpService.GenerateAll(transactionId);
+                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count(), Message = "Success"});
+            }
+            catch(Exception err)
+            {
+                _logger.Fatal(err.ToString());
+                return Ok(new DtpHttpResponse{RecordCount = 0, Message = "Missing Paydays"});
+            }
+        }
     }
 }
