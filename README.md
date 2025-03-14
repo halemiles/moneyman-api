@@ -2,6 +2,8 @@
 
 MoneyMan is a .NET Core API designed to help you manage your monthly bills more effectively. It predicts due dates for your bills each month, considering weekends and bank holidays to ensure timely payments.
 
+# Codacy status
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/252624afd7c64302bd26667db210f002)](https://app.codacy.com/gh/halemiles/moneyman-api/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade) [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/252624afd7c64302bd26667db210f002)](https://app.codacy.com/gh/halemiles/moneyman-api/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 ## Features
 
 - **Bill Date Prediction**: Uses advanced algorithms to estimate bill due dates.
