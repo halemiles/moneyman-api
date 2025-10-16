@@ -54,6 +54,7 @@ namespace Moneyman.Tests
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new TransactionProfile());
+                mc.AddProfile(new TransactionDtoProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

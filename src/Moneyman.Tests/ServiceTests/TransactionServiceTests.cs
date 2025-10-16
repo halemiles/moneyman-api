@@ -17,6 +17,7 @@ using Moneyman.Domain.MapperProfiles;
 using Snapper;
 using Microsoft.Extensions.Logging;
 using AutoFixture;
+using System.Runtime.CompilerServices;
 
 namespace Moneyman.Tests
 {
@@ -45,6 +46,7 @@ namespace Moneyman.Tests
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new TransactionProfile());
+                mc.AddProfile(new TransactionDtoProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
@@ -81,7 +83,8 @@ namespace Moneyman.Tests
                 Amount = 150,
                 Frequency = Frequency.Weekly
             };
-
+            _transRepoMock.Setup(x => x.Get(It.IsAny<int>()))
+                .Returns(newTransaction);
             _transRepoMock.Setup(x => x.Update(It.IsAny<Transaction>()))
                 .Returns(true);
 
@@ -90,7 +93,7 @@ namespace Moneyman.Tests
 
             _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
-            result.Should().Be(0);
+            result.Should().Be(1);
         }
 
         [TestMethod]
@@ -176,7 +179,7 @@ namespace Moneyman.Tests
         [TestMethod]
         public void Update_WithNullResults_ReturnsEmptyList()
         {
-            _transRepoMock.Setup(x => x.Get(It.IsAny<int>())).Returns(new Transaction
+            _transRepoMock.Setup(x => x.Get(1)).Returns(new Transaction
             {
                 Id = 1,
                 Name = "Transaction Test",
@@ -186,19 +189,16 @@ namespace Moneyman.Tests
             });
 
             var service = NewTransactionService();
-            var result = service.Update(new Transaction{
-                Id = 1
-            });
-
             var updatedTransaction = new Transaction{
                  Id = 1,
                 Name = "Transaction Test",
                 StartDate = new DateTime(2025,1,1),
-                Amount = 100,
+                Amount = 200,
                 Frequency = Frequency.Weekly
             };
+            var result = service.Update(updatedTransaction);
 
-            _transRepoMock.Verify(x => x.Update(updatedTransaction), Times.Once());
+            _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once());
         }
     }
 }

@@ -65,7 +65,8 @@ namespace Moneyman.Services
             existing.Frequency = model.Frequency;
         }
 
-        _transactionRepository.Update(existing);
+      _transactionRepository.Update(existing);
+      _transactionRepository.Save();
         logger.LogInformation("Saving transaction {TransactionName}", model.Name);
         return 1;
       }
