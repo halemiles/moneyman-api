@@ -1,22 +1,33 @@
-import test, {expect} from "@playwright/test";
-import {dtp} from "../models/dtp";
+import test, { expect } from "@playwright/test";
+import {describe} from "node:test";
 
-test('anticipated transaction shows in dtp', async ({ request }) => {
-    const createdTransaction = await request.post('/transaction', {
+describe('basic transaction endpoint tests', async () => {
+  test('transaction returns OK', async ({ request, baseURL }) => {
+    const createdTransaction = await request.get(`http://localhost:5000/transaction`);
+    console.log(createdTransaction);
+    await expect(await createdTransaction.status()).toBe(200);
+  });
+});
+
+
+describe('ansiticpated transactions', async () => {
+  test('anticipated transaction shows in dtp', async ({ request, baseURL }) => {
+    const createdTransaction = await request.post(`${baseURL}/transaction`, {
       data: {
-        "Name":"Testransaction",
-        "Amount":34,
-        "StartDate":"2024-05-17",
-        "Frequency":1,
+        "Name": "Testransaction",
+        "Amount": 34,
+        "StartDate": "2024-05-17",
+        "Frequency": 1,
         "Active": true
-    }});
+      }
+    });
 
     await expect(createdTransaction.ok()).toBeTruthy();
-    const  body = await createdTransaction.json();
+    const body = await createdTransaction.json();
 
-
-   await request.delete(`/transaction/${body.id}`);
-   const deletedTransaction = await request.get(`/transaction/${body.id}`);
-   const deletedTransactionJson = await deletedTransaction.json();
-   await expect(await deletedTransactionJson.status).toBe(404);
+    await request.delete(`${baseURL}/transaction/${body.id}`);
+    const deletedTransaction = await request.get(`${baseURL}/transaction/${body.id}`);
+    const deletedTransactionJson = await deletedTransaction.json();
+    await expect(await deletedTransactionJson.status()).toBe(404);
   });
+})
