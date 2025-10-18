@@ -70,5 +70,10 @@ namespace Moneyman.Services
 				.Where(x => x.Date < _dateTimeProvider.GetNow())
 				.LastOrDefault();
         }
+
+        public void RemoveAll()
+        {
+	        _paydayRepository.RemoveAll("Paydays");
+        }
     }
 }

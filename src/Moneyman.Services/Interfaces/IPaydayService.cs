@@ -9,5 +9,6 @@ namespace Moneyman.Services.Interfaces
 		List<Payday> Generate(int dayOfMonth);
 		Payday GetNext();
 		Payday GetPrevious();
+		void RemoveAll();
 	}
 }

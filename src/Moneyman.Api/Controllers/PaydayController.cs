@@ -40,5 +40,13 @@ namespace Moneyman.Api.Controllers
             var paydays = paydayService.Generate(body.DayOfMonth.Value);
             return Ok(paydays);
         }
+        
+        [HttpDelete("clear")]
+        public IActionResult ClearPaydays()
+        {
+            
+            paydayService.RemoveAll();
+            return Ok();
+        }
     }
 }
