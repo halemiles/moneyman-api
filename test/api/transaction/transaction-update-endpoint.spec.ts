@@ -2,9 +2,6 @@ import { test, expect } from "@playwright/test";
 
 const BASE_URL = "http://localhost:5000"; // Adjust if needed
 
-test.describe("Transaction API Tests", () => {
-
-
 
   test("Update transaction and verify persistence", async ({ request }) => {
     const transactionId = await setup(request);
@@ -64,7 +61,6 @@ test.describe("Transaction API Tests", () => {
   // });
 
 
-});
 
 async function setup(request) {
     let transactionIdResponse = 0;
