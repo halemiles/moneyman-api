@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Moneyman.Api.Controllers
 {
@@ -15,24 +15,21 @@ namespace Moneyman.Api.Controllers
     public class BankAccountController : ControllerBase
     {
         private readonly IBankAccountService bankAccountService;
-        private readonly ILogger _logger;
-        private readonly IMapper _mapper;
+        private readonly ILogger<BankAccountController> _logger;
 
         public BankAccountController(
-            ILogger logger,
-            IBankAccountService bankAccountService,
-            IMapper mapper
+            ILogger<BankAccountController> logger,
+            IBankAccountService bankAccountService
         )
         {
             _logger = logger;
             this.bankAccountService = bankAccountService;
-            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetAll([FromQuery] int? bankAccountId)
         {
-            _logger.Information("GET all bank accounts");
+            _logger.LogInformation("GET all bank accounts");
             var accounts = bankAccountService.GetAll();
 
             return Ok(accounts);

@@ -4,7 +4,7 @@ using System.Linq;
 using System;
 using Moneyman.Domain;
 using Moneyman.Services.Validators;
-using AutoMapper;
+using Moneyman.Domain.MapperProfiles;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain.Models;
@@ -18,18 +18,18 @@ namespace Moneyman.Services
     private readonly IPlanDateRepository planDateRepository;
     private readonly ILogger<TransactionService> logger;
 
-    private readonly IMapper mapper;
+    private readonly TransactionMapper transactionMapper;
 
 		public TransactionService(
       ITransactionRepository transactionRepository,
       IPlanDateRepository planDateRepository,
       ILogger<TransactionService> logger,
-      IMapper mapper
+      TransactionMapper transactionMapper
     )
 		{
 			_transactionRepository = transactionRepository;
       this.logger = logger;
-      this.mapper = mapper;
+      this.transactionMapper = transactionMapper;
 		}
 
     public int Update(Transaction model)
@@ -96,15 +96,15 @@ namespace Moneyman.Services
     public List<TransactionDto> GetAll()
     {
       var transactions =  _transactionRepository.GetAll();
-      var transactionsAsDto = mapper.Map<List<TransactionDto>>(transactions);
-      return transactionsAsDto?.ToList() ?? new List<TransactionDto>();
+      var transactionsAsDto = transactions.Select(transactionMapper.ToDto).ToList();
+      return transactionsAsDto;
     }
 
     public List<TransactionDto> GetAnticipated()
     {
       var transactions =  _transactionRepository.GetAll().Where(x => x.IsAnticipated);
-      var transactionsAsDto = mapper.Map<List<TransactionDto>>(transactions);
-      return transactionsAsDto?.ToList() ?? new List<TransactionDto>();
+      var transactionsAsDto = transactions.Select(transactionMapper.ToDto).ToList();
+      return transactionsAsDto;
     }
 
     public Transaction GetById(int id)
@@ -114,11 +114,10 @@ namespace Moneyman.Services
 
     public async Task<ApiResponse<int>> Create(TransactionDto trans)
     {
-
       TransactionDtoValidator transactionValidator = new TransactionDtoValidator();
       logger.LogInformation("Validation transaction {TransactionName}", trans.Name);
       var validationResult = transactionValidator.Validate(trans);
-      var transaction = mapper.Map<TransactionDto, Transaction>(trans);
+      var transaction = transactionMapper.ToEntity(trans);
       if(validationResult.IsValid)
       {
         logger.LogInformation("Transaction is valid {TransactionName}", transaction.Name);

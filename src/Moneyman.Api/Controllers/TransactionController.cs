@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Moneyman.Domain.MapperProfiles;
 
 namespace Moneyman.Api.Controllers
 {
@@ -15,24 +16,24 @@ namespace Moneyman.Api.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly ITransactionService transactionService;
-        private readonly ILogger _logger;
-        private readonly IMapper _mapper;
+        private readonly ILogger<TransactionController> _logger;
+        private readonly TransactionMapper mapper;
 
         public TransactionController(
-            ILogger logger,
+            ILogger<TransactionController> logger,
             ITransactionService transactionService,
-            IMapper mapper
+            TransactionMapper mapper
         )
         {
             _logger = logger;
             this.transactionService = transactionService;
-            _mapper = mapper;
+            this.mapper = mapper;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(TransactionDto transactionDto)
         {
-            _logger.Information("Creating transaction {TransactionName}", transactionDto?.Name);
+            _logger.LogInformation("Creating transaction {TransactionName}", transactionDto?.Name);
 
             var result = await transactionService.Create(transactionDto);
             if(!result.Success)
@@ -45,8 +46,8 @@ namespace Moneyman.Api.Controllers
         [HttpPost("multiple")]
         public IActionResult CreateMultiple([FromBody] List<TransactionDto> transactions)
         {
-            _logger.Information("Creating multiple transactions transaction {TransactionCount}", transactions.Count);
-            var mappedTransactions = _mapper.Map<List<TransactionDto>, List<Transaction>>(transactions);
+            _logger.LogInformation("Creating multiple transactions transaction {TransactionCount}", transactions.Count);
+            var mappedTransactions = mapper.ToEntityList(transactions);
             transactionService.Update(mappedTransactions);
             return Ok();
         }
@@ -54,8 +55,8 @@ namespace Moneyman.Api.Controllers
         [HttpPut]
         public IActionResult Update(TransactionDto transactionDto)
         {
-            _logger.Information("Updating transaction {TransactionName}", transactionDto?.Name);
-            var transaction = _mapper.Map<TransactionDto, Transaction>(transactionDto);
+            _logger.LogInformation("Updating transaction {TransactionName}", transactionDto?.Name);
+            var transaction = mapper.ToEntity(transactionDto);
             transactionService.Update(transaction);
 
             return Ok(transaction); //TODO - Convert back to DTO
@@ -64,7 +65,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            _logger.Information("GET transaction {TransactionId}", id);
+            _logger.LogInformation("GET transaction {TransactionId}", id);
             var transaction = transactionService.GetById(id);
 
             if(transaction == null)
@@ -77,7 +78,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet]
         public IActionResult GetAll([FromQuery] bool? anticipated)
         {
-            _logger.Information("GET all transactions");
+            _logger.LogInformation("GET all transactions");
             var transactions = transactionService.GetAll();
 
             if(anticipated.HasValue && anticipated.Value == true)
@@ -92,7 +93,7 @@ namespace Moneyman.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _logger.Information("DELETE transaction {TransactionId}", id);
+            _logger.LogInformation("DELETE transaction {TransactionId}", id);
             transactionService.Delete(id);
             return Ok();
         }
@@ -100,7 +101,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("anticipated")]
         public IActionResult Anticipated()
         {
-            _logger.Information("Get Anticipated Transactions");
+            _logger.LogInformation("Get Anticipated Transactions");
             var transactions = transactionService.GetAnticipated();
             return Ok(transactions);
         }

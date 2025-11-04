@@ -10,7 +10,7 @@ namespace Moneyman.Persistence
 {
     public class TransactionRepository : GenericRepository<Transaction>, ITransactionRepository
     {
-        public TransactionRepository(MoneymanContext context, IMapper mapper) : base(context, mapper)
+        public TransactionRepository(MoneymanContext context) : base(context)
         {
         }
 

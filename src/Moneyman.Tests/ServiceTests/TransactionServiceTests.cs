@@ -12,7 +12,6 @@ using Moneyman.Persistence;
 using Moneyman.Tests.Builders;
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 using Snapper;
 using Microsoft.Extensions.Logging;
@@ -27,13 +26,14 @@ namespace Moneyman.Tests
         private Mock<ITransactionRepository> _transRepoMock;
         private Mock<IPlanDateRepository> _planDateRepoMock;
         private Mock<ILogger<TransactionService>> mockLogger;
-        private IMapper mockMapper;
+        private Mock<TransactionMapper> _mapper;
+        private IFixture fixture;
         private TransactionService NewTransactionService() =>
             new TransactionService(
                 _transRepoMock.Object,
                 _planDateRepoMock.Object,
                 mockLogger.Object,
-                mockMapper
+                _mapper.Object
             );
 
         [TestInitialize]
@@ -42,15 +42,8 @@ namespace Moneyman.Tests
             _transRepoMock = new Mock<ITransactionRepository>();
             _planDateRepoMock = new Mock<IPlanDateRepository>();
             mockLogger = new Mock<ILogger<TransactionService>>();
-
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new TransactionProfile());
-                mc.AddProfile(new TransactionDtoProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            mockMapper = mapper;
+            _mapper = new Mock<TransactionMapper>();
+            
         }
 
         [TestMethod]
