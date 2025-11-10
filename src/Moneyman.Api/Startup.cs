@@ -12,7 +12,6 @@ using Moneyman.Interfaces;
 using Moneyman.Persistence;
 using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
-using AutoMapper;
 using Moneyman.Services.Interfaces;
 using Serilog;
 
@@ -36,7 +35,7 @@ namespace Moneyman.Api
             services.SetupSwagger();
             services.AddRepositories();
             services.AddServices();
-            services.AddAutomapperProfiles();
+            services.AddMappers();
             services.SetupCors();
             services.SetupLogger();
             services.SetupHolidays(Configuration);

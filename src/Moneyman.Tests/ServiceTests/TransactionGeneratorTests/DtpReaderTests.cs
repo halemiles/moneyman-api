@@ -9,8 +9,7 @@ using System.Linq;
 using System;
 using Snapper;
 using Moneyman.Services.Interfaces;
-using AutoMapper;
-using Moneyman.Domain.MapperProfiles;
+using Moneyman.Domain.Mappers;
 using Microsoft.Extensions.Logging;
 
 namespace Moneyman.Tests
@@ -23,7 +22,7 @@ namespace Moneyman.Tests
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
         private Mock<IDateTimeProvider> mockDateTimeProvider;
-        private IMapper mockMapper;
+        private PlanDateMapper planDateMapper;
         private Mock<ILogger<DtpService>> mockLogger;
 
         private DtpService NewDtpService() =>
@@ -32,9 +31,9 @@ namespace Moneyman.Tests
                     mockPlanDateRepository.Object,
                     mockOffsetCalculationService.Object,
                     mockPaydayService.Object,
-                    mockMapper,
                     mockDateTimeProvider.Object,
-                    mockLogger.Object
+                    mockLogger.Object,
+                    planDateMapper
             );
 
         [TestInitialize]
@@ -50,13 +49,7 @@ namespace Moneyman.Tests
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new CalculatedPlanDate());
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new PlanDateDtoProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            mockMapper = mapper;
+            planDateMapper = new PlanDateMapper();
         }
 
         [TestMethod]

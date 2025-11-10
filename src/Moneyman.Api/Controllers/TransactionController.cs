@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moneyman.Domain;
+using Moneyman.Domain.MapperProfiles;
 using Moneyman.Interfaces;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Moneyman.Domain.MapperProfiles;
 
 namespace Moneyman.Api.Controllers
 {

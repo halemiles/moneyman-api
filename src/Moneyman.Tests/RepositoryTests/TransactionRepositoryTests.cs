@@ -12,8 +12,7 @@ using Moneyman.Persistence;
 using Moneyman.Tests.Builders;
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
-using Moneyman.Domain.MapperProfiles;
+using Moneyman.Domain.Mappers;
 using Snapper;
 
 namespace Moneyman.Tests
@@ -25,9 +24,9 @@ namespace Moneyman.Tests
         private Mock<MoneymanContext> _contextMock;
         private Mock<TransactionRepository> _transRepoMock;
         private Mock<IRepository<Transaction>> _genericRepositoryMock;
-        private IMapper _mapper;
+        private TransactionMapper _mapper;
         private TransactionRepository NewTransactionRepository() =>
-            new TransactionRepository(_contextMock.Object, _mapper);
+            new TransactionRepository(_contextMock.Object);
 
         [TestInitialize]
         public void SetUp()
@@ -45,14 +44,7 @@ namespace Moneyman.Tests
 
             _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new TransactionDtoToTransactionProfile());
-                mc.AddProfile(new TransactionProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            _mapper = mapper;
+            _mapper = new TransactionMapper();
         }
 
         [TestMethod]
@@ -114,7 +106,7 @@ namespace Moneyman.Tests
             Transaction updatedTransaction = null;
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
-                var transactionRepository = new TransactionRepository(context, _mapper);
+                var transactionRepository = new TransactionRepository(context);
                 transactionRepository.Add(existingTransaction);
                 await transactionRepository.Save();
 

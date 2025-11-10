@@ -38,9 +38,8 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    public static void AddAutomapperProfiles(this IServiceCollection services)
+    public static void AddMappers(this IServiceCollection services)
     {
-       
         services.AddSingleton<BankAccountMapper>();
         services.AddSingleton<TransactionMapper>();
         services.AddSingleton<PlanDateMapper>();

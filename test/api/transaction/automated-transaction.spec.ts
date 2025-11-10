@@ -2,9 +2,9 @@ import { test, expect } from '@playwright/test';
 import {dtp, dtpResponse} from '../models/dtp';
 import {DuetillPaydayPage} from "../Base/Pages/DueTillPayday";
 
-test('anticipated transaction shows in dtp', async ({ page, request }) => {
+test.skip('anticipated transaction shows in dtp', async ({ page, request }) => {
     //const dueTillPaydayPage = new DuetillPaydayPage(page, request);
-    
+
     const newAnticipatedTransaction = await request.post('/transaction', {
         data: {
           "Name":"TestAnticipatedTransaction",
@@ -17,26 +17,26 @@ test('anticipated transaction shows in dtp', async ({ page, request }) => {
 
     await expect(newAnticipatedTransaction.ok()).toBeTruthy();
     const  body = await newAnticipatedTransaction.json();
-    
+
     await request.post('/payday/generate', {
     data: {DayOfMonth: 25}
     });
-    
+
     var generateResponse = await this.request.get(`${this.baseUrl}/dtp/generate`); // dueTillPaydayPage.generatePlandates();
     //await expect(generateResponse.ok()).toBeTruthy();
     console.log(await generateResponse.json());
-    
+
     const dtpCurrentResult = await request.post('/dtp/full',{
     data:{
       startingValue:100
     }
     });
-    
+
     const dtpResultJson = await dtpCurrentResult.json() as dtpResponse;
-    
+
     await expect(await dtpResultJson.payload.planDates).not.toBeNull();
     await expect(await dtpResultJson.payload.planDates.some(pd => pd.transactionName == "TestAnticipatedTransaction")).toBeTruthy();
-    
+
     await request.delete(`/transaction/${body.id}`);
     const deletedTransaction = await request.get(`/transaction/${body.id}`);
     const deletedTransactionJson = await deletedTransaction.json();

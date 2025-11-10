@@ -11,7 +11,7 @@ export class DuetillPaydayPage {
 
     // Base URL for the application
     private get baseUrl() {
-        return "http://localhost:5000";
+        return "";
     }
 
     // Helper method to send a POST request

@@ -24,6 +24,7 @@ namespace Moneyman.Tests
         private Mock<IDateTimeProvider> mockDateTimeProvider;
         private PlanDateMapper planDateMapper;
         private Mock<ILogger<DtpService>> mockLogger;
+        private PlanDateMapper planDateMapper;
 
         private DtpService NewDtpService() =>
             new DtpService(

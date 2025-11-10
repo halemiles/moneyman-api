@@ -12,8 +12,7 @@ using Moneyman.Persistence;
 using Moneyman.Tests.Builders;
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
-using Moneyman.Domain.MapperProfiles;
+
 using Snapper;
 
 namespace Moneyman.Tests
@@ -22,10 +21,9 @@ namespace Moneyman.Tests
     public class PaydayRepositoryTests
     {
         private Mock<MoneymanContext> _contextMock;
-        private IMapper _mapper;
         private List<Payday> _paydays;
         private PaydayRepository NewPaydayRepository() =>
-            new PaydayRepository(_contextMock.Object, _mapper);
+            new PaydayRepository(_contextMock.Object);
 
         [TestInitialize]
         public void SetUp()
@@ -42,14 +40,7 @@ namespace Moneyman.Tests
 
             _contextMock.Setup(x => x.Set<Payday>()).Returns(paydayMockDbSet.Object);
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new TransactionDtoToTransactionProfile());
-                mc.AddProfile(new TransactionProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            _mapper = mapper;
+            
         }
 
         [TestMethod]
@@ -75,7 +66,7 @@ namespace Moneyman.Tests
             List<Payday> updatedPaydays = null;
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
-                var paydayRepository = new PaydayRepository(context, _mapper);
+                var paydayRepository = new PaydayRepository(context);
                 foreach(var payday in _paydays)
                 {
                     paydayRepository.Add(payday);
