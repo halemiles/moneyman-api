@@ -1,5 +1,4 @@
 ﻿import { test, expect } from '@playwright/test';
-import {dtp, dtpResponse} from '../models/dtp';
 
 const BASE_URL = "http://localhost:5000"; // Adjust if needed
 test('Generate plandates', async ({ request }) => {
