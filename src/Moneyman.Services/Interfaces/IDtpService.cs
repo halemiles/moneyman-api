@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Moneyman.Domain;
 using Moneyman.Domain.Models;
-using Moneyman.Models.Dtos;
+using Moneyman.Models.DomainTransferObjects;
 
 namespace Moneyman.Services.Interfaces
 {

@@ -4,6 +4,7 @@
 // using FluentAssertions;
 // using Moneyman.Domain.MapperProfiles;
 // using Moneyman.Models.Dtos;
+// using Moneyman.Models.DomainTransferObjects;
 //
 // namespace Moneyman.Tests
 // {

@@ -1,14 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Moneyman.Domain;
 using Moneyman.Domain.Models;
-using Moneyman.Domain.Models.Dtos;
-using Moneyman.Interfaces;
-using Moneyman.Models.Dtos;
 using Moneyman.Services.Interfaces;
 
 namespace Moneyman.Api.Controllers

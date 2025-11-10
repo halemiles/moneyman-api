@@ -6,7 +6,7 @@ using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using Moneyman.Domain.Models;
 using Moneyman.Interfaces;
-using Moneyman.Models.Dtos;
+using Moneyman.Models.DomainTransferObjects;
 using Moneyman.Services.Factories;
 using Moneyman.Services.Interfaces;
 
