@@ -2,7 +2,6 @@ using Moneyman.Interfaces;
 using System.Collections.Generic;
 using System;
 using Moneyman.Domain;
-using AutoMapper;
 using Moneyman.Services.Interfaces;
 using System.Linq;
 using Moneyman.Services.Extentions;

@@ -14,7 +14,7 @@ using Snapper;
 using Snapper.Core;
 using Microsoft.Extensions.Logging;
 using Moneyman.Services.Interfaces;
-using AutoMapper;
+
 using Moneyman.Domain.MapperProfiles;
 
 namespace Moneyman.Tests

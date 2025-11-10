@@ -4,7 +4,6 @@ using Moneyman.Domain;
 using Microsoft.EntityFrameworkCore;
 using Moneyman.Interfaces;
 using System.Threading.Tasks;
-using AutoMapper;
 
 namespace Moneyman.Persistence
 {
