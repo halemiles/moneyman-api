@@ -1,6 +1,6 @@
 using System;
 
-namespace Moneyman.Models.Dtos
+namespace Moneyman.Models.DomainTransferObjects
 {
     public class PlanDateDto
     {

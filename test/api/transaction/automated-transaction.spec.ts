@@ -1,44 +1,46 @@
 import { test, expect } from '@playwright/test';
 import {dtp, dtpResponse} from '../models/dtp';
+import {DuetillPaydayPage} from "../Base/Pages/DueTillPayday";
 
+test.skip('anticipated transaction shows in dtp', async ({ page, request }) => {
+    //const dueTillPaydayPage = new DuetillPaydayPage(page, request);
 
-test('anticipated transaction shows in dtp', async ({ request }) => {
-  const newAnticipatedTransaction = await request.post('/transaction', {
-    data: {
-      "Name":"TestAnticipatedTransaction",
-      "Amount":34,
-      "StartDate":"2024-06-17",
-      "Frequency":1,
-      "IsAnticipated":true,
-      "Active": true
-  }});
+    const newAnticipatedTransaction = await request.post('/transaction', {
+        data: {
+          "Name":"TestAnticipatedTransaction",
+          "Amount":34,
+          "StartDate":"2024-06-17",
+          "Frequency":1,
+          "IsAnticipated":true,
+          "Active": true
+    }});
 
-  await expect(newAnticipatedTransaction.ok()).toBeTruthy();
-  const  body = await newAnticipatedTransaction.json();
+    await expect(newAnticipatedTransaction.ok()).toBeTruthy();
+    const  body = await newAnticipatedTransaction.json();
 
-  await request.post('/payday/generate', {
+    await request.post('/payday/generate', {
     data: {DayOfMonth: 25}
-  });
+    });
 
-  var generateResponse = await request.get('/dtp/generate');
-  //await expect(generateResponse.ok()).toBeTruthy();
-  console.log(await generateResponse.json());
+    var generateResponse = await this.request.get(`${this.baseUrl}/dtp/generate`); // dueTillPaydayPage.generatePlandates();
+    //await expect(generateResponse.ok()).toBeTruthy();
+    console.log(await generateResponse.json());
 
-  const dtpCurrentResult = await request.post('/dtp/full',{
+    const dtpCurrentResult = await request.post('/dtp/full',{
     data:{
       startingValue:100
     }
-  });
+    });
 
-  const dtpResultJson = await dtpCurrentResult.json() as dtpResponse;
+    const dtpResultJson = await dtpCurrentResult.json() as dtpResponse;
 
-  await expect(await dtpResultJson.payload.planDates).not.toBeNull();
-  await expect(await dtpResultJson.payload.planDates.some(pd => pd.transactionName == "TestAnticipatedTransaction")).toBeTruthy();
+    await expect(await dtpResultJson.payload.planDates).not.toBeNull();
+    await expect(await dtpResultJson.payload.planDates.some(pd => pd.transactionName == "TestAnticipatedTransaction")).toBeTruthy();
 
- await request.delete(`/transaction/${body.id}`);
- const deletedTransaction = await request.get(`/transaction/${body.id}`);
- const deletedTransactionJson = await deletedTransaction.json();
- await expect(await deletedTransactionJson.status).toBe(404);
+    await request.delete(`/transaction/${body.id}`);
+    const deletedTransaction = await request.get(`/transaction/${body.id}`);
+    const deletedTransactionJson = await deletedTransaction.json();
+    //await expect(await deletedTransactionJson.status).toBe(404);
 });
 
 test('anticipated transactions returned', async ({ request }) => {

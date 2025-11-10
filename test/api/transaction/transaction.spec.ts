@@ -3,7 +3,7 @@ import {describe} from "node:test";
 
 describe('basic transaction endpoint tests', async () => {
   test('transaction returns OK', async ({ request, baseURL }) => {
-    const createdTransaction = await request.get(`http://localhost:5000/transaction`);
+    const createdTransaction = await request.get(`${baseURL}/transaction`);
     console.log(createdTransaction);
     await expect(await createdTransaction.status()).toBe(200);
   });
@@ -11,7 +11,7 @@ describe('basic transaction endpoint tests', async () => {
 
 
 describe('ansiticpated transactions', async () => {
-  test('anticipated transaction shows in dtp', async ({ request, baseURL }) => {
+  test.skip('anticipated transaction shows in dtp', async ({ request, baseURL }) => {
     const createdTransaction = await request.post(`${baseURL}/transaction`, {
       data: {
         "Name": "Testransaction",

@@ -9,30 +9,25 @@ using Moneyman.Services;
 using Moneyman.Domain;
 using System;
 
-namespace YourProject.Tests
+namespace Moneyman.Tests.StrategyTests
 {
     [TestClass]
     public class DefaultPlanDateGenerationStrategyTests
     {
-        private readonly Mock<ILogger<DtpService>> _mockLogger;
-        private readonly Mock<ITransactionRepository> _mockTransactionRepository;
-        private readonly Mock<IOffsetCalculationService> _mockOffsetCalculationService;
         private readonly DefaultPlanDateGenerationStrategy _generator;
-        private readonly Mock<IPlanDateRepository> mockPlanDateRepository;
-
-        private const int TotalPlanDateYears = 2;
 
         public DefaultPlanDateGenerationStrategyTests()
         {
-            _mockLogger = new Mock<ILogger<DtpService>>();
-            _mockTransactionRepository = new Mock<ITransactionRepository>();
-            _mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
-            mockPlanDateRepository = new Mock<IPlanDateRepository>();
+            var mockLogger = new Mock<ILogger<DtpService>>();
+            var mockPlanDateRepository = new Mock<IPlanDateRepository>();
+            var mockTransactionRepository = new Mock<ITransactionRepository>();
+            var mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+
             _generator = new DefaultPlanDateGenerationStrategy(
-                _mockTransactionRepository.Object,
+                mockTransactionRepository.Object,
                 mockPlanDateRepository.Object,
-                _mockOffsetCalculationService.Object,
-                _mockLogger.Object
+                mockOffsetCalculationService.Object,
+                mockLogger.Object
             );
         }
 
@@ -51,9 +46,12 @@ namespace YourProject.Tests
                 new Transaction { Id = 1, Frequency = frequency, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" }
             };
 
-            _mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
+            var mockTransactionRepository = new Mock<ITransactionRepository>();
+            var mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
 
-            _mockOffsetCalculationService.Setup(service => service.CalculateOffset(It.IsAny<DateTime>()))
+            mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
+
+            mockOffsetCalculationService.Setup(service => service.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns((DateTime inputDate) => new CalculatedPlanDate { PlanDate = inputDate });
 
             // Act

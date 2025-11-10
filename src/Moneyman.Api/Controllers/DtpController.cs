@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Moneyman.Domain;
+using Microsoft.Extensions.Logging;
 using Moneyman.Domain.Models;
-using Moneyman.Domain.Models.Dtos;
-using Moneyman.Interfaces;
-using Moneyman.Models.Dtos;
 using Moneyman.Services.Interfaces;
-using Serilog;
 
 namespace Moneyman.Api.Controllers
 {
@@ -18,10 +12,10 @@ namespace Moneyman.Api.Controllers
     public class DtpController : ControllerBase
     {
         private readonly IDtpService dtpService;
-        private readonly ILogger _logger;
+        private readonly ILogger<DtpController> _logger;
 
         public DtpController(
-            ILogger logger,
+            ILogger<DtpController> logger,
             IDtpService dtpService
         )
         {
@@ -33,7 +27,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("current")]
         public IActionResult GetCurrentPeriod(int? startingValue, int? bankAccountId)
         {
-            _logger.Information("GET all current");
+            _logger.LogInformation("GET all current");
             var planDateDto = dtpService.GetCurrent(startingValue, bankAccountId);
             return Ok(planDateDto);
         }
@@ -41,7 +35,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("full")]
         public IActionResult GetOffsetPeriod(int? startingValue, int? bankAccountId)
         {
-            _logger.Information("GET all DTP");
+            _logger.LogInformation("GET all DTP");
             var planDateDto = dtpService.GetOffset(0);
             return Ok(planDateDto);
         }
@@ -49,7 +43,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("generate")]
         public IActionResult Generate([FromQuery]int? transactionId)
         {
-            _logger.Information("GET generate DTP {TransactionId}", transactionId ?? 0);
+            _logger.LogInformation("GET generate DTP {TransactionId}", transactionId ?? 0);
 
             try
             {
@@ -58,7 +52,7 @@ namespace Moneyman.Api.Controllers
             }
             catch(Exception err)
             {
-                _logger.Fatal(err.ToString());
+                _logger.LogError(err.ToString());
                 return Ok(new DtpHttpResponse{RecordCount = 0, Message = "Missing Paydays"});
             }
         }

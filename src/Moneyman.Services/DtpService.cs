@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
+using Moneyman.Domain.MapperProfiles;
 using Moneyman.Domain.Models;
 using Moneyman.Interfaces;
-using Moneyman.Models.Dtos;
+using Moneyman.Models.DomainTransferObjects;
 using Moneyman.Services.Factories;
 using Moneyman.Services.Interfaces;
 
@@ -21,16 +21,16 @@ namespace Moneyman.Services
         private readonly IPaydayService paydayService;
         private readonly ILogger<DtpService> logger;
         private readonly IDateTimeProvider dateTimeProvider;
-        private readonly IMapper mapper;
+        private readonly PlanDateMapper planDateMapper;
 
         public DtpService(
             ITransactionRepository transactionRepository,
             IPlanDateRepository planDateRepository,
             IOffsetCalculationService offsetCalculationService,
             IPaydayService paydayService,
-            IMapper mapper,
             IDateTimeProvider dateTimeProvider,
-            ILogger<DtpService> logger
+            ILogger<DtpService> logger,
+            PlanDateMapper planDateMapper
         )
         {
             this.transactionRepository = transactionRepository;
@@ -38,8 +38,8 @@ namespace Moneyman.Services
             this.offsetCalculationService = offsetCalculationService;
             this.paydayService = paydayService;
             this.dateTimeProvider = dateTimeProvider;
-            this.mapper = mapper;
             this.logger = logger;
+            this.planDateMapper = planDateMapper;
         }
 
         //TODO: Move this to a another class so we can unit test
@@ -200,7 +200,7 @@ namespace Moneyman.Services
                     || (x.Transaction.BankAccountId == bankAccountId )
                 )
             ).ToList();
-            var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
+            var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             var amountDue = mappedPlanDates.Sum(x => x.Amount);
             var weeksRemaining = WeeksRemaining(startDate, endDate);
             var weekDivisder = weeksRemaining == 0 ? 1 : weeksRemaining;
@@ -237,7 +237,7 @@ namespace Moneyman.Services
                                .GetAll()
                                .Where(x => x.Transaction.Active && x.Date > startDate && x.Date < endDate)
                                .ToList();
-            var mappedPlanDates = mapper.Map<List<PlanDateDto>>(planDates);
+            var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             return ApiResponse.Success<DtpDto>( new DtpDto{
                 PlanDates = mappedPlanDates,
                 StartDate = startDate,

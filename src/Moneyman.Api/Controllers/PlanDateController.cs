@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
@@ -15,17 +15,14 @@ namespace Moneyman.Api.Controllers
     {
         private readonly IPlanDateService planDateService;
         private readonly ILogger<PlandateController> _logger;
-        private readonly IMapper _mapper;
 
         public PlandateController(
             ILogger<PlandateController> logger,
-            IPlanDateService planDateService,
-            IMapper mapper
+            IPlanDateService planDateService
         )
         {
             _logger = logger;
             this.planDateService = planDateService;
-            _mapper = mapper;
         }
 
         [HttpGet]

@@ -1,4 +1,4 @@
-using AutoMapper;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
@@ -14,17 +14,14 @@ namespace Moneyman.Api.Controllers
     {
         private readonly IPaydayService paydayService;
         private readonly ILogger<PaydayController> _logger;
-        private readonly IMapper _mapper;
 
         public PaydayController(
             ILogger<PaydayController> logger,
-            IPaydayService paydayService,
-            IMapper mapper
+            IPaydayService paydayService
         )
         {
             _logger = logger;
             this.paydayService = paydayService;
-            _mapper = mapper;
         }
 
         [HttpPost("generate")]
@@ -39,6 +36,21 @@ namespace Moneyman.Api.Controllers
             
             var paydays = paydayService.Generate(body.DayOfMonth.Value);
             return Ok(paydays);
+        }
+        
+        [HttpDelete("clear")]
+        public IActionResult ClearPaydays()
+        {
+            
+            paydayService.RemoveAll();
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult GetAllPaydays()
+        {
+            var payitys = paydayService.GetAll();
+            return Ok(payitys);
         }
     }
 }

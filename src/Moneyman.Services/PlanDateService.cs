@@ -4,7 +4,6 @@ using System.Linq;
 using System;
 using Moneyman.Domain;
 using Moneyman.Services.Validators;
-using AutoMapper;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 

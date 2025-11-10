@@ -2,7 +2,7 @@ using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moneyman.Interfaces;
 using Moneyman.Services;
-using AutoMapper;
+
 using System.Linq;
 using FluentAssertions;
 using Snapper;

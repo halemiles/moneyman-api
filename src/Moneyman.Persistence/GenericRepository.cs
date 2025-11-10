@@ -4,19 +4,16 @@ using Moneyman.Domain;
 using Microsoft.EntityFrameworkCore;
 using Moneyman.Interfaces;
 using System.Threading.Tasks;
-using AutoMapper;
 
 namespace Moneyman.Persistence
 {
   public class GenericRepository<T> : IRepository<T> where T : class
   {
     protected MoneymanContext _context;
-    protected IMapper _mapper;
 
-    public GenericRepository(MoneymanContext context, IMapper mapper)
+    public GenericRepository(MoneymanContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
     public virtual void Add(T newObject)
