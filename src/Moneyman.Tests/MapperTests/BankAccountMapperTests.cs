@@ -2,7 +2,7 @@
 // using Moneyman.Domain;
 // using System;
 // using FluentAssertions;
-// using Moneyman.Domain.Mappers;
+// using Moneyman.Domain.MapperProfiles;
 // using BankAccountMapper = Moneyman.Domain.BankAccountMapper;
 //
 // namespace Moneyman.Tests

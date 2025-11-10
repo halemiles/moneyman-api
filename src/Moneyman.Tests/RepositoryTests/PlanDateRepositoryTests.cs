@@ -12,7 +12,7 @@ using Moneyman.Persistence;
 using Moneyman.Tests.Builders;
 using System;
 using System.Threading.Tasks;
-using Moneyman.Domain.Mappers;
+using Moneyman.Domain.MapperProfiles;
 using Snapper;
 using AutoFixture;
 

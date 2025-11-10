@@ -9,7 +9,6 @@ using System.Linq;
 using System;
 using Microsoft.Extensions.Logging;
 using Moneyman.Services.Interfaces;
-using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 
 namespace Moneyman.Tests
@@ -24,7 +23,6 @@ namespace Moneyman.Tests
         private Mock<IDateTimeProvider> mockDateTimeProvider;
         private PlanDateMapper planDateMapper;
         private Mock<ILogger<DtpService>> mockLogger;
-        private PlanDateMapper planDateMapper;
 
         private DtpService NewDtpService() =>
             new DtpService(
@@ -34,7 +32,6 @@ namespace Moneyman.Tests
                     mockPaydayService.Object,
                     mockDateTimeProvider.Object,
                     mockLogger.Object,
-
                     planDateMapper
             );
 

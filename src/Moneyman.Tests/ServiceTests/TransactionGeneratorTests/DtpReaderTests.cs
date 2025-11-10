@@ -9,7 +9,7 @@ using System.Linq;
 using System;
 using Snapper;
 using Moneyman.Services.Interfaces;
-using Moneyman.Domain.Mappers;
+using Moneyman.Domain.MapperProfiles;
 using Microsoft.Extensions.Logging;
 
 namespace Moneyman.Tests
