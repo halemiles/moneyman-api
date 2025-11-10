@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import {dtp, dtpResponse} from '../models/dtp';
-import {DuetillPaydayPage} from "../Base/Pages/DueTillPayday";
 
 test.skip('anticipated transaction shows in dtp', async ({ page, request }) => {
     //const dueTillPaydayPage = new DuetillPaydayPage(page, request);
