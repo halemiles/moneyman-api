@@ -1,9 +1,9 @@
 namespace Moneyman.Domain
 {
-    public enum PaymentType 
+    public enum PaymentType
     {
-        MANUAL,
-        STANDINGORDER,
-        DIRECTDEBIT
+        MANUAL = 0,
+        STANDINGORDER = 1,
+        DIRECTDEBIT = 2
     };
 }

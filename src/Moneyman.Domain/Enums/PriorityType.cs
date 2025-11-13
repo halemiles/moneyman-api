@@ -2,8 +2,8 @@ namespace Moneyman.Domain
 {
     public enum PriorityType
     {
-        DESIRED,
-        DEPENDANT,
-        ESSENTIAL
+        DESIRED = 0,
+        DEPENDANT = 1,
+        ESSENTIAL = 2
     };
 }

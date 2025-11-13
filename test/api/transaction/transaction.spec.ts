@@ -18,7 +18,11 @@ describe('ansiticpated transactions', async () => {
         "Amount": 34,
         "StartDate": "2024-05-17",
         "Frequency": 1,
-        "Active": true
+        "Active": true,
+        "Anticipated": false,
+        "PaymentType": 2, // DIRECTDEBIT
+        "CategoryType": 2, // TRANSPORTATION
+        "Priority": 2 // ESSENTIAL
       }
     });
 
