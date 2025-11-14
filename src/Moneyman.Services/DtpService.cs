@@ -191,6 +191,12 @@ namespace Moneyman.Services
             var planDates = planDateRepository
                                .GetAll();
 
+            if (!planDates.Any())
+            {
+                logger.LogWarning("Plandate list is empty");
+                return ApiResponse.NoContent<DtpDto>("Plandate list is empty. Please regenerate plandates");
+            }
+            
             planDates = planDates.Where(x =>
                 x.Transaction.Active
                 && x.Date > startDate
