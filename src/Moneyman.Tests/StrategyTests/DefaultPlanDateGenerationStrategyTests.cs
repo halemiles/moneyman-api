@@ -14,19 +14,21 @@ namespace Moneyman.Tests.StrategyTests
     [TestClass]
     public class DefaultPlanDateGenerationStrategyTests
     {
+        private readonly Mock<ITransactionRepository> _mockTransactionRepository;
+        private readonly Mock<IOffsetCalculationService> _mockOffsetCalculationService;
         private readonly DefaultPlanDateGenerationStrategy _generator;
 
         public DefaultPlanDateGenerationStrategyTests()
         {
             var mockLogger = new Mock<ILogger<DtpService>>();
             var mockPlanDateRepository = new Mock<IPlanDateRepository>();
-            var mockTransactionRepository = new Mock<ITransactionRepository>();
-            var mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+            _mockTransactionRepository = new Mock<ITransactionRepository>();
+            _mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
 
             _generator = new DefaultPlanDateGenerationStrategy(
-                mockTransactionRepository.Object,
+                _mockTransactionRepository.Object,
                 mockPlanDateRepository.Object,
-                mockOffsetCalculationService.Object,
+                _mockOffsetCalculationService.Object,
                 mockLogger.Object
             );
         }
@@ -46,12 +48,9 @@ namespace Moneyman.Tests.StrategyTests
                 new Transaction { Id = 1, Frequency = frequency, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" }
             };
 
-            var mockTransactionRepository = new Mock<ITransactionRepository>();
-            var mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
+            _mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
 
-            mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
-
-            mockOffsetCalculationService.Setup(service => service.CalculateOffset(It.IsAny<DateTime>()))
+            _mockOffsetCalculationService.Setup(service => service.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns((DateTime inputDate) => new CalculatedPlanDate { PlanDate = inputDate });
 
             // Act
