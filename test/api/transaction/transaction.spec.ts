@@ -10,7 +10,7 @@ describe('basic transaction endpoint tests', async () => {
 });
 
 
-describe('ansiticpated transactions', async () => {
+describe('anticipated transactions', async () => {
   test.skip('anticipated transaction shows in dtp', async ({ request, baseURL }) => {
     const createdTransaction = await request.post(`${baseURL}/transaction`, {
       data: {
