@@ -37,8 +37,6 @@ test.skip('anticipated transaction shows in dtp', async ({ page, request }) => {
     await expect(await dtpResultJson.payload.planDates.some(pd => pd.transactionName == "TestAnticipatedTransaction")).toBeTruthy();
 
     await request.delete(`/transaction/${body.id}`);
-    const deletedTransaction = await request.get(`/transaction/${body.id}`);
-    const deletedTransactionJson = await deletedTransaction.json();
     //await expect(await deletedTransactionJson.status).toBe(404);
 });
 
