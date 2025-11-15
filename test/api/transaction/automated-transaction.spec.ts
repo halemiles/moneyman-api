@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {dtp, dtpResponse} from '../models/dtp';
 
-test.skip('anticipated transaction shows in dtp', async ({ page, request }) => {
+test.skip('anticipated transaction shows in dtp', async ({ page, request, baseURL }) => {
     //const dueTillPaydayPage = new DuetillPaydayPage(page, request);
 
     const newAnticipatedTransaction = await request.post('/transaction', {
@@ -21,7 +21,7 @@ test.skip('anticipated transaction shows in dtp', async ({ page, request }) => {
     data: {DayOfMonth: 25}
     });
 
-    var generateResponse = await this.request.get(`${this.baseUrl}/dtp/generate`); // dueTillPaydayPage.generatePlandates();
+    var generateResponse = await request.get(`${baseURL}/dtp/generate`); // dueTillPaydayPage.generatePlandates();
     //await expect(generateResponse.ok()).toBeTruthy();
     console.log(await generateResponse.json());
 
