@@ -1,8 +1,9 @@
-namespace Moneyman.Domain.Models
+namespace Moneyman.Domain
 {
     public enum StatusCode
     {
         Success = 200,
+        NoContent = 204,
         BadRequest = 400,
         InternalError = 500,
         NotFound = 404
@@ -10,7 +11,7 @@ namespace Moneyman.Domain.Models
 
     public class ApiResponse<T>
     {
-        public bool Success { get{ return StatusCode == StatusCode.Success; } }
+        public bool Success { get{ return StatusCode == StatusCode.Success || StatusCode == StatusCode.NoContent; } }
         public StatusCode StatusCode {get; set;}
         public string Message { get; set; }
         public T Payload { get; set; }
@@ -41,6 +42,12 @@ namespace Moneyman.Domain.Models
         {
             message ??= "Not Found";
             return new ApiResponse<T>(StatusCode.NotFound, message, default);
+        }
+        
+        public static ApiResponse<T> NoContent<T>(string message = null)
+        {
+            message ??= "No Content";
+            return new ApiResponse<T>(StatusCode.NoContent, message, default);
         }
     }
 
