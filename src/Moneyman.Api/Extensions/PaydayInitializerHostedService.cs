@@ -49,7 +49,7 @@ namespace Moneyman.Api.Extensions
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to initialize paydays. Database may not be ready.");
+                _logger.LogError(ex, "Failed to initialize paydays. The application will continue running but payday data may not be available until the database is ready and the application is restarted.");
             }
             
             return Task.CompletedTask;
