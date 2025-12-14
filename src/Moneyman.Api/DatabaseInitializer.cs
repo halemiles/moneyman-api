@@ -7,24 +7,43 @@ namespace Moneyman.Api
 {
     public static class DatabaseInitializer
     {
+        private static string FindScriptPath()
+        {
+            // Try multiple possible paths
+            var possiblePaths = new[]
+            {
+                // Development: from bin/Debug/net9.0 back to src/Scripts
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Scripts", "seed_database.py"),
+                // Alternative development path
+                Path.Combine(Directory.GetCurrentDirectory(), "..", "Scripts", "seed_database.py"),
+                // Running from src/Moneyman.Api directory
+                Path.Combine(Directory.GetCurrentDirectory(), "..", "Scripts", "seed_database.py"),
+                // Docker/published builds (if script is copied to output)
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts", "seed_database.py")
+            };
+            
+            foreach (var path in possiblePaths)
+            {
+                var normalizedPath = Path.GetFullPath(path);
+                if (File.Exists(normalizedPath))
+                {
+                    return normalizedPath;
+                }
+            }
+            
+            return null;
+        }
+        
         public static void SeedDatabase(ILogger logger = null)
         {
             try
             {
-                var scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Scripts", "seed_database.py");
+                var scriptPath = FindScriptPath();
                 
-                // Normalize the path
-                scriptPath = Path.GetFullPath(scriptPath);
-                
-                if (!File.Exists(scriptPath))
+                if (scriptPath == null)
                 {
-                    // Try alternative path for Docker/published builds
-                    scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts", "seed_database.py");
-                    if (!File.Exists(scriptPath))
-                    {
-                        logger?.LogWarning($"Seed script not found at {scriptPath}. Skipping database seeding.");
-                        return;
-                    }
+                    logger?.LogWarning("Seed script not found. Skipping database seeding.");
+                    return;
                 }
                 
                 logger?.LogInformation("Initializing database with seed data...");
