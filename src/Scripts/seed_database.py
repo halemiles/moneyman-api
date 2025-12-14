@@ -63,7 +63,10 @@ def execute_sql_file(db_path, sql_file_path):
             sql_script = sql_file.read()
         
         conn = sqlite3.connect(db_path)
-        conn.isolation_level = None  # Enable autocommit mode for scripts with transactions
+        # Set isolation_level to None to allow executescript to handle transactions.
+        # The SQL files contain BEGIN TRANSACTION/COMMIT statements that need autocommit mode.
+        # executescript() automatically commits before executing, so this is safe.
+        conn.isolation_level = None
         cursor = conn.cursor()
         cursor.executescript(sql_script)
         conn.close()

@@ -48,9 +48,32 @@ namespace Moneyman.Api
                 
                 logger?.LogInformation("Initializing database with seed data...");
                 
+                // Try python3 first (Linux/Mac), fallback to python (Windows)
+                string pythonCommand = "python3";
+                try
+                {
+                    var testProcess = Process.Start(new ProcessStartInfo
+                    {
+                        FileName = pythonCommand,
+                        Arguments = "--version",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    });
+                    testProcess?.WaitForExit();
+                    if (testProcess?.ExitCode != 0)
+                    {
+                        pythonCommand = "python";
+                    }
+                }
+                catch
+                {
+                    pythonCommand = "python";
+                }
+                
                 var processStartInfo = new ProcessStartInfo
                 {
-                    FileName = "python3",
+                    FileName = pythonCommand,
                     Arguments = $"\"{scriptPath}\"",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
