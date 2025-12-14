@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "Transactions" (
 	"PriorityType"	INTEGER NOT NULL DEFAULT 0,
 	"BankAccountID"	INTEGER,
 	CONSTRAINT "PK_Transactions" PRIMARY KEY("Id" AUTOINCREMENT)
-)
+);
 
 CREATE TABLE IF NOT EXISTS "PlanDates" (
     "Id" INTEGER NOT NULL CONSTRAINT "PK_PlanDates" PRIMARY KEY AUTOINCREMENT,
@@ -41,9 +41,5 @@ CREATE TABLE IF NOT EXISTS "PlanDates" (
     CONSTRAINT "FK_PlanDates_Transactions_TransactionId" FOREIGN KEY ("TransactionId") REFERENCES "Transactions" ("Id")
 );
 
-DELETE FROM sqlite_sequence;
-INSERT INTO sqlite_sequence VALUES('Transactions',17);
-INSERT INTO sqlite_sequence VALUES('Paydays',96);
-INSERT INTO sqlite_sequence VALUES('PlanDates',3736);
-CREATE INDEX "IX_PlanDates_TransactionId" ON "PlanDates" ("TransactionId");
+CREATE INDEX IF NOT EXISTS "IX_PlanDates_TransactionId" ON "PlanDates" ("TransactionId");
 COMMIT;
