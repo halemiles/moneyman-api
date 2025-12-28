@@ -78,7 +78,37 @@ namespace Moneyman.Tests
             var result = sut.GenerateAll(null);
 
             // Assert
-            result.StatusCode.Should().Be(Domain.Models.StatusCode.NotFound);
+            result.StatusCode.Should().Be(StatusCode.NotFound);
+        }
+
+        [TestMethod]
+        public void GenerateAll_WhenNoTransactionsStartInCurrentYear_ReturnsNotFound()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            var currentYear = DateTime.Now.Year;
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(currentYear, 6, 15));
+            
+            // Create transactions with start dates NOT in the current year
+            IEnumerable<Transaction> trans = new List<Transaction>
+            {
+                new Transaction
+                {
+                    Name = "Old Transaction",
+                    Amount = 100,
+                    Active = true,
+                    StartDate = new DateTime(currentYear - 1, 5, 10),
+                    Frequency = Frequency.Monthly
+                }
+            };
+            mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
+            
+            // Act
+            var result = sut.GenerateAll(null);
+
+            // Assert
+            result.StatusCode.Should().Be(StatusCode.NotFound);
+            result.Message.Should().Contain("No transactions exist which start in the current year");
         }
 
         [TestMethod]
@@ -86,9 +116,13 @@ namespace Moneyman.Tests
         {
             // Arrange
             var sut = NewDtpService();
+            var currentYear = DateTime.Now.Year;
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(currentYear, 6, 15));
+            
             Fixture fixture = new Fixture();
             Transaction t = new(){
-                Frequency = Frequency.Monthly
+                Frequency = Frequency.Monthly,
+                StartDate = new DateTime(currentYear, 1, 1)
             };
             IEnumerable<Transaction> trans = new List<Transaction>
             {
@@ -100,7 +134,7 @@ namespace Moneyman.Tests
             var result = sut.GenerateAll(null);
 
             // Assert
-            result.StatusCode.Should().Be(Domain.Models.StatusCode.Success);
+            result.StatusCode.Should().Be(StatusCode.Success);
             result.Payload.Count().Should().Be(24*3);
         }
     }

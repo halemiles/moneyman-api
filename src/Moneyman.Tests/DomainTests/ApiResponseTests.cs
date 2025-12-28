@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moneyman.Domain.Models;
+using Moneyman.Domain;
 using Moq;
 
 namespace Moneyman.Tests
