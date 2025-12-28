@@ -59,7 +59,7 @@ namespace Moneyman.Api.Controllers
             catch(Exception err)
             {
                 _logger.LogError(err.ToString());
-                return Ok(new DtpHttpResponse{RecordCount = 0, Message = "Unexpected error occurred"});
+                return Ok(new DtpHttpResponse{RecordCount = 0, Message = $"Unexpected error occurred: {err.Message}"});
             }
         }
 
