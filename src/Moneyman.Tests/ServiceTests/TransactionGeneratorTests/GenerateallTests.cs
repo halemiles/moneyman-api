@@ -86,8 +86,8 @@ namespace Moneyman.Tests
         {
             // Arrange
             var sut = NewDtpService();
-            var currentYear = DateTime.Now.Year;
-            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(currentYear, 6, 15));
+            const int testYear = 2024;
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(testYear, 6, 15));
             
             // Create transactions with start dates NOT in the current year
             IEnumerable<Transaction> trans = new List<Transaction>
@@ -97,7 +97,7 @@ namespace Moneyman.Tests
                     Name = "Old Transaction",
                     Amount = 100,
                     Active = true,
-                    StartDate = new DateTime(currentYear - 1, 5, 10),
+                    StartDate = new DateTime(testYear - 1, 5, 10),
                     Frequency = Frequency.Monthly
                 }
             };
@@ -116,13 +116,13 @@ namespace Moneyman.Tests
         {
             // Arrange
             var sut = NewDtpService();
-            var currentYear = DateTime.Now.Year;
-            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(currentYear, 6, 15));
+            const int testYear = 2024;
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(testYear, 6, 15));
             
             Fixture fixture = new Fixture();
             Transaction t = new(){
                 Frequency = Frequency.Monthly,
-                StartDate = new DateTime(currentYear, 1, 1)
+                StartDate = new DateTime(testYear, 1, 1)
             };
             IEnumerable<Transaction> trans = new List<Transaction>
             {
