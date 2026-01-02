@@ -78,7 +78,7 @@ namespace Moneyman.Tests
             var result = sut.GenerateAll(null);
 
             // Assert
-            result.StatusCode.Should().Be(Domain.Models.StatusCode.NotFound);
+            result.StatusCode.Should().Be(StatusCode.NotFound);
         }
 
         [TestMethod]
@@ -100,7 +100,7 @@ namespace Moneyman.Tests
             var result = sut.GenerateAll(null);
 
             // Assert
-            result.StatusCode.Should().Be(Domain.Models.StatusCode.Success);
+            result.StatusCode.Should().Be(StatusCode.Success);
             result.Payload.Count().Should().Be(24*3);
         }
     }
