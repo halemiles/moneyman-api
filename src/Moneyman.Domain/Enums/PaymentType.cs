@@ -4,6 +4,7 @@ namespace Moneyman.Domain
     {
         MANUAL,
         STANDINGORDER,
-        DIRECTDEBIT
+        DIRECTDEBIT,
+        SUBSCRIPTION
     };
 }
