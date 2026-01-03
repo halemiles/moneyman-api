@@ -94,6 +94,12 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection SetupPayday(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<PaydayOptions>(configuration.GetSection("PaydayOptions"));
+        return services;
+    }
+
     public static IServiceCollection SetupSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>
