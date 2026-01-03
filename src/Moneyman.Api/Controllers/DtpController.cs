@@ -48,12 +48,18 @@ namespace Moneyman.Api.Controllers
             try
             {
                 var planDates = dtpService.GenerateAll(transactionId);
-                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count(), Message = "Success"});
+                
+                if (!planDates.Success)
+                {
+                    return Ok(new DtpHttpResponse{RecordCount = 0, Message = planDates.Message});
+                }
+                
+                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count(), Message = planDates.Message});
             }
             catch(Exception err)
             {
                 _logger.LogError(err.ToString());
-                return Ok(new DtpHttpResponse{RecordCount = 0, Message = "Missing Paydays"});
+                return Ok(new DtpHttpResponse{RecordCount = 0, Message = $"Unexpected error occurred: {err.Message}"});
             }
         }
 

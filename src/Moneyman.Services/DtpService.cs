@@ -49,6 +49,14 @@ namespace Moneyman.Services
             {
                 return ApiResponse.NotFound<List<PlanDate>>("No paydays found. Please regenerate");
             }
+
+            var currentYear = dateTimeProvider.GetToday().Year;
+            if(!transactionRepository.GetAll().Any(x => x.StartDate.Year == currentYear))
+            {
+                logger.LogWarning("No transactions with start date in current year {CurrentYear}", currentYear);
+                return ApiResponse.NotFound<List<PlanDate>>($"No transactions exist which start in the current year ({currentYear}). Please add or update transactions.");
+            }
+
             logger.LogInformation("Removing existing plan dates");
             transactionRepository.RemoveAll("PlanDates");
 
