@@ -13,6 +13,7 @@ using Moneyman.Persistence;
 using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using Moneyman.Services.Interfaces;
+using Moneyman.Api.Extensions;
 using Serilog;
 
 namespace Moneyman.Api
@@ -39,6 +40,8 @@ namespace Moneyman.Api
             services.SetupCors();
             services.SetupLogger();
             services.SetupHolidays(Configuration);
+            services.SetupPayday(Configuration);
+            services.AddHostedService<PaydayInitializerHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

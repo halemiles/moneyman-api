@@ -1,3 +1,4 @@
+// src/Moneyman.Api/Controllers/TransactionController.cs
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,10 +81,15 @@ namespace Moneyman.Api.Controllers
             _logger.LogInformation("GET all transactions");
             var transactions = transactionService.GetAll();
 
-            if(anticipated.HasValue && anticipated.Value == true)
+            if (anticipated.HasValue && anticipated.Value)
             {
                 transactions = transactions.Where(x => x.IsAnticipated == true).ToList();
             }
+            else
+            {
+                transactions = transactions.Where(x => x.IsAnticipated == false).ToList();
+            }
+
             return Ok(transactions);
         }
 

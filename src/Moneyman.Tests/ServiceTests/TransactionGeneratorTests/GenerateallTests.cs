@@ -109,6 +109,7 @@ namespace Moneyman.Tests
             // Assert
             result.StatusCode.Should().Be(StatusCode.NotFound);
             result.Message.Should().Contain("No transactions exist which start in the current year");
+            result.StatusCode.Should().Be(StatusCode.NotFound);
         }
 
         [TestMethod]
