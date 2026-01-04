@@ -1,38 +1,33 @@
+using Moneyman.Domain.MapperProfiles;
 using Moneyman.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using Moneyman.Domain;
-using Moneyman.Services.Validators;
-using AutoMapper;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Moneyman.Domain.Models;
+using Moneyman.Domain;
 
 namespace Moneyman.Services
 {
 	public class BankAccountService : IBankAccountService
 	{
-		private readonly ITransactionRepository _transactionRepository;
-    private readonly ILogger<TransactionService> logger;
     private readonly IBankAccountRepository bankAccountRepository;
-    private readonly IMapper mapper;
+    private readonly BankAccountMapper bankAccountMapper;
+    private readonly ILogger<TransactionService> logger;
 
 		public BankAccountService(
       IBankAccountRepository bankAccountRepository,
       ILogger<TransactionService> logger,
-      IMapper mapper
+      BankAccountMapper bankAccountMapper
     )
 		{
 			this.bankAccountRepository = bankAccountRepository;
       this.logger = logger;
-      this.mapper = mapper;
+      this.bankAccountMapper = bankAccountMapper;
 		}
     public List<BankAccountDto> GetAll()
     {
-        var bankAccounts =  bankAccountRepository.GetAll();
-        var bankAccountDto = mapper.Map<List<BankAccountDto>>(bankAccounts);
-        return bankAccountDto?.ToList() ?? new List<BankAccountDto>();
+        var bankAccounts = bankAccountRepository.GetAll();
+        var bankAccountDto = bankAccounts.Select(bankAccountMapper.ToDto).ToList();
+        return bankAccountDto;
     }
   }
 }

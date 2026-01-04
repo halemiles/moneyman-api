@@ -1,5 +1,5 @@
 using System;
-using AutoMapper;
+
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +12,6 @@ using Moneyman.Interfaces;
 using Moneyman.Persistence;
 using Moneyman.Services;
 using Moneyman.Services.Interfaces;
-using Serilog;
 
 public static class ServiceCollectionExtensions
 {
@@ -40,28 +39,21 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    public static void AddAutomapperProfiles(this IServiceCollection services)
+    public static void AddMappers(this IServiceCollection services)
     {
-        AutoMapper.IConfigurationProvider config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<TransactionProfile>();
-                cfg.AddProfile<TransactionDtoToTransactionProfile>();
-                cfg.AddProfile<PlanDateDtoProfile>();
-                cfg.AddProfile<BankAccountProfile>();
-            });
-
-            services.AddSingleton(config);
-            services.AddScoped<IMapper, Mapper>();
+        services.AddSingleton<BankAccountMapper>();
+        services.AddSingleton<TransactionMapper>();
+        services.AddSingleton<PlanDateMapper>();
     }
 
     public static IServiceCollection SetupLogger(this IServiceCollection services)
     {
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
-            .WriteTo.Seq("http://localhost:5341")
-            .CreateLogger();
-
-        services.AddSingleton(Log.Logger);
+        // Log.Logger = new LoggerConfiguration()
+        //     .WriteTo.Console()
+        //     //.WriteTo.Seq("http://localhost:5341")
+        //     .CreateLogger();
+        //
+        // services.AddSingleton(Log.Logger);
         return services;
     }
 
@@ -100,6 +92,12 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection SetupHolidays(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<HolidayOptions>(configuration.GetSection("HolidayOptions"));
+        return services;
+    }
+
+    public static IServiceCollection SetupPayday(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<PaydayOptions>(configuration.GetSection("PaydayOptions"));
         return services;
     }
 

@@ -11,7 +11,7 @@ using Snapper;
 using Microsoft.Extensions.Logging;
 using AutoFixture;
 using Moneyman.Services.Interfaces;
-using AutoMapper;
+using Moneyman.Domain.MapperProfiles;
 
 namespace Moneyman.Tests
 {
@@ -24,7 +24,7 @@ namespace Moneyman.Tests
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
         private Mock<IDateTimeProvider> mockDateTimeProvider;
-        private IMapper mockMapper;
+        private PlanDateMapper mockPlanDateMapper;
         private Mock<ILogger<DtpService>> mockLogger;
 
         private readonly List<string> holidays = new List<string>
@@ -46,9 +46,9 @@ namespace Moneyman.Tests
                     mockPlanDateRepository.Object,
                     mockOffsetCalculationService.Object,
                     mockPaydayService.Object,
-                    mockMapper,
                     mockDateTimeProvider.Object,
-                    mockLogger.Object
+                    mockLogger.Object,
+                    mockPlanDateMapper
             );
 
         [TestInitialize]
@@ -60,6 +60,7 @@ namespace Moneyman.Tests
             mockPaydayService = new Mock<IPaydayService>();
             mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
+            mockPlanDateMapper = new PlanDateMapper();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new CalculatedPlanDate());

@@ -11,7 +11,7 @@ using Snapper;
 using AutoFixture;
 using Microsoft.Extensions.Logging;
 using Moneyman.Services.Interfaces;
-using AutoMapper;
+using Moneyman.Domain.MapperProfiles;
 
 namespace Moneyman.Tests
 {
@@ -37,7 +37,7 @@ namespace Moneyman.Tests
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
         private Mock<IDateTimeProvider> mockDateTimeProvider;
-        private IMapper mockMapper;
+        private PlanDateMapper planDateMapper;
         private Mock<ILogger<DtpService>> mockLogger;
 
         private DtpService NewDtpService() =>
@@ -46,9 +46,9 @@ namespace Moneyman.Tests
                     mockPlanDateRepository.Object,
                     mockOffsetCalculationService.Object,
                     mockPaydayService.Object,
-                    mockMapper,
                     mockDateTimeProvider.Object,
-                    mockLogger.Object
+                    mockLogger.Object,
+                    planDateMapper
             );
 
         [TestInitialize]
@@ -60,11 +60,12 @@ namespace Moneyman.Tests
             mockPaydayService = new Mock<IPaydayService>();
             mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
+            planDateMapper = new PlanDateMapper();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new CalculatedPlanDate());
 
-            mockPaydayService.Setup(x => x.GetAll()).Returns(new List<Payday>{new Payday()});
+            mockPaydayService.Setup(x => x.GetAll()).Returns(new List<Payday>(){new Payday()});
         }
 
         [TestMethod]
@@ -77,7 +78,38 @@ namespace Moneyman.Tests
             var result = sut.GenerateAll(null);
 
             // Assert
-            result.StatusCode.Should().Be(Domain.Models.StatusCode.NotFound);
+            result.StatusCode.Should().Be(StatusCode.NotFound);
+        }
+
+        [TestMethod]
+        public void GenerateAll_WhenNoTransactionsStartInCurrentYear_ReturnsNotFound()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            const int testYear = 2024;
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(testYear, 6, 15));
+            
+            // Create transactions with start dates NOT in the current year
+            IEnumerable<Transaction> trans = new List<Transaction>
+            {
+                new Transaction
+                {
+                    Name = "Old Transaction",
+                    Amount = 100,
+                    Active = true,
+                    StartDate = new DateTime(testYear - 1, 5, 10),
+                    Frequency = Frequency.Monthly
+                }
+            };
+            mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
+            
+            // Act
+            var result = sut.GenerateAll(null);
+
+            // Assert
+            result.StatusCode.Should().Be(StatusCode.NotFound);
+            result.Message.Should().Contain("No transactions exist which start in the current year");
+            result.StatusCode.Should().Be(StatusCode.NotFound);
         }
 
         [TestMethod]
@@ -85,20 +117,25 @@ namespace Moneyman.Tests
         {
             // Arrange
             var sut = NewDtpService();
+            const int testYear = 2024;
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(testYear, 6, 15));
+            
+            Fixture fixture = new Fixture();
             Transaction t = new(){
-                Frequency = Frequency.Monthly
+                Frequency = Frequency.Monthly,
+                StartDate = new DateTime(testYear, 1, 1)
             };
             IEnumerable<Transaction> trans = new List<Transaction>
             {
                 t,t,t
             };
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
-            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>{new PlanDate()});
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>(){new PlanDate()});
             // Act
             var result = sut.GenerateAll(null);
 
             // Assert
-            result.StatusCode.Should().Be(Domain.Models.StatusCode.Success);
+            result.StatusCode.Should().Be(StatusCode.Success);
             result.Payload.Count().Should().Be(24*3);
         }
     }

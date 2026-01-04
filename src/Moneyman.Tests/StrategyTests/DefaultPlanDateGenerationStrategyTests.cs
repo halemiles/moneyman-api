@@ -9,30 +9,27 @@ using Moneyman.Services;
 using Moneyman.Domain;
 using System;
 
-namespace YourProject.Tests
+namespace Moneyman.Tests.StrategyTests
 {
     [TestClass]
     public class DefaultPlanDateGenerationStrategyTests
     {
-        private readonly Mock<ILogger<DtpService>> _mockLogger;
         private readonly Mock<ITransactionRepository> _mockTransactionRepository;
         private readonly Mock<IOffsetCalculationService> _mockOffsetCalculationService;
         private readonly DefaultPlanDateGenerationStrategy _generator;
-        private readonly Mock<IPlanDateRepository> mockPlanDateRepository;
-
-        private const int TotalPlanDateYears = 2;
 
         public DefaultPlanDateGenerationStrategyTests()
         {
-            _mockLogger = new Mock<ILogger<DtpService>>();
+            var mockLogger = new Mock<ILogger<DtpService>>();
+            var mockPlanDateRepository = new Mock<IPlanDateRepository>();
             _mockTransactionRepository = new Mock<ITransactionRepository>();
             _mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
-            mockPlanDateRepository = new Mock<IPlanDateRepository>();
+
             _generator = new DefaultPlanDateGenerationStrategy(
                 _mockTransactionRepository.Object,
                 mockPlanDateRepository.Object,
                 _mockOffsetCalculationService.Object,
-                _mockLogger.Object
+                mockLogger.Object
             );
         }
 

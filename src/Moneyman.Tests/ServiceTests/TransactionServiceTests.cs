@@ -12,13 +12,13 @@ using Moneyman.Persistence;
 using Moneyman.Tests.Builders;
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 using Snapper;
 using Microsoft.Extensions.Logging;
 using AutoFixture;
+using System.Runtime.CompilerServices;
 
-namespace Tests
+namespace Moneyman.Tests
 {
     [TestClass]
     public class TransactionServiceTests
@@ -26,13 +26,14 @@ namespace Tests
         private Mock<ITransactionRepository> _transRepoMock;
         private Mock<IPlanDateRepository> _planDateRepoMock;
         private Mock<ILogger<TransactionService>> mockLogger;
-        private IMapper mockMapper;
+        private Mock<TransactionMapper> _mapper;
+        private IFixture fixture;
         private TransactionService NewTransactionService() =>
             new TransactionService(
                 _transRepoMock.Object,
                 _planDateRepoMock.Object,
                 mockLogger.Object,
-                mockMapper
+                _mapper.Object
             );
 
         [TestInitialize]
@@ -41,14 +42,8 @@ namespace Tests
             _transRepoMock = new Mock<ITransactionRepository>();
             _planDateRepoMock = new Mock<IPlanDateRepository>();
             mockLogger = new Mock<ILogger<TransactionService>>();
-
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new TransactionProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            mockMapper = mapper;
+            _mapper = new Mock<TransactionMapper>();
+            
         }
 
         [TestMethod]
@@ -81,7 +76,8 @@ namespace Tests
                 Amount = 150,
                 Frequency = Frequency.Weekly
             };
-
+            _transRepoMock.Setup(x => x.Get(It.IsAny<int>()))
+                .Returns(newTransaction);
             _transRepoMock.Setup(x => x.Update(It.IsAny<Transaction>()))
                 .Returns(true);
 
@@ -90,7 +86,7 @@ namespace Tests
 
             _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
-            result.Should().Be(0);
+            result.Should().Be(1);
         }
 
         [TestMethod]
@@ -171,6 +167,31 @@ namespace Tests
             _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Exactly(4));
             _transRepoMock.Verify(x => x.Update(transactionForUpdate), Times.Once());
             _transRepoMock.Verify(x => x.Save(), Times.Once());
+        }
+
+        [TestMethod]
+        public void Update_WithNullResults_ReturnsEmptyList()
+        {
+            _transRepoMock.Setup(x => x.Get(1)).Returns(new Transaction
+            {
+                Id = 1,
+                Name = "Transaction Test",
+                StartDate = new DateTime(2025,1,1),
+                Amount = 100,
+                Frequency = Frequency.Weekly
+            });
+
+            var service = NewTransactionService();
+            var updatedTransaction = new Transaction{
+                 Id = 1,
+                Name = "Transaction Test",
+                StartDate = new DateTime(2025,1,1),
+                Amount = 200,
+                Frequency = Frequency.Weekly
+            };
+            var result = service.Update(updatedTransaction);
+
+            _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once());
         }
     }
 }

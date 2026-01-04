@@ -3,14 +3,13 @@ using Moneyman.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using Moneyman.Domain;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Moneyman.Persistence
 {
     public class PlanDateRepository : GenericRepository<PlanDate>, IPlanDateRepository
     {
-        public PlanDateRepository(MoneymanContext context, IMapper mapper) : base(context, mapper)
+        public PlanDateRepository(MoneymanContext context) : base(context)
         {
         }
 

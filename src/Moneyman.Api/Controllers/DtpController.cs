@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moneyman.Domain.Models;
 using Moneyman.Services.Interfaces;
-using Serilog;
 
 namespace Moneyman.Api.Controllers
 {
@@ -12,10 +12,10 @@ namespace Moneyman.Api.Controllers
     public class DtpController : ControllerBase
     {
         private readonly IDtpService dtpService;
-        private readonly ILogger _logger;
+        private readonly ILogger<DtpController> _logger;
 
         public DtpController(
-            ILogger logger,
+            ILogger<DtpController> logger,
             IDtpService dtpService
         )
         {
@@ -27,7 +27,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("current")]
         public IActionResult GetCurrentPeriod(int? startingValue, int? bankAccountId)
         {
-            _logger.Information("GET all current");
+            _logger.LogInformation("GET all current");
             var planDateDto = dtpService.GetCurrent(startingValue, bankAccountId);
             return Ok(planDateDto);
         }
@@ -35,7 +35,7 @@ namespace Moneyman.Api.Controllers
         [HttpGet("full")]
         public IActionResult GetOffsetPeriod(int? startingValue, int? bankAccountId)
         {
-            _logger.Information("GET all DTP");
+            _logger.LogInformation("GET all DTP");
             var planDateDto = dtpService.GetOffset(0);
             return Ok(planDateDto);
         }
@@ -43,18 +43,25 @@ namespace Moneyman.Api.Controllers
         [HttpPost("generate")]
         public IActionResult Generate([FromQuery]int? transactionId)
         {
-            _logger.Information("POST generate DTP {TransactionId}", transactionId ?? 0);
+            _logger.LogInformation("GET generate DTP {TransactionId}", transactionId ?? 0);
 
             try
             {
                 var planDates = dtpService.GenerateAll(transactionId);
-                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count(), Message = "Success"});
+                
+                if (!planDates.Success)
+                {
+                    return Ok(new DtpHttpResponse{RecordCount = 0, Message = planDates.Message});
+                }
+                
+                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count(), Message = planDates.Message});
             }
             catch(Exception err)
             {
-                _logger.Fatal(err.ToString());
-                return Ok(new DtpHttpResponse{RecordCount = 0, Message = "Missing Paydays"});
+                _logger.LogError(err.ToString());
+                return Ok(new DtpHttpResponse{RecordCount = 0, Message = $"Unexpected error occurred: {err.Message}"});
             }
         }
+
     }
 }

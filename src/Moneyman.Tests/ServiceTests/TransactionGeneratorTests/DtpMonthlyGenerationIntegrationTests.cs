@@ -14,7 +14,8 @@ using Snapper;
 using Snapper.Core;
 using Microsoft.Extensions.Logging;
 using Moneyman.Services.Interfaces;
-using AutoMapper;
+
+using Moneyman.Domain.MapperProfiles;
 
 namespace Moneyman.Tests
 {
@@ -48,8 +49,8 @@ namespace Moneyman.Tests
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
         private Mock<IDateTimeProvider> mockDateTimeProvider;
-        private IMapper mockMapper;
         private Mock<ILogger<DtpService>> mockLogger;
+        private Mock<PlanDateMapper> mockPlanDateMapper;
 
         private DtpService NewDtpService() =>
             new DtpService(
@@ -57,9 +58,9 @@ namespace Moneyman.Tests
                     mockPlanDateRepository.Object,
                     mockOffsetCalculationService.Object,
                     mockPaydayService.Object,
-                    mockMapper,
                     mockDateTimeProvider.Object,
-                    mockLogger.Object
+                    mockLogger.Object,
+                    mockPlanDateMapper.Object
             );
 
         [TestInitialize]
@@ -71,6 +72,7 @@ namespace Moneyman.Tests
             mockPaydayService = new Mock<IPaydayService>();
             mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
+            mockPlanDateMapper = new Mock<PlanDateMapper>();
 
             mockHolidayService = new Mock<IHolidayService>();
 

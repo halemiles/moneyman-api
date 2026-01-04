@@ -2,7 +2,6 @@ using Moneyman.Interfaces;
 using System.Collections.Generic;
 using System;
 using Moneyman.Domain;
-using AutoMapper;
 using Moneyman.Services.Interfaces;
 using System.Linq;
 using Moneyman.Services.Extentions;
@@ -69,6 +68,11 @@ namespace Moneyman.Services
 				.GetAll()
 				.Where(x => x.Date < _dateTimeProvider.GetNow())
 				.LastOrDefault();
+        }
+
+        public void RemoveAll()
+        {
+	        _paydayRepository.RemoveAll("Paydays");
         }
     }
 }

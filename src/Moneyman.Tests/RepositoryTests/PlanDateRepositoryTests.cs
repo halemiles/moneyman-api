@@ -12,26 +12,26 @@ using Moneyman.Persistence;
 using Moneyman.Tests.Builders;
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using Moneyman.Domain.MapperProfiles;
 using Snapper;
 using AutoFixture;
 
-namespace Tests
+namespace Moneyman.Tests
 {
     [TestClass]
     public class PlanDateRepositoryTests
     {
         private Mock<MoneymanContext> _contextMock;
-        private IMapper _mapper;
+        private PlanDateMapper _mapper;
         private List<PlanDate> _planDates;
         private PlanDateRepository NewPlanDateRepository() =>
-            new PlanDateRepository(_contextMock.Object, _mapper);
+            new PlanDateRepository(_contextMock.Object);
 
         [TestInitialize]
         public void SetUp()
         {
             _contextMock = new  Mock<MoneymanContext>();
+            var fixture = new Fixture();
 
             var transaction1 = new Transaction
             {
@@ -93,14 +93,6 @@ namespace Tests
 
             _contextMock.Setup(x => x.Set<PlanDate>()).Returns(planDateMockDbSet.Object);
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new TransactionDtoToTransactionProfile());
-                mc.AddProfile(new TransactionProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            _mapper = mapper;
         }
 
         [TestMethod]
@@ -110,7 +102,7 @@ namespace Tests
 
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
-                var planDateRepository = new PlanDateRepository(context, _mapper);
+                var planDateRepository = new PlanDateRepository(context);
                 updatedPlanDates = planDateRepository.GetAll().ToList();
             }
 
@@ -124,7 +116,7 @@ namespace Tests
             var fixture = new Fixture();
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
-                var planDateRepository = new PlanDateRepository(context, _mapper);
+                var planDateRepository = new PlanDateRepository(context);
                 planDateRepository.Add(fixture.Create<PlanDate>());
                 planDateRepository.Add(fixture.Create<PlanDate>());
                 planDateRepository.Save();
@@ -140,7 +132,7 @@ namespace Tests
             List<PlanDate> updatedPlanDates = null;
             using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
             {
-                var planDateRepository = new PlanDateRepository(context, _mapper);
+                var planDateRepository = new PlanDateRepository(context);
                 foreach(var planDate in _planDates)
                 {
                     planDateRepository.Add(planDate);
