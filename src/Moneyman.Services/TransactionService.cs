@@ -41,10 +41,6 @@ namespace Moneyman.Services
             return 0;
         }
 
-        //mapper.Map(model, existing);
-
-        //TODO - Update this in the mapping profile
-
         if(model.Name != existing.Name && !string.IsNullOrEmpty(model.Name))
         {
             existing.Name = model.Name;

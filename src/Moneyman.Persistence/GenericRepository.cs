@@ -4,6 +4,7 @@ using Moneyman.Domain;
 using Microsoft.EntityFrameworkCore;
 using Moneyman.Interfaces;
 using System.Threading.Tasks;
+using Moneyman.Domain.Interfaces;
 
 namespace Moneyman.Persistence
 {
@@ -47,10 +48,10 @@ namespace Moneyman.Persistence
       IEntity entity = (IEntity)newObject;
 
       var existing = _context.Set<T>().Find(entity.Id);
-        
+
       if (existing == null)
       {
-          
+
           return false;
       }
       _context.Entry(existing).CurrentValues.SetValues(newObject);

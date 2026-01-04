@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moneyman.Services", "Moneym
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moneyman.Persistence", "Moneyman.Persistence\Moneyman.Persistence.csproj", "{D7083C2C-DD69-4D51-857C-9AA8BF0E190A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moneyman.Extensions", "Moneyman.Extensions\Moneyman.Extensions.csproj", "{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C9D2FDC9-5B8E-4045-9D0D-F4C022ACE72E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -86,5 +85,20 @@ Global
 		{D7083C2C-DD69-4D51-857C-9AA8BF0E190A}.Release|x64.Build.0 = Release|Any CPU
 		{D7083C2C-DD69-4D51-857C-9AA8BF0E190A}.Release|x86.ActiveCfg = Release|Any CPU
 		{D7083C2C-DD69-4D51-857C-9AA8BF0E190A}.Release|x86.Build.0 = Release|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Debug|x64.Build.0 = Debug|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Debug|x86.Build.0 = Debug|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Release|x64.ActiveCfg = Release|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Release|x64.Build.0 = Release|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Release|x86.ActiveCfg = Release|Any CPU
+		{0A4CBD1F-2A51-40C1-BED3-71FAFF0D9F12}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

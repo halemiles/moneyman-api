@@ -1,4 +1,5 @@
 using System;
+using Moneyman.Domain.Interfaces;
 
 namespace Moneyman.Domain
 {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Moneyman.Domain
+namespace Moneyman.Domain.Interfaces
 {
     public interface IEntity
     {

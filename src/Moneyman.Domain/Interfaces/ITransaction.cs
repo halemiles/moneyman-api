@@ -1,7 +1,7 @@
 using System;
 using Moneyman.Domain;
 
-namespace Moneyman.Domain
+namespace Moneyman.Domain.Interfaces
 {
     public class BaseTransaction : Entity
     {

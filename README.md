@@ -1,11 +1,96 @@
-# moneyman-api
+# MoneyMan API
 
-MoneyMan is a project designed to help you manage your monthly bills more effectively. It takes a list of bills as input and predicts their due dates each month, considering weekends and bank holidays.
+MoneyMan is a .NET Core API designed to help you manage your monthly bills more effectively. It predicts due dates for your bills each month, considering weekends and bank holidays to ensure timely payments.
 
-# Features
+# Codacy status
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/252624afd7c64302bd26667db210f002)](https://app.codacy.com/gh/halemiles/moneyman-api/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade) [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/252624afd7c64302bd26667db210f002)](https://app.codacy.com/gh/halemiles/moneyman-api/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+## Features
 
-- Bill Date Prediction: MoneyMan uses advanced algorithms to predict the dates on which your bills are likely to be due each month.
-- Weekend Consideration: MoneyMan takes weekends into account while predicting bill dates, ensuring that you are aware of any adjustments needed for bills falling on weekends.
-- Bank Holiday Adjustment: MoneyMan considers bank holidays and adjusts bill dates accordingly, helping you stay on top of your payments even during holiday periods.
-- Flexible Configuration: MoneyMan provides customizable settings to accommodate different billing cycles, payment frequencies, and regional holidays.
-- User-Friendly Interface: The project includes an intuitive user interface that makes it easy to input your bill information, view predicted dates, and manage your monthly payment schedule.
+- **Bill Date Prediction**: Uses advanced algorithms to estimate bill due dates.
+- **Weekend Consideration**: Adjusts due dates when bills fall on weekends.
+- **Bank Holiday Adjustment**: Modifies due dates for recognized holidays.
+- **Flexible Configuration**: Supports different billing cycles and payment frequencies.
+- **User-Friendly API**: Provides endpoints to manage bills, view predictions, and configure settings.
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed on your machine:
+
+- [.NET SDK](https://dotnet.microsoft.com/en-us/download)
+- [Docker](https://www.docker.com/) (optional, for containerized deployment)
+- [Pre-commit](https://pre-commit.com/) (for Git hooks)
+- [Playwright](https://playwright.dev/dotnet/) (for API testing)
+
+### Clone the Repository
+
+```sh
+git clone https://github.com/halemiles/moneyman-api.git
+cd moneyman-api
+```
+
+### Install Dependencies
+
+```sh
+dotnet restore
+```
+
+### Configure Pre-commit Hooks
+
+To enforce code quality and linting, install `pre-commit` hooks:
+
+```sh
+pre-commit install
+```
+
+### Running the Application
+
+#### Using .NET CLI
+
+```sh
+dotnet build
+
+dotnet run
+```
+
+#### Using Docker
+
+```sh
+docker build -t moneyman-api .
+docker run -p 5000:5000 moneyman-api
+```
+
+### Running Tests
+
+#### Unit Tests
+
+```sh
+dotnet test
+```
+
+#### API Tests with Playwright
+
+Ensure Playwright dependencies are installed:
+
+```sh
+playwright install
+```
+
+Run Playwright tests:
+
+```sh
+dotnet test --filter Category=Playwright
+```
+
+## Contributing
+
+1. Fork the repository.
+2. Create a new branch.
+3. Commit your changes.
+4. Push to your branch and submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
+

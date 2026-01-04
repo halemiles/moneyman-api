@@ -1,7 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Data.Sqlite;
-using Moneyman.Domain;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Moneyman.Domain

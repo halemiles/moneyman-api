@@ -40,7 +40,7 @@ namespace Moneyman.Api.Controllers
             return Ok(planDateDto);
         }
 
-        [HttpGet("generate")]
+        [HttpPost("generate")]
         public IActionResult Generate([FromQuery]int? transactionId)
         {
             _logger.LogInformation("GET generate DTP {TransactionId}", transactionId ?? 0);

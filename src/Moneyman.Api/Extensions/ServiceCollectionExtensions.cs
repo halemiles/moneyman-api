@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
+using Moneyman.Domain.Settings;
 using Moneyman.Interfaces;
 using Moneyman.Persistence;
 using Moneyman.Services;
