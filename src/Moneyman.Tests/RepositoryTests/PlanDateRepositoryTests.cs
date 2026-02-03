@@ -50,11 +50,7 @@ namespace Moneyman.Tests
                 Transaction = transaction1,
                 Date = new DateTime(2022, 03, 01),
                 Active = true,
-                OriginalDate = new DateTime(2022, 03, 01),
-                YearGroup = 2022,
-                MonthGroup = 3,
-                IsAnticipated = false,
-                OrderId = 1
+                OriginalDate = new DateTime(2022, 03, 01)
             };
 
             var transaction2 = new Transaction
@@ -75,11 +71,7 @@ namespace Moneyman.Tests
                 Transaction = transaction2,
                 Date = new DateTime(2022, 03, 01),
                 Active = true,
-                OriginalDate = new DateTime(2022, 03, 01),
-                YearGroup = 2022,
-                MonthGroup = 3,
-                IsAnticipated = false,
-                OrderId = 1
+                OriginalDate = new DateTime(2022, 03, 01)
             };
 
             _planDates = new List<PlanDate>

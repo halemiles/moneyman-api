@@ -2,7 +2,6 @@
   "Id": 0,
   "Transaction": {
     "Frequency": 0,
-    "IsAnticipated": false,
     "PaymentType": 0,
     "CategoryType": 0,
     "PriorityType": 0,
@@ -11,13 +10,10 @@
     "Active": false,
     "StartDate": "0001-01-01T00:00:00",
     "BankAccountId": 0,
-    "Id": 0
+    "Id": 0,
+    "IsAnticipated": false
   },
   "Date": "2022-01-01T00:00:00",
   "Active": false,
-  "OriginalDate": "0001-01-01T00:00:00",
-  "YearGroup": 0,
-  "MonthGroup": 0,
-  "IsAnticipated": false,
-  "OrderId": 0
+  "OriginalDate": "0001-01-01T00:00:00"
 }

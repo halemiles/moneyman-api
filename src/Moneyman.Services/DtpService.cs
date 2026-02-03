@@ -88,43 +88,15 @@ namespace Moneyman.Services
             return GetGenerationStrategy(GenerationStrategy.Daily).Generate(transactionId, Frequency.Daily);
         }
 
-        //TODO - Do we need this?
-        public List<PlanDate> GenerateForTransaction(int? transactionId)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public IPlanDateGenerationStrategy GetGenerationStrategy(GenerationStrategy strategyName)
         {
-            IPlanDateGenerationStrategy generationStrategy;
-            PlanDateGenerationStrategyFactory generationStrategyFactory = new PlanDateGenerationStrategyFactory(transactionRepository,
-                        planDateRepository,
-                        offsetCalculationService,
-                        logger);
-
-            switch(strategyName)
-            {
-                case GenerationStrategy.Monthly:
-                    generationStrategy = generationStrategyFactory.Create(Frequency.Monthly);
-                    break;
-                case GenerationStrategy.Weekly:
-                    generationStrategy = generationStrategyFactory.Create(Frequency.Weekly);
-                    break;
-                case GenerationStrategy.Yearly:
-                    generationStrategy = generationStrategyFactory.Create(Frequency.Yearly);
-                    break;
-                case GenerationStrategy.Daily:
-                    generationStrategy = generationStrategyFactory.Create(Frequency.Daily);
-                    break;
-                case GenerationStrategy.Anticipated:
-                    generationStrategy = generationStrategyFactory.Create(Frequency.Anticipated);
-                    break;
-                default:
-                    generationStrategy = generationStrategyFactory.Create(Frequency.Monthly);
-                    break;
-            }
-
-            return generationStrategy;
+            // Factory pattern was removed as it always returned the same strategy type regardless of input
+            return new DefaultPlanDateGenerationStrategy(
+                transactionRepository,
+                planDateRepository,
+                offsetCalculationService,
+                logger
+            );
         }
 
         public List<PlanDate> GenerateWeekly(int? transactionId)

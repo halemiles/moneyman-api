@@ -20,10 +20,6 @@ namespace Moneyman.Services.Factories
                 Active = true,
                 Date = calculatedOffsetDate,
                 OriginalDate = transaction.StartDate,
-                YearGroup = 1, //TODO - Needs actual data
-                MonthGroup = 1, //TODO - Needs actual data
-                IsAnticipated = false, //TODO - Needs actual data
-                OrderId = 0, //TODO - Needs actual data
                 Transaction = transaction
             };
         }
