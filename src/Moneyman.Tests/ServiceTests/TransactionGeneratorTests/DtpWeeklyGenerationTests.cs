@@ -18,7 +18,6 @@ namespace Moneyman.Tests
     [TestClass]
     public class DtpWeeklyGenerationTests
     {
-        private Mock<ITransactionService> mockTransactionService;
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;

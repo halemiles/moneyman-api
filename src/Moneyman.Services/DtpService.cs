@@ -184,7 +184,7 @@ namespace Moneyman.Services
             {
                 endDate = paydayService.GetNext().Date;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 logger.LogError("Failed to get payday information");
                 return ApiResponse.NotFound<DtpDto>("Could not find any paydays. Please ensure they have been generated");

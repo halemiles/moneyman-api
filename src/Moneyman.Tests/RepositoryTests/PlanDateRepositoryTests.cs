@@ -22,7 +22,6 @@ namespace Moneyman.Tests
     public class PlanDateRepositoryTests
     {
         private Mock<MoneymanContext> _contextMock;
-        private PlanDateMapper _mapper;
         private List<PlanDate> _planDates;
         private PlanDateRepository NewPlanDateRepository() =>
             new PlanDateRepository(_contextMock.Object);
