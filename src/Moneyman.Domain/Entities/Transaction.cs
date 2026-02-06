@@ -12,8 +12,4 @@ namespace Moneyman.Domain
         public CategoryType CategoryType {get; set;}
         public PriorityType PriorityType { get; set; }
     }
-
-    public class AnticipatedTransaction : BaseTransaction
-    {
-    }
 }

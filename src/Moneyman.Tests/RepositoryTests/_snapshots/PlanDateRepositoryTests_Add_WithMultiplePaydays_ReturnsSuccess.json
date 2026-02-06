@@ -4,7 +4,6 @@
       "Id": 1,
       "Transaction": {
         "Frequency": 1,
-        "IsAnticipated": false,
         "PaymentType": 2,
         "CategoryType": 4,
         "PriorityType": 1,
@@ -13,21 +12,17 @@
         "Active": true,
         "StartDate": "2022-03-01T00:00:00",
         "BankAccountId": 0,
-        "Id": 1
+        "Id": 1,
+        "IsAnticipated": false
       },
       "Date": "2022-03-01T00:00:00",
       "Active": true,
-      "OriginalDate": "2022-03-01T00:00:00",
-      "YearGroup": 2022,
-      "MonthGroup": 3,
-      "IsAnticipated": false,
-      "OrderId": 1
+      "OriginalDate": "2022-03-01T00:00:00"
     },
     {
       "Id": 2,
       "Transaction": {
         "Frequency": 1,
-        "IsAnticipated": false,
         "PaymentType": 2,
         "CategoryType": 4,
         "PriorityType": 1,
@@ -36,15 +31,12 @@
         "Active": true,
         "StartDate": "2022-03-01T00:00:00",
         "BankAccountId": 0,
-        "Id": 2
+        "Id": 2,
+        "IsAnticipated": false
       },
       "Date": "2022-03-01T00:00:00",
       "Active": true,
-      "OriginalDate": "2022-03-01T00:00:00",
-      "YearGroup": 2022,
-      "MonthGroup": 3,
-      "IsAnticipated": false,
-      "OrderId": 1
+      "OriginalDate": "2022-03-01T00:00:00"
     }
   ]
 }

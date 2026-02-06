@@ -27,7 +27,6 @@ namespace Moneyman.Tests
         private Mock<IPlanDateRepository> _planDateRepoMock;
         private Mock<ILogger<TransactionService>> mockLogger;
         private Mock<TransactionMapper> _mapper;
-        private IFixture fixture;
         private TransactionService NewTransactionService() =>
             new TransactionService(
                 _transRepoMock.Object,

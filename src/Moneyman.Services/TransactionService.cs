@@ -15,7 +15,6 @@ namespace Moneyman.Services
 	public class TransactionService : ITransactionService
 	{
 		private readonly ITransactionRepository _transactionRepository;
-    private readonly IPlanDateRepository planDateRepository;
     private readonly ILogger<TransactionService> logger;
 
     private readonly TransactionMapper transactionMapper;

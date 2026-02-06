@@ -9,8 +9,6 @@ namespace Moneyman.Services.Interfaces
     {
         ApiResponse<List<PlanDate>> GenerateAll(int? transactionId);
 
-        List<PlanDate> GenerateForTransaction(int? transactionId);
-
         List<PlanDate> GenerateMonthly(int? transactionId);
 
         List<PlanDate> GenerateWeekly(int? transactionId);
