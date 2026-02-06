@@ -102,11 +102,18 @@ namespace Moneyman.Services
 
         public ApiResponse<DtpDto> GetPlanDatesByPeriod(int? monthOffset)
         {
+            if (_paydayService == null || _planDateRepository == null || _planDateMapper == null)
+            {
+                throw new InvalidOperationException(
+                    "GetPlanDatesByPeriod requires IPaydayService, IPlanDateRepository, and PlanDateMapper dependencies. " +
+                    "Use the full constructor to provide all dependencies.");
+            }
+
             var offset = monthOffset ?? 0;
             var startDate = _paydayService.GetPrevious().Date.AddMonths(offset);
             var endDate = _paydayService.GetNext().Date.AddMonths(offset);
 
-            _logger.LogInformation(
+            _logger?.LogInformation(
                 "Getting DTP period {startDate} {endDate}",
                 startDate,
                 endDate
