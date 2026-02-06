@@ -31,7 +31,7 @@ namespace Moneyman.Services
 
         public List<PlanDate> Generate(int? transactionId, Frequency frequency)
         {
-            logger.LogInformation("Generating monthly");
+            logger.LogInformation("Generating {Frequency}", frequency);
 
             var transactions = transactionRepository.GetAll().Where(x => x.Frequency == frequency && !x.IsAnticipated);
             if(transactionId.HasValue)
@@ -40,18 +40,18 @@ namespace Moneyman.Services
             }
 
             List<PlanDate> planDates = new();
-            int totalMonthCount = frequency.ToFrequencyCount() * TotalPlanDateYears;
+            int totalCount = frequency.ToFrequencyCount() * TotalPlanDateYears;
 
             foreach(var transaction in transactions)
             {
                 DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan
-                for(int i=0;i<totalMonthCount;i++)
+                for(int i=0;i<totalCount;i++)
                 {
                     try
                     {
-                        DateTime dateOffset = startDate.AddMonths(i);
+                        DateTime dateOffset = AddFrequencyOffset(startDate, frequency, i);
 
-                        DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
+                        DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate;
 
                         var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
 
@@ -59,12 +59,19 @@ namespace Moneyman.Services
                     }
                     catch(Exception err)
                     {
-                        logger.LogError("Error generating monthly plandate {TransactionName} {month} {exceptionText}", transaction.Name, i, err.ToString());
+                        logger.LogError("Error generating {Frequency} plandate {TransactionName} {period} {exceptionText}", frequency, transaction.Name, i, err.ToString());
                     }
                 }
             }
 
             return planDates;
         }
+
+        private static DateTime AddFrequencyOffset(DateTime startDate, Frequency frequency, int offset) => frequency switch
+        {
+            Frequency.Daily => startDate.AddDays(offset),
+            Frequency.Weekly => startDate.AddDays(7 * offset),
+            _ => startDate.AddMonths(offset)
+        };
     }
 }
