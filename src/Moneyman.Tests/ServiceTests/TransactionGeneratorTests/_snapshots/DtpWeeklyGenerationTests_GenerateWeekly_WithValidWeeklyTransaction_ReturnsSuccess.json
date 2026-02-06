@@ -987,6 +987,994 @@
       "Date": "0001-01-01T00:00:00",
       "Active": true,
       "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
+    },
+    {
+      "Id": 0,
+      "Transaction": {
+        "Frequency": 2,
+        "PaymentType": 0,
+        "CategoryType": 0,
+        "PriorityType": 0,
+        "Name": "Trans 1",
+        "Amount": 100.0,
+        "Active": true,
+        "StartDate": "2022-01-01T00:00:00",
+        "BankAccountId": 0,
+        "Id": 0,
+        "IsAnticipated": false
+      },
+      "Date": "0001-01-01T00:00:00",
+      "Active": true,
+      "OriginalDate": "2022-01-01T00:00:00"
     }
   ]
 }

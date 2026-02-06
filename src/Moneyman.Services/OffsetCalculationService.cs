@@ -1,7 +1,13 @@
 using System;
+using System.Linq;
+using Microsoft.Extensions.Logging;
 using Moneyman.Interfaces;
 using Moneyman.Domain;
+using Moneyman.Domain.MapperProfiles;
+using Moneyman.Domain.Models;
 using Moneyman.Extensions;
+using Moneyman.Models.DomainTransferObjects;
+using Moneyman.Services.Interfaces;
 
 namespace Moneyman.Services
 {
@@ -9,13 +15,33 @@ namespace Moneyman.Services
     {
         private readonly IWeekdayService _weekdayService;
         private readonly IHolidayService _holidayService;
+        private readonly IPaydayService _paydayService;
+        private readonly IPlanDateRepository _planDateRepository;
+        private readonly PlanDateMapper _planDateMapper;
+        private readonly ILogger<OffsetCalculationService> _logger;
+
         public OffsetCalculationService(
             IWeekdayService weekdayService,
-            IHolidayService holidayService
+            IHolidayService holidayService,
+            IPaydayService paydayService,
+            IPlanDateRepository planDateRepository,
+            PlanDateMapper planDateMapper,
+            ILogger<OffsetCalculationService> logger
         )
         {
             _weekdayService = weekdayService;
             _holidayService = holidayService;
+            _paydayService = paydayService;
+            _planDateRepository = planDateRepository;
+            _planDateMapper = planDateMapper;
+            _logger = logger;
+        }
+
+        public OffsetCalculationService(
+            IWeekdayService weekdayService,
+            IHolidayService holidayService
+        ) : this(weekdayService, holidayService, null, null, null, null)
+        {
         }
 
 
@@ -72,6 +98,32 @@ namespace Moneyman.Services
 
             }
             return returnObject;
+        }
+
+        public ApiResponse<DtpDto> GetPlanDatesByPeriod(int? monthOffset)
+        {
+            var offset = monthOffset ?? 0;
+            var startDate = _paydayService.GetPrevious().Date.AddMonths(offset);
+            var endDate = _paydayService.GetNext().Date.AddMonths(offset);
+
+            _logger.LogInformation(
+                "Getting DTP period {startDate} {endDate}",
+                startDate,
+                endDate
+            );
+
+            var planDates = _planDateRepository
+                               .GetAll()
+                               .Where(x => x.Transaction.Active && x.Date > startDate && x.Date < endDate)
+                               .ToList();
+            var mappedPlanDates = _planDateMapper.ToDtoList(planDates);
+
+            return ApiResponse.Success(new DtpDto
+            {
+                PlanDates = mappedPlanDates,
+                StartDate = startDate,
+                EndDate = endDate
+            }, "Success");
         }
     }
 }
