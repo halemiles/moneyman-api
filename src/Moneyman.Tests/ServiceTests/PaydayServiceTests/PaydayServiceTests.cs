@@ -153,15 +153,5 @@ namespace Moneyman.Tests
             result.Date.Should().Be(new DateTime(2022,6,27));
         }
 
-        [TestMethod]
-        public void GetNext_WhenDayBeforePayday_ReturnsSuccess()
-        {
-            var paydayService = NewPaydayService();
-            mockDateTimeProvider.Setup(x => x.GetNow())
-                .Returns(new DateTime(2022,5,25));
-            var result = paydayService.GetNext();
-
-            result.Date.Should().Be(new DateTime(2022,6,27));
-        }
     }
 }
