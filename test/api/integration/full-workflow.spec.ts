@@ -1,9 +1,9 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, APIRequestContext } from "@playwright/test";
 
 const BASE_URL = "http://localhost:5000";
 
 // Helper function to create a transaction
-async function createTransaction(request, data) {
+async function createTransaction(request: APIRequestContext, data: any): Promise<number> {
   const response = await request.post(`${BASE_URL}/transaction`, { data });
   expect(response.ok()).toBeTruthy();
   const body = await response.json();
@@ -11,7 +11,7 @@ async function createTransaction(request, data) {
 }
 
 // Helper function to delete a transaction
-async function deleteTransaction(request, id) {
+async function deleteTransaction(request: APIRequestContext, id: number): Promise<void> {
   await request.delete(`${BASE_URL}/transaction/${id}`);
 }
 
