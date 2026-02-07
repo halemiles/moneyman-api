@@ -6,7 +6,7 @@ test("anticipated transaction shows in dtp", async ({ request }) => {
     data: {
       Name: "Testransaction",
       Amount: 34,
-      StartDate: "2024-05-17",
+      StartDate: "2026-05-17",
       Frequency: 1,
       Active: true,
     },

@@ -6,7 +6,7 @@ test("anticipated transaction shows in dtp", async ({ request }) => {
     data: {
       Name: "TestAnticipatedTransaction",
       Amount: 34,
-      StartDate: "2024-06-17",
+      StartDate: "2026-06-17",
       Frequency: 1,
       IsAnticipated: true,
       Active: true,
@@ -50,7 +50,7 @@ test("anticipated transactions returned", async ({ request }) => {
     data: {
       Name: "TestAnticipatedTransaction1",
       Amount: 34,
-      StartDate: "2024-06-17",
+      StartDate: "2026-06-17",
       Frequency: 1,
       IsAnticipated: true,
       Active: true,
@@ -61,7 +61,7 @@ test("anticipated transactions returned", async ({ request }) => {
     data: {
       Name: "TestAnticipatedTransaction2",
       Amount: 34,
-      StartDate: "2024-06-17",
+      StartDate: "2026-06-17",
       Frequency: 1,
       IsAnticipated: true,
       Active: true,
@@ -72,7 +72,7 @@ test("anticipated transactions returned", async ({ request }) => {
     data: {
       Name: "TestAnticipatedTransaction3",
       Amount: 34,
-      StartDate: "2024-06-17",
+      StartDate: "2026-06-17",
       Frequency: 1,
       IsAnticipated: false,
       Active: true,

@@ -21,7 +21,7 @@ test.describe("Complete Workflow Integration Tests", () => {
     const weeklyTransactionId = await createTransaction(request, {
       Name: "Weekly Grocery Shopping",
       Amount: 150,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 0, // Weekly
       Active: true,
     });
@@ -29,7 +29,7 @@ test.describe("Complete Workflow Integration Tests", () => {
     const monthlyRentId = await createTransaction(request, {
       Name: "Monthly Rent",
       Amount: 1200,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1, // Monthly
       Active: true,
     });
@@ -37,17 +37,17 @@ test.describe("Complete Workflow Integration Tests", () => {
     const monthlyUtilityId = await createTransaction(request, {
       Name: "Monthly Utility Bill",
       Amount: 150,
-      StartDate: "2024-06-15",
+      StartDate: "2026-06-15",
       Frequency: 1, // Monthly
       Active: true,
     });
 
     // Step 2: Generate plan dates for all transactions
-    const generateResponse = await request.get(`${BASE_URL}/dtp/generate`);
+    const generateResponse = await request.post(`${BASE_URL}/dtp/generate`);
     expect(generateResponse.ok()).toBeTruthy();
     
     const generateBody = await generateResponse.json();
-    expect(generateBody.message).toBe("Success");
+    expect(generateBody.message).toBe("Successfully generated plandates");
     expect(generateBody.recordCount).toBeGreaterThan(0);
 
     // Step 3: Retrieve the DTP with a starting value
@@ -106,13 +106,13 @@ test.describe("Complete Workflow Integration Tests", () => {
     const transactionId = await createTransaction(request, {
       Name: "Weekly Accuracy Test",
       Amount: 50,
-      StartDate: "2024-06-03", // Monday
+      StartDate: "2026-06-03", // Monday
       Frequency: 0, // Weekly
       Active: true,
     });
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Get full DTP to see multiple periods
     const dtpResponse = await request.get(`${BASE_URL}/dtp/full?startingValue=1000`);
@@ -147,13 +147,13 @@ test.describe("Complete Workflow Integration Tests", () => {
     const transactionId = await createTransaction(request, {
       Name: "Monthly Accuracy Test",
       Amount: 100,
-      StartDate: "2024-06-15",
+      StartDate: "2026-06-15",
       Frequency: 1, // Monthly
       Active: true,
     });
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Get full DTP
     const dtpResponse = await request.get(`${BASE_URL}/dtp/full?startingValue=2000`);
@@ -188,7 +188,7 @@ test.describe("Complete Workflow Integration Tests", () => {
     const transaction1Id = await createTransaction(request, {
       Name: "Balance Test 1",
       Amount: 100,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
@@ -196,13 +196,13 @@ test.describe("Complete Workflow Integration Tests", () => {
     const transaction2Id = await createTransaction(request, {
       Name: "Balance Test 2",
       Amount: 50,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Get DTP with a starting value
     const startingValue = 1000;
@@ -232,14 +232,14 @@ test.describe("Complete Workflow Integration Tests", () => {
     const anticipatedId = await createTransaction(request, {
       Name: "Anticipated Bonus",
       Amount: 500,
-      StartDate: "2024-06-20",
+      StartDate: "2026-06-20",
       Frequency: 1,
       Active: true,
       IsAnticipated: true,
     });
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Get DTP
     const dtpResponse = await request.get(`${BASE_URL}/dtp/current?startingValue=1000`);
@@ -260,13 +260,13 @@ test.describe("Complete Workflow Integration Tests", () => {
     const transactionId = await createTransaction(request, {
       Name: "Update Test Transaction",
       Amount: 100,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Get DTP and verify original amount
     let dtpResponse = await request.get(`${BASE_URL}/dtp/current?startingValue=1000`);
@@ -286,7 +286,7 @@ test.describe("Complete Workflow Integration Tests", () => {
         Id: transactionId,
         Name: "Update Test Transaction",
         Amount: 200,
-        StartDate: "2024-06-01",
+        StartDate: "2026-06-01",
         Frequency: 1,
         Active: true,
       },
@@ -294,7 +294,7 @@ test.describe("Complete Workflow Integration Tests", () => {
     expect(updateResponse.ok()).toBeTruthy();
 
     // Regenerate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Get DTP again and verify updated amount
     dtpResponse = await request.get(`${BASE_URL}/dtp/current?startingValue=1000`);
@@ -317,13 +317,13 @@ test.describe("Complete Workflow Integration Tests", () => {
     const transactionId = await createTransaction(request, {
       Name: "Current vs Full Test",
       Amount: 75,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Get current DTP
     const currentResponse = await request.get(`${BASE_URL}/dtp/current?startingValue=1000`);

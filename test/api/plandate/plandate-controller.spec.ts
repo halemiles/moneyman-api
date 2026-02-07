@@ -30,13 +30,13 @@ test.describe("PlanDateController - Tests", () => {
     const transactionId = await createTransaction(request, {
       Name: uniqueName,
       Amount: 50,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Search for the plan date
     const response = await request.get(
@@ -85,13 +85,13 @@ test.describe("PlanDateController - Integration Tests", () => {
     const transactionId = await createTransaction(request, {
       Name: uniqueName,
       Amount: 100,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
 
     // Generate plan dates
-    const generateResponse = await request.get(`${BASE_URL}/dtp/generate`);
+    const generateResponse = await request.post(`${BASE_URL}/dtp/generate`);
     expect(generateResponse.ok()).toBeTruthy();
 
     // Get all plan dates
@@ -127,7 +127,7 @@ test.describe("PlanDateController - Integration Tests", () => {
       const id = await createTransaction(request, {
         Name: name,
         Amount: 50,
-        StartDate: "2024-06-01",
+        StartDate: "2026-06-01",
         Frequency: 1,
         Active: true,
       });
@@ -135,7 +135,7 @@ test.describe("PlanDateController - Integration Tests", () => {
     }
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Verify each transaction has plan dates
     for (const name of transactionNames) {
@@ -158,13 +158,13 @@ test.describe("PlanDateController - Integration Tests", () => {
     const transactionId = await createTransaction(request, {
       Name: uniqueName,
       Amount: 75,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Search for plan dates
     const searchResponse = await request.get(

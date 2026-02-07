@@ -68,7 +68,7 @@ async function setup(request) {
         data: {
             name: "test transaction",
             amount: 100.5,
-            startdate: "2024-05-17T00:00:00Z",
+            startdate: "2026-05-17T00:00:00Z",
             frequency: 1,
             active: true,
             isanticipated: false,
@@ -89,6 +89,6 @@ async function setup(request) {
     expect(fetchedData.name).toBe("test transaction");
     expect(fetchedData.amount).toBe(100.5);
     expect(fetchedData.active).toBe(true);
-    expect(fetchedData.startDate).toBe("2024-05-17T00:00:00");
+    expect(fetchedData.startDate).toBe("2026-05-17T00:00:00");
     return transactionIdResponse;
 }

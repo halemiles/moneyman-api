@@ -21,12 +21,12 @@ test.describe("DtpController - Plan Date Generation", () => {
     const transactionId = await createTransaction(request, {
       Name: "Test DTP Transaction",
       Amount: 50,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
 
-    const response = await request.get(`${BASE_URL}/dtp/generate`);
+    const response = await request.post(`${BASE_URL}/dtp/generate`);
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -43,12 +43,12 @@ test.describe("DtpController - Plan Date Generation", () => {
     const transactionId = await createTransaction(request, {
       Name: "Specific Transaction for DTP",
       Amount: 75,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
 
-    const response = await request.get(`${BASE_URL}/dtp/generate?transactionId=${transactionId}`);
+    const response = await request.post(`${BASE_URL}/dtp/generate?transactionId=${transactionId}`);
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -112,7 +112,7 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     const weeklyTransactionId = await createTransaction(request, {
       Name: "Weekly Test Transaction",
       Amount: 25,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 0, // Weekly
       Active: true,
     });
@@ -121,16 +121,16 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     const monthlyTransactionId = await createTransaction(request, {
       Name: "Monthly Test Transaction",
       Amount: 100,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1, // Monthly
       Active: true,
     });
 
     // Generate plan dates
-    const generateResponse = await request.get(`${BASE_URL}/dtp/generate`);
+    const generateResponse = await request.post(`${BASE_URL}/dtp/generate`);
     expect(generateResponse.ok()).toBeTruthy();
     const generateBody = await generateResponse.json();
-    expect(generateBody.message).toBe("Success");
+    expect(generateBody.message).toBe("Successfully generated plandates");
     expect(generateBody.recordCount).toBeGreaterThan(0);
 
     // Get current DTP to verify plan dates were created
@@ -160,13 +160,13 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     const transactionId = await createTransaction(request, {
       Name: "Amount Verification Transaction",
       Amount: expectedAmount,
-      StartDate: "2024-06-15",
+      StartDate: "2026-06-15",
       Frequency: 1,
       Active: true,
     });
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Get full DTP
     const dtpResponse = await request.get(`${BASE_URL}/dtp/full?startingValue=1000`);
@@ -192,7 +192,7 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
       const id = await createTransaction(request, {
         Name: `Multi Transaction ${i}`,
         Amount: i * 10,
-        StartDate: "2024-06-01",
+        StartDate: "2026-06-01",
         Frequency: 1,
         Active: true,
       });
@@ -200,7 +200,7 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     }
 
     // Generate plan dates
-    const generateResponse = await request.get(`${BASE_URL}/dtp/generate`);
+    const generateResponse = await request.post(`${BASE_URL}/dtp/generate`);
     const generateBody = await generateResponse.json();
     expect(generateBody.recordCount).toBeGreaterThan(0);
 
@@ -225,7 +225,7 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     const activeId = await createTransaction(request, {
       Name: "Active Transaction",
       Amount: 50,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
@@ -233,13 +233,13 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     const inactiveId = await createTransaction(request, {
       Name: "Inactive Transaction",
       Amount: 75,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: false,
     });
 
     // Generate plan dates
-    await request.get(`${BASE_URL}/dtp/generate`);
+    await request.post(`${BASE_URL}/dtp/generate`);
 
     // Get DTP
     const dtpResponse = await request.get(`${BASE_URL}/dtp/current?startingValue=500`);
@@ -262,7 +262,7 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     const transaction1Id = await createTransaction(request, {
       Name: "Transaction One",
       Amount: 100,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
@@ -270,19 +270,19 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     const transaction2Id = await createTransaction(request, {
       Name: "Transaction Two",
       Amount: 200,
-      StartDate: "2024-06-01",
+      StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
 
     // Generate plan dates for only transaction2
-    const generateResponse = await request.get(
+    const generateResponse = await request.post(
       `${BASE_URL}/dtp/generate?transactionId=${transaction2Id}`
     );
     
     expect(generateResponse.ok()).toBeTruthy();
     const generateBody = await generateResponse.json();
-    expect(generateBody.message).toBe("Success");
+    expect(generateBody.message).toBe("Successfully generated plandates");
     expect(generateBody.recordCount).toBeGreaterThan(0);
 
     // Cleanup
