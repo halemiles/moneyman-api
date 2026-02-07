@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
@@ -43,7 +44,7 @@ namespace Moneyman.Services
         }
 
         //TODO: Move this to a another class so we can unit test
-        public ApiResponse<List<PlanDate>> GenerateAll(int? transactionId)
+        public async Task<ApiResponse<List<PlanDate>>> GenerateAll(int? transactionId)
         {
             if(!paydayService.GetAll().Any())
             {
@@ -73,7 +74,8 @@ namespace Moneyman.Services
 
             try
             {
-                planDateRepository.Save(); //TODO - Try moving this out so we run batches
+                var response = await planDateRepository.Save(); //TODO - Try moving this out so we run batches
+                Console.WriteLine($"Saved {response} plandates");
             }
             catch(Exception err)
             {
@@ -176,15 +178,15 @@ namespace Moneyman.Services
                 logger.LogWarning("Plandate list is empty");
                 return ApiResponse.NoContent<DtpDto>("Plandate list is empty. Please regenerate plandates");
             }
-            
+
             planDates = planDates.Where(x =>
                 x.Transaction.Active
                 && x.Date > startDate
                 && x.Date < endDate
-                && (!bankAccountId.HasValue
-                    || bankAccountId == 0
-                    || (x.Transaction.BankAccountId == bankAccountId )
-                )
+                // && (!bankAccountId.HasValue
+                //     || bankAccountId == 0
+                //     || (x.Transaction.BankAccountId == bankAccountId )
+                // )
             ).ToList();
             var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             var amountDue = mappedPlanDates.Sum(x => x.Amount);

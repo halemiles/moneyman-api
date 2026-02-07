@@ -81,7 +81,7 @@ test.describe("PlanDateController - Tests", () => {
 test.describe("PlanDateController - Integration Tests", () => {
   test("Create transaction, generate plan dates, verify plan dates can be retrieved", async ({ request }) => {
     const uniqueName = `Integration Test Transaction ${Date.now()}`;
-    
+
     const transactionId = await createTransaction(request, {
       Name: uniqueName,
       Amount: 100,
@@ -97,7 +97,7 @@ test.describe("PlanDateController - Integration Tests", () => {
     // Get all plan dates
     const allPlanDatesResponse = await request.get(`${BASE_URL}/plandate`);
     const allPlanDates = await allPlanDatesResponse.json();
-    
+
     // Should have plan dates
     expect(allPlanDates.length).toBeGreaterThan(0);
 
@@ -106,7 +106,7 @@ test.describe("PlanDateController - Integration Tests", () => {
       `${BASE_URL}/plandate/search?transactionName=${encodeURIComponent(uniqueName)}`
     );
     const searchResults = await searchResponse.json();
-    
+
     expect(searchResults.length).toBeGreaterThan(0);
 
     // Cleanup
@@ -119,7 +119,7 @@ test.describe("PlanDateController - Integration Tests", () => {
       `Multi Test 2 ${Date.now()}`,
       `Multi Test 3 ${Date.now()}`,
     ];
-    
+
     const transactionIds = [];
 
     // Create multiple transactions
@@ -154,7 +154,7 @@ test.describe("PlanDateController - Integration Tests", () => {
 
   test("Verify plan dates have correct transaction reference", async ({ request }) => {
     const uniqueName = `Reference Test ${Date.now()}`;
-    
+
     const transactionId = await createTransaction(request, {
       Name: uniqueName,
       Amount: 75,
@@ -171,7 +171,7 @@ test.describe("PlanDateController - Integration Tests", () => {
       `${BASE_URL}/plandate/search?transactionName=${encodeURIComponent(uniqueName)}`
     );
     const planDates = await searchResponse.json();
-    
+
     expect(planDates.length).toBeGreaterThan(0);
 
     // Verify each plan date references the correct transaction

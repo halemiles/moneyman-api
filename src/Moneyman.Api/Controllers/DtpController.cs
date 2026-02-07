@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain.Models;
@@ -41,19 +42,19 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpPost("generate")]
-        public IActionResult Generate([FromQuery]int? transactionId)
+        public async Task<IActionResult> Generate([FromQuery]int? transactionId)
         {
             _logger.LogInformation("GET generate DTP {TransactionId}", transactionId ?? 0);
 
             try
             {
-                var planDates = dtpService.GenerateAll(transactionId);
-                
+                var planDates = await dtpService.GenerateAll(transactionId);
+
                 if (!planDates.Success)
                 {
                     return Ok(new DtpHttpResponse{RecordCount = 0, Message = planDates.Message});
                 }
-                
+
                 return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count(), Message = planDates.Message});
             }
             catch(Exception err)
