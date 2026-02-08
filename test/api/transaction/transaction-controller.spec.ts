@@ -1,4 +1,5 @@
 import { test, expect, APIRequestContext } from "@playwright/test";
+import { Frequency } from "../models/frequency";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -21,7 +22,7 @@ test.describe("TransactionController - CRUD Operations", () => {
       Name: "Test Transaction",
       Amount: 50.75,
       StartDate: "2026-06-01",
-      Frequency: 1,
+      Frequency: Frequency.Monthly,
       Active: true,
       IsAnticipated: false,
     };
@@ -75,7 +76,7 @@ test.describe("TransactionController - CRUD Operations", () => {
 
     const response = await request.get(`${BASE_URL}/transaction/${transactionId}`);
     expect(response.ok()).toBeTruthy();
-    
+
     const body = await response.json();
     expect(body.id).toBe(transactionId);
     expect(body.name).toBe("Fetch Test Transaction");
@@ -102,10 +103,10 @@ test.describe("TransactionController - CRUD Operations", () => {
 
     const response = await request.get(`${BASE_URL}/transaction`);
     expect(response.ok()).toBeTruthy();
-    
+
     const body = await response.json();
     expect(Array.isArray(body)).toBeTruthy();
-    
+
     const transaction = body.find((t) => t.id === transactionId);
     expect(transaction).toBeDefined();
     expect(transaction.isAnticipated).toBe(false);
@@ -126,10 +127,10 @@ test.describe("TransactionController - CRUD Operations", () => {
 
     const response = await request.get(`${BASE_URL}/transaction?anticipated=true`);
     expect(response.ok()).toBeTruthy();
-    
+
     const body = await response.json();
     expect(Array.isArray(body)).toBeTruthy();
-    
+
     // All returned transactions should be anticipated
     body.forEach((t) => {
       expect(t.isAnticipated).toBe(true);
@@ -154,10 +155,10 @@ test.describe("TransactionController - CRUD Operations", () => {
 
     const response = await request.get(`${BASE_URL}/transaction/anticipated`);
     expect(response.ok()).toBeTruthy();
-    
+
     const body = await response.json();
     expect(Array.isArray(body)).toBeTruthy();
-    
+
     const transaction = body.find((t) => t.id === anticipatedId);
     expect(transaction).toBeDefined();
     expect(transaction.isAnticipated).toBe(true);
@@ -191,7 +192,7 @@ test.describe("TransactionController - CRUD Operations", () => {
     // Verify the update
     const getResponse = await request.get(`${BASE_URL}/transaction/${transactionId}`);
     const updatedBody = await getResponse.json();
-    
+
     expect(updatedBody.name).toBe("Updated Transaction");
     expect(updatedBody.amount).toBe(200.50);
     expect(updatedBody.active).toBe(false);
@@ -230,7 +231,7 @@ test.describe("TransactionController - Different Transaction Types", () => {
 
     const response = await request.get(`${BASE_URL}/transaction/${transactionId}`);
     const body = await response.json();
-    
+
     expect(body.frequency).toBe(0);
     expect(body.name).toBe("Weekly Transaction");
 
@@ -248,7 +249,7 @@ test.describe("TransactionController - Different Transaction Types", () => {
 
     const response = await request.get(`${BASE_URL}/transaction/${transactionId}`);
     const body = await response.json();
-    
+
     expect(body.frequency).toBe(1);
     expect(body.name).toBe("Monthly Transaction");
 
@@ -266,7 +267,7 @@ test.describe("TransactionController - Different Transaction Types", () => {
 
     const response = await request.get(`${BASE_URL}/transaction/${transactionId}`);
     const body = await response.json();
-    
+
     expect(body.active).toBe(false);
 
     await deleteTransaction(request, transactionId);

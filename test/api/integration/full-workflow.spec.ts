@@ -1,4 +1,5 @@
 import { test, expect, APIRequestContext } from "@playwright/test";
+import {Frequency} from "../models/frequency";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -22,7 +23,7 @@ test.describe("Complete Workflow Integration Tests", () => {
       Name: "Weekly Grocery Shopping",
       Amount: 150,
       StartDate: "2026-06-01",
-      Frequency: 2, // Weekly
+      Frequency: Frequency.Weekly, // Weekly
       Active: true,
     });
 
@@ -30,7 +31,7 @@ test.describe("Complete Workflow Integration Tests", () => {
       Name: "Monthly Rent",
       Amount: 1200,
       StartDate: "2026-06-15",
-      Frequency: 1, // Monthly
+      Frequency: Frequency.Monthly, // Monthly
       Active: true,
     });
 
@@ -38,7 +39,7 @@ test.describe("Complete Workflow Integration Tests", () => {
       Name: "Monthly Utility Bill",
       Amount: 150,
       StartDate: "2026-06-15",
-      Frequency: 1, // Monthly
+      Frequency: Frequency.Monthly, // Monthly
       Active: true,
     });
 
