@@ -12,7 +12,7 @@ function isoDate(days = 1) {
 // Helper function to create a transaction
 async function createTransaction(request: APIRequestContext, data: any): Promise<number> {
   const response = await request.post(`${BASE_URL}/transaction`, { data });
-  
+
   // expect(response.ok()).toBeTruthy();
   const body = await response.json();
   return body.id;
@@ -121,7 +121,7 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
       Name: "Weekly Test Transaction",
       Amount: 25,
       StartDate: isoDate(),
-      Frequency: 0, // Weekly
+      Frequency: 2, // Weekly
       Active: true,
     });
 
@@ -129,7 +129,7 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     const monthlyTransactionId = await createTransaction(request, {
       Name: "Monthly Test Transaction",
       Amount: 100,
-      StartDate: isoDate() + 2,
+      StartDate: isoDate(),
       Frequency: 1, // Monthly
       Active: true,
     });
