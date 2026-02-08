@@ -13,7 +13,7 @@ const BASE_URL = "http://localhost:5000"; // Adjust if needed
         name: "updated Transaction",
         amount: 200.75,
         active: false,
-          startDate: "2023-10-10T01:30:45Z",
+          startDate: "2026-02-10T01:30:45Z",
       },
     });
 
@@ -27,7 +27,7 @@ const BASE_URL = "http://localhost:5000"; // Adjust if needed
     expect(updatedData.name).toBe("updated Transaction");
     expect(updatedData.amount).toBe(200.75);
     expect(updatedData.active).toBe(false);
-    expect(updatedData.startDate).toBe("2023-10-10T01:30:45");
+    expect(updatedData.startDate).toBe("2026-02-10T01:30:45");
   });
 
   // test("Update transaction with null values", async ({ request }) => {
