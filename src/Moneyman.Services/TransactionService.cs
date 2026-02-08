@@ -21,7 +21,6 @@ namespace Moneyman.Services
 
 		public TransactionService(
       ITransactionRepository transactionRepository,
-      IPlanDateRepository planDateRepository,
       ILogger<TransactionService> logger,
       TransactionMapper transactionMapper
     )
@@ -115,11 +114,19 @@ namespace Moneyman.Services
       var transaction = transactionMapper.ToEntity(trans);
       if(validationResult.IsValid)
       {
-        logger.LogInformation("Transaction is valid {TransactionName}", transaction.Name);
-        _transactionRepository.Add(transaction);
+        try
+        {
+          logger.LogInformation("Transaction is valid {TransactionName}", transaction.Name);
+          _transactionRepository.Add(transaction);
 
-        logger.LogInformation("Saving transaction {TransactionName}", transaction.Name);
-        await _transactionRepository.Save();
+          logger.LogInformation("Saving transaction {TransactionName}", transaction.Name);
+          await _transactionRepository.Save();
+        }
+        catch (Exception err)
+        {
+          logger.LogError("Failed to save transaction {TransactionName} {Error}", transaction.Name, err.Message);
+          return ApiResponse.ValidationError<int>("Failed to save transaction");
+        }
       }
       else
       {
