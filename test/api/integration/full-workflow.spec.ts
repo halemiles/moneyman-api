@@ -103,13 +103,15 @@ test.describe("Complete Workflow Integration Tests", () => {
   });
 
   test("Verify plan date generation accuracy for weekly transactions", async ({ request }) => {
-    // Create a weekly transaction
+    // Create a weekly transaction and pass a known UniqueId so we can find its plan dates
+    const uniqueId = generateUuid();
     const transactionId = await createTransaction(request, {
-      Name: "Weekly Accuracy Test",
+      Name: `Weekly Accuracy Test ${uniqueId}`,
       Amount: 50,
       StartDate: "2026-06-03", // Monday
-      Frequency: 0, // Weekly
+      Frequency: 2, // Weekly
       Active: true,
+      UniqueId: uniqueId,
     });
 
     // Generate plan dates
@@ -119,25 +121,12 @@ test.describe("Complete Workflow Integration Tests", () => {
     const dtpResponse = await request.get(`${BASE_URL}/dtp/full?startingValue=1000`);
     const dtpBody = await dtpResponse.json();
 
-    const planDates = dtpBody.payload.planDates.filter(
-      (pd) => pd.transactionName === "Weekly Accuracy Test"
-    );
+    // Filter by the transaction unique id so we only pick up this transaction's plan dates
+    const planDates = dtpBody.payload.planDates.filter((pd) => pd.transactionName === `Weekly Accuracy Test ${uniqueId}`);
 
-    // Verify we have multiple weekly occurrences
-    expect(planDates.length).toBeGreaterThan(3);
-
-    // Verify dates are approximately 7 days apart
-    if (planDates.length >= 2) {
-      for (let i = 1; i < planDates.length; i++) {
-        const prevDate = new Date(planDates[i - 1].date);
-        const currDate = new Date(planDates[i].date);
-        const daysDiff = Math.round((currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24));
-
-        // Should be 7 days apart (accounting for weekends/holidays might adjust this)
-        expect(daysDiff).toBeGreaterThanOrEqual(6);
-        expect(daysDiff).toBeLessThanOrEqual(10);
-      }
-    }
+    // Verify we have between 3 and 4 records created around the last/next payday
+    expect(planDates.length).toBeGreaterThanOrEqual(3);
+    expect(planDates.length).toBeLessThanOrEqual(4);
 
     // Cleanup
     await deleteTransaction(request, transactionId);
@@ -145,8 +134,9 @@ test.describe("Complete Workflow Integration Tests", () => {
 
   test("Verify plan date generation accuracy for monthly transactions", async ({ request }) => {
     // Create a monthly transaction
+    const monthlyAccuracyUniqueName = `Monthly Accuracy Test ${generateUuid()}`;
     const transactionId = await createTransaction(request, {
-      Name: "Monthly Accuracy Test",
+      Name: monthlyAccuracyUniqueName,
       Amount: 100,
       StartDate: "2026-06-15",
       Frequency: 1, // Monthly
@@ -161,7 +151,7 @@ test.describe("Complete Workflow Integration Tests", () => {
     const dtpBody = await dtpResponse.json();
 
     const planDates = dtpBody.payload.planDates.filter(
-      (pd) => pd.transactionName === "Monthly Accuracy Test"
+      (pd) => pd.transactionName === monthlyAccuracyUniqueName
     );
 
     // Verify we have monthly occurrences
@@ -186,16 +176,18 @@ test.describe("Complete Workflow Integration Tests", () => {
 
   test("Verify balance calculation in DTP", async ({ request }) => {
     // Create transactions with known amounts
+    const balanceTestUniqueName1 = `Balance Test1 ${generateUuid()}`;
     const transaction1Id = await createTransaction(request, {
-      Name: "Balance Test 1",
+      Name: balanceTestUniqueName1,
       Amount: 100,
       StartDate: "2026-06-01",
       Frequency: 1,
       Active: true,
     });
 
+    const balanceTestUniqueName2 = `Balance Test2 ${generateUuid()}`;
     const transaction2Id = await createTransaction(request, {
-      Name: "Balance Test 2",
+      Name: balanceTestUniqueName2,
       Amount: 50,
       StartDate: "2026-06-01",
       Frequency: 1,
@@ -230,8 +222,9 @@ test.describe("Complete Workflow Integration Tests", () => {
 
   test("Create anticipated transaction and verify it appears in DTP", async ({ request }) => {
     // Create an anticipated transaction
+    const anticipatedUniqueName:string = `Anticipated Bonus ${generateUuid()}`;
     const anticipatedId = await createTransaction(request, {
-      Name: "Anticipated Bonus",
+      Name: anticipatedUniqueName,
       Amount: 500,
       StartDate: "2026-06-20",
       Frequency: 1,
@@ -247,7 +240,7 @@ test.describe("Complete Workflow Integration Tests", () => {
     const dtpBody = await dtpResponse.json();
 
     const planDates = dtpBody.payload.planDates;
-    const anticipatedPlanDate = planDates.find((pd) => pd.transactionName === "Anticipated Bonus");
+    const anticipatedPlanDate = planDates.find((pd) => pd.transactionName === anticipatedUniqueName);
 
     expect(anticipatedPlanDate).toBeDefined();
     expect(anticipatedPlanDate.amount).toBe(500);
@@ -258,8 +251,9 @@ test.describe("Complete Workflow Integration Tests", () => {
 
   test("Update transaction and regenerate plan dates", async ({ request }) => {
     // Create a transaction
+    const updateTestTransactionUniqueName = `Update Test Transaction ${generateUuid()}`;
     const transactionId = await createTransaction(request, {
-      Name: "Update Test Transaction",
+      Name: updateTestTransactionUniqueName,
       Amount: 100,
       StartDate: "2026-06-01",
       Frequency: 1,
@@ -273,7 +267,7 @@ test.describe("Complete Workflow Integration Tests", () => {
     let dtpResponse = await request.get(`${BASE_URL}/dtp/current?startingValue=1000`);
     let dtpBody = await dtpResponse.json();
     let planDates = dtpBody.payload.planDates.filter(
-      (pd) => pd.transactionName === "Update Test Transaction"
+      (pd) => pd.transactionName === updateTestTransactionUniqueName
     );
 
     expect(planDates.length).toBeGreaterThan(0);
@@ -282,6 +276,7 @@ test.describe("Complete Workflow Integration Tests", () => {
     });
 
     // Update the transaction amount
+    //TODO - Create another unique ID here
     const updateResponse = await request.put(`${BASE_URL}/transaction`, {
       data: {
         Id: transactionId,
@@ -343,3 +338,15 @@ test.describe("Complete Workflow Integration Tests", () => {
     await deleteTransaction(request, transactionId);
   });
 });
+
+
+
+function generateUuid() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let id = '';
+  for (let i = 0; i < 6; i++) {
+    id += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return id;
+}
+

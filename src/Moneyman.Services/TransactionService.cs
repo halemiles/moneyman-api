@@ -58,7 +58,7 @@ namespace Moneyman.Services
         {
             existing.Frequency = model.Frequency;
         }
-        
+
         if(model.Active != existing.Active)
         {
           existing.Active = model.Active;
@@ -87,6 +87,15 @@ namespace Moneyman.Services
         _transactionRepository.Save();
     }
 
+    public void DeleteAll()
+    {
+      // Remove dependent plan dates via repository SQL and then transactions
+      _transactionRepository.RemoveAll("PlanDates");
+      _transactionRepository.RemoveAll("Transactions");
+      logger.LogInformation("Deleting all transactions and plan dates");
+      _transactionRepository.Save();
+    }
+
     public List<TransactionDto> GetAll()
     {
       var transactions =  _transactionRepository.GetAll();
@@ -112,6 +121,11 @@ namespace Moneyman.Services
       logger.LogInformation("Validation transaction {TransactionName}", trans.Name);
       var validationResult = transactionValidator.Validate(trans);
       var transaction = transactionMapper.ToEntity(trans);
+      // Ensure a unique identifier is present for each transaction created
+      if (string.IsNullOrEmpty(transaction.UniqueId))
+      {
+        transaction.UniqueId = Guid.NewGuid().ToString();
+      }
       if(validationResult.IsValid)
       {
         try
