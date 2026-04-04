@@ -29,7 +29,6 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<ITransactionService, TransactionService>();
         services.AddScoped<IPaydayService, PaydayService>();
-        services.AddScoped<IWeekdayService, WeekdayService>();
         services.AddScoped<IHolidayService, HolidayService>();
         services.AddScoped<IDtpService, DtpService>();
         services.AddScoped<IOffsetCalculationService, OffsetCalculationService>();
@@ -44,17 +43,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<BankAccountMapper>();
         services.AddSingleton<TransactionMapper>();
         services.AddSingleton<PlanDateMapper>();
-    }
-
-    public static IServiceCollection SetupLogger(this IServiceCollection services)
-    {
-        // Log.Logger = new LoggerConfiguration()
-        //     .WriteTo.Console()
-        //     //.WriteTo.Seq("http://localhost:5341")
-        //     .CreateLogger();
-        //
-        // services.AddSingleton(Log.Logger);
-        return services;
     }
 
     public static IServiceCollection SetupContexts(this IServiceCollection services, IConfiguration configuration)

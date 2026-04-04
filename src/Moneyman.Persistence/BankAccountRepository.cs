@@ -9,7 +9,7 @@ namespace Moneyman.Persistence
 {
     public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccountRepository
     {
-        public BankAccountRepository(MoneymanContext context, BankAccountMapper mapper) : base(context)
+        public BankAccountRepository(MoneymanContext context) : base(context)
         {
         }
     }

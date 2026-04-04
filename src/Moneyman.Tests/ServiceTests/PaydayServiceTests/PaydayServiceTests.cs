@@ -52,7 +52,6 @@ namespace Moneyman.Tests
         //TODO - Move this to a fixture class
         public OffsetCalculationService NewOffsetCalculationService() =>
             new(
-                new WeekdayService(),
                 mockHolidayService.Object
             );
 

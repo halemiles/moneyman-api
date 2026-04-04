@@ -20,11 +20,11 @@ test("anticipated transaction shows in dtp", async ({ request }) => {
     data: { DayOfMonth: 25 },
   });
 
-  var generateResponse = await request.get("/dtp/generate");
-  await expect(generateResponse.ok()).toBeTruthy();
+  var generateResponse = await request.post("/dtp/generate");
+  expect(await generateResponse.ok()).toBeTruthy();
   console.log(await generateResponse.json());
 
-  const dtpCurrentResult = await request.post("/dtp/full", {
+  const dtpCurrentResult = await request.get("/dtp/full", {
     data: {
       startingValue: 100,
     },
