@@ -26,15 +26,15 @@ namespace Moneyman.Api.Controllers
 
 
         [HttpGet("current")]
-        public IActionResult GetCurrentPeriod(int? startingValue, int? bankAccountId)
+        public IActionResult GetCurrentPeriod(int? startingValue)
         {
             _logger.LogInformation("GET all current");
-            var planDateDto = dtpService.GetCurrent(startingValue, bankAccountId);
+            var planDateDto = dtpService.GetCurrent(startingValue);
             return Ok(planDateDto);
         }
 
         [HttpGet("full")]
-        public IActionResult GetOffsetPeriod(int? startingValue, int? bankAccountId)
+        public IActionResult GetOffsetPeriod()
         {
             _logger.LogInformation("GET all DTP");
             var planDateDto = dtpService.GetOffset(0);

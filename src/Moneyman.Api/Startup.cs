@@ -14,8 +14,6 @@ using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using Moneyman.Services.Interfaces;
 using Moneyman.Api.Extensions;
-using Serilog;
-
 namespace Moneyman.Api
 {
     public class Startup
@@ -38,7 +36,6 @@ namespace Moneyman.Api
             services.AddServices();
             services.AddMappers();
             services.SetupCors();
-            services.SetupLogger();
             services.SetupHolidays(Configuration);
             services.SetupPayday(Configuration);
             services.AddHostedService<PaydayInitializerHostedService>();
@@ -53,9 +50,6 @@ namespace Moneyman.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Moneyman.Api v1"));
             }
-
-            //TODO - Start using this
-            //app.UseHttpsRedirection();
 
 	        app.UseCors("AllowAnyOrigin");
 

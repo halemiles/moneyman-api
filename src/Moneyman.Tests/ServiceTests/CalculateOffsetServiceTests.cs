@@ -20,7 +20,6 @@ namespace Moneyman.Tests
 
         private OffsetCalculationService NewOffsetCalculationService() =>
             new OffsetCalculationService(
-                new WeekdayService(),
                 mockHolidayService.Object
             );
 

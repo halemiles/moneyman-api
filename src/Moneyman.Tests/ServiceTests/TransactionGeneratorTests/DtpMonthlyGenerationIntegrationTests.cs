@@ -22,28 +22,6 @@ namespace Moneyman.Tests
     [TestClass]
     public class DtpMonthlyGenerationIntegrationTests
     {
-        private readonly List<string> holidays = new List<string>
-        {
-                "03-01-2022",
-                "15-04-2022",
-                "18-04-2022",
-                "02-05-2022",
-                "02-06-2022",
-                "03-06-2022",
-                "29-08-2022",
-                "26-12-2022",
-                "27-12-2022"
-        };
-
-        private Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
-
-        //TODO - Move this to a fixture class
-        private OffsetCalculationService NewOffsetCalculationService() =>
-            new(
-                new WeekdayService(),
-                mockHolidayService.Object
-            );
-
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
@@ -74,12 +52,9 @@ namespace Moneyman.Tests
             mockLogger = new Mock<ILogger<DtpService>>();
             mockPlanDateMapper = new Mock<PlanDateMapper>();
 
-            mockHolidayService = new Mock<IHolidayService>();
-
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new CalculatedPlanDate());
 
-            mockHolidayService.Setup(x => x.GenerateHolidays()).Returns(holidays);
             mockPaydayService.Setup(x => x.GetAll()).Returns(new List<Payday>());
         }
 

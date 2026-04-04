@@ -12,8 +12,5 @@ namespace Moneyman.Domain.Interfaces
         public DateTime StartDate { get; set; }
 
         public int BankAccountId { get; set; }
-
-        // Unique identifier for correlating transactions (set on create)
-        public string UniqueId { get; set; }
     }
 }

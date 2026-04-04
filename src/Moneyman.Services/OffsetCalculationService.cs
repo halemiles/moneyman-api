@@ -7,14 +7,11 @@ namespace Moneyman.Services
 {
     public class OffsetCalculationService : IOffsetCalculationService
     {
-        private readonly IWeekdayService _weekdayService;
         private readonly IHolidayService _holidayService;
         public OffsetCalculationService(
-            IWeekdayService weekdayService,
             IHolidayService holidayService
         )
         {
-            _weekdayService = weekdayService;
             _holidayService = holidayService;
         }
 

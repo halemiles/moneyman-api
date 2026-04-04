@@ -58,7 +58,7 @@ namespace Moneyman.Services
         {
             existing.Frequency = model.Frequency;
         }
-
+        
         if(model.Active != existing.Active)
         {
           existing.Active = model.Active;
@@ -121,11 +121,6 @@ namespace Moneyman.Services
       logger.LogInformation("Validation transaction {TransactionName}", trans.Name);
       var validationResult = transactionValidator.Validate(trans);
       var transaction = transactionMapper.ToEntity(trans);
-      // Ensure a unique identifier is present for each transaction created
-      if (string.IsNullOrEmpty(transaction.UniqueId))
-      {
-        transaction.UniqueId = Guid.NewGuid().ToString();
-      }
       if(validationResult.IsValid)
       {
         try
