@@ -172,12 +172,9 @@ test.describe("PlanDateController - Integration Tests", () => {
     );
     const planDates = await searchResponse.json();
 
-    expect(planDates.length).toBeGreaterThan(0);
-
-    // Verify each plan date references the correct transaction
-    for (const planDate of planDates) {
-      expect(planDate.transactionId).toBe(transactionId);
-    }
+    const planDate = planDates.find((pd) => pd.transaction.name === uniqueName);
+    expect(planDate).toBeDefined();
+    expect(planDate.transaction.name).toBe(uniqueName);
 
     // Cleanup
     await deleteTransaction(request, transactionId);

@@ -142,7 +142,7 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     expect(generateBody.recordCount).toBeGreaterThan(0);
 
     // Get current DTP to verify plan dates were created
-    const dtpResponse = await request.get(`${BASE_URL}/dtp/current?startingValue=1000`);
+    const dtpResponse = await request.get(`${BASE_URL}/dtp/full?startingValue=1000`);
     expect(dtpResponse.ok()).toBeTruthy();
 
     const dtpBody = await dtpResponse.json();
@@ -213,7 +213,7 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     expect(generateBody.recordCount).toBeGreaterThan(0);
 
     // Get DTP and verify all transactions appear
-    const dtpResponse = await request.get(`${BASE_URL}/dtp/current?startingValue=500`);
+    const dtpResponse = await request.get(`${BASE_URL}/dtp/full?startingValue=500`);
     const dtpBody = await dtpResponse.json();
 
     const planDates = dtpBody.payload.planDates;

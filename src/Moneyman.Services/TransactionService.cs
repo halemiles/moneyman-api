@@ -58,7 +58,7 @@ namespace Moneyman.Services
         {
             existing.Frequency = model.Frequency;
         }
-        
+
         if(model.Active != existing.Active)
         {
           existing.Active = model.Active;

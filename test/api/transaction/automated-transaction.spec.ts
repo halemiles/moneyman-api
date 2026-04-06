@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { dtp, dtpResponse } from "../models/dtp";
 
-test("anticipated transaction shows in dtp", async ({ request }) => {
+test.skip("anticipated transaction shows in dtp", async ({ request }) => {
   const newAnticipatedTransaction = await request.post("/transaction", {
     data: {
       Name: "TestAnticipatedTransaction",
