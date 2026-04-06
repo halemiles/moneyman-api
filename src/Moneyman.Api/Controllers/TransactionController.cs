@@ -103,6 +103,14 @@ namespace Moneyman.Api.Controllers
             return Ok();
         }
 
+        [HttpDelete("all")]
+        public IActionResult DeleteAll()
+        {
+            _logger.LogInformation("DELETE all transactions");
+            transactionService.DeleteAll();
+            return Ok();
+        }
+
         [HttpGet("anticipated")]
         public IActionResult Anticipated()
         {

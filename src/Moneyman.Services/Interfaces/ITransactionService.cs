@@ -14,5 +14,6 @@ namespace Moneyman.Interfaces
 		int Update(Transaction model);
 		void Update(List<Transaction> model);
     	void Delete(int id);
+		void DeleteAll();
 	}
 }

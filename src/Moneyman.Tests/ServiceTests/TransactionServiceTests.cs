@@ -30,7 +30,6 @@ namespace Moneyman.Tests
         private TransactionService NewTransactionService() =>
             new TransactionService(
                 _transRepoMock.Object,
-                _planDateRepoMock.Object,
                 mockLogger.Object,
                 _mapper.Object
             );

@@ -5,11 +5,6 @@ namespace Moneyman.Extensions
 {
     public static class DateVerificationExtensions
     {
-        public static bool IsMonday(this DateTime dte)
-        {
-            return dte.DayOfWeek == DayOfWeek.Monday;
-        }
-
         public static bool IsWeekday(this DateTime dte)
         {
             return dte.DayOfWeek != DayOfWeek.Saturday && dte.DayOfWeek != DayOfWeek.Sunday;

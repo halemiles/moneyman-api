@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
@@ -43,7 +44,7 @@ namespace Moneyman.Services
         }
 
         //TODO: Move this to a another class so we can unit test
-        public ApiResponse<List<PlanDate>> GenerateAll(int? transactionId)
+        public async Task<ApiResponse<List<PlanDate>>> GenerateAll(int? transactionId)
         {
             if(!paydayService.GetAll().Any())
             {
@@ -73,7 +74,8 @@ namespace Moneyman.Services
 
             try
             {
-                planDateRepository.Save(); //TODO - Try moving this out so we run batches
+                var response = await planDateRepository.Save(); //TODO - Try moving this out so we run batches
+                Console.WriteLine($"Saved {response} plandates");
             }
             catch(Exception err)
             {
@@ -85,12 +87,11 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateDaily(int? transactionId)
         {
-            return GetGenerationStrategy(GenerationStrategy.Daily).Generate(transactionId, Frequency.Daily);
+            return GetGenerationStrategy().Generate(transactionId, Frequency.Daily);
         }
 
-        public IPlanDateGenerationStrategy GetGenerationStrategy(GenerationStrategy strategyName)
+        private IPlanDateGenerationStrategy GetGenerationStrategy()
         {
-            // Factory pattern was removed as it always returned the same strategy type regardless of input
             return new DefaultPlanDateGenerationStrategy(
                 transactionRepository,
                 planDateRepository,
@@ -135,20 +136,20 @@ namespace Moneyman.Services
 
         public List<PlanDate> GenerateYearly(int? transactionId)
         {
-            return GetGenerationStrategy(GenerationStrategy.Yearly).Generate(transactionId, Frequency.Yearly);
+            return GetGenerationStrategy().Generate(transactionId, Frequency.Yearly);
         }
 
         public List<PlanDate> GenerateAnticipated(int? transactionId)
         {
-            return GetGenerationStrategy(GenerationStrategy.Anticipated).Generate(transactionId, Frequency.Anticipated);
+            return GetGenerationStrategy().Generate(transactionId, Frequency.Anticipated);
         }
 
         public List<PlanDate> GenerateMonthly(int? transactionId)
         {
-            return GetGenerationStrategy(GenerationStrategy.Monthly).Generate(transactionId, Frequency.Monthly);
+            return GetGenerationStrategy().Generate(transactionId, Frequency.Monthly);
         }
 
-        public ApiResponse<DtpDto> GetCurrent(int? startingValue, int? bankAccountId)
+        public ApiResponse<DtpDto> GetCurrent(int? startingValue)
         {
             var startDate = dateTimeProvider.GetToday();
             DateTime endDate = DateTime.MinValue;
@@ -176,15 +177,11 @@ namespace Moneyman.Services
                 logger.LogWarning("Plandate list is empty");
                 return ApiResponse.NoContent<DtpDto>("Plandate list is empty. Please regenerate plandates");
             }
-            
+
             planDates = planDates.Where(x =>
                 x.Transaction.Active
                 && x.Date > startDate
                 && x.Date < endDate
-                && (!bankAccountId.HasValue
-                    || bankAccountId == 0
-                    || (x.Transaction.BankAccountId == bankAccountId )
-                )
             ).ToList();
             var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             var amountDue = mappedPlanDates.Sum(x => x.Amount);

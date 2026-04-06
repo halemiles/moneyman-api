@@ -13,7 +13,7 @@ const BASE_URL = "http://localhost:5000"; // Adjust if needed
         name: "updated Transaction",
         amount: 200.75,
         active: false,
-          startDate: "2023-10-10T01:30:45Z",
+          startDate: "2026-02-10T01:30:45Z",
       },
     });
 
@@ -27,7 +27,7 @@ const BASE_URL = "http://localhost:5000"; // Adjust if needed
     expect(updatedData.name).toBe("updated Transaction");
     expect(updatedData.amount).toBe(200.75);
     expect(updatedData.active).toBe(false);
-    expect(updatedData.startDate).toBe("2023-10-10T01:30:45");
+    expect(updatedData.startDate).toBe("2026-02-10T01:30:45");
   });
 
   // test("Update transaction with null values", async ({ request }) => {
@@ -68,7 +68,7 @@ async function setup(request) {
         data: {
             name: "test transaction",
             amount: 100.5,
-            startdate: "2024-05-17T00:00:00Z",
+            startdate: "2026-05-17T00:00:00Z",
             frequency: 1,
             active: true,
             isanticipated: false,
@@ -89,6 +89,6 @@ async function setup(request) {
     expect(fetchedData.name).toBe("test transaction");
     expect(fetchedData.amount).toBe(100.5);
     expect(fetchedData.active).toBe(true);
-    expect(fetchedData.startDate).toBe("2024-05-17T00:00:00");
+    expect(fetchedData.startDate).toBe("2026-05-17T00:00:00");
     return transactionIdResponse;
 }
