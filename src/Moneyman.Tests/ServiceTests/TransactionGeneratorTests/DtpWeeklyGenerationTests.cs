@@ -184,26 +184,24 @@ namespace Moneyman.Tests
 
 
 
-        public void GenerateWeekly_WithAnticipatedTransactions_ShouldOnlyGenerateNonAnticipated_ReturnsSuccess()
+        public void GenerateWeekly_WithAnticipatedFrequencyTransactions_ShouldNotAppearInWeeklyGeneration_ReturnsSuccess()
         {
             // Arrange
             var sut = NewDtpService();
             var fixture = new Fixture();
             IEnumerable<Transaction> trans = new List<Transaction>
             {
-                fixture.Build<Transaction>().With(f => f.IsAnticipated ,true).With(f => f.Name, "Trans 1").Create(),
-                fixture.Build<Transaction>().With(f => f.IsAnticipated, false).With(f => f.Name, "Trans 2").Create()
+                fixture.Build<Transaction>().With(f => f.Frequency, Frequency.Anticipated).With(f => f.Name, "Trans 1").Create(),
+                fixture.Build<Transaction>().With(f => f.Frequency, Frequency.Weekly).With(f => f.Name, "Trans 2").Create()
             }.AsEnumerable();
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateWeekly(1);
+            var result = sut.GenerateWeekly(null);
 
             // Assert
-            result.Count.Should().Be(12);
-            result.All(x => x.Transaction.Name == "Trans 1").Should().BeTrue();
-            result.All(x => x.Transaction.IsAnticipated).Should().BeFalse();
-            result.ShouldMatchSnapshot();
+            result.Any(x => x.Transaction.Name == "Trans 1").Should().BeFalse();
+            result.Any(x => x.Transaction.Name == "Trans 2").Should().BeTrue();
         }
     }
 }

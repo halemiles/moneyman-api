@@ -103,7 +103,7 @@ namespace Moneyman.Services
         public List<PlanDate> GenerateWeekly(int? transactionId)
         {
             logger.LogInformation("Generating weekly");
-            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Weekly && !x.IsAnticipated);
+            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Weekly);
             if(transactionId.HasValue)
             {
                 transactions = transactions.Where(x => x.Id == transactionId);

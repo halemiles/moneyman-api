@@ -105,7 +105,7 @@ namespace Moneyman.Services
 
     public List<TransactionDto> GetAnticipated()
     {
-      var transactions =  _transactionRepository.GetAll().Where(x => x.IsAnticipated);
+      var transactions =  _transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Anticipated);
       var transactionsAsDto = transactions.Select(transactionMapper.ToDto).ToList();
       return transactionsAsDto;
     }

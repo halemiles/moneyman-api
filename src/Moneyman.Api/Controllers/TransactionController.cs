@@ -83,11 +83,11 @@ namespace Moneyman.Api.Controllers
 
             if (anticipated.HasValue && anticipated.Value)
             {
-                transactions = transactions.Where(x => x.IsAnticipated == true).ToList();
+                transactions = transactions.Where(x => x.Frequency == Frequency.Anticipated).ToList();
             }
             else
             {
-                transactions = transactions.Where(x => x.IsAnticipated == false).ToList();
+                transactions = transactions.Where(x => x.Frequency != Frequency.Anticipated).ToList();
             }
 
             return Ok(transactions);

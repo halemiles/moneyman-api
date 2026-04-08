@@ -37,7 +37,8 @@ namespace Moneyman.Tests.StrategyTests
         [DataRow(Frequency.Monthly, 24)]
         [DataRow(Frequency.Yearly, 2)]
         [DataRow(Frequency.Weekly, 104)]
-        [DataRow(Frequency.Daily,730)]
+        [DataRow(Frequency.Daily, 730)]
+        [DataRow(Frequency.Anticipated, 1)]
         public void Generate_WhenMonthly_WithValidInput_ReturnsPlanDates(Frequency frequency, int expectedRecordCount)
         {
             // Arrange
@@ -45,7 +46,7 @@ namespace Moneyman.Tests.StrategyTests
 
             var transactions = new List<Transaction>
             {
-                new Transaction { Id = 1, Frequency = frequency, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" }
+                new Transaction { Id = 1, Frequency = frequency, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" }
             };
 
             _mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
