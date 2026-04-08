@@ -37,7 +37,7 @@ namespace Moneyman.Tests
             mockLogger = new Mock<ILogger<DtpService>>();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
-                .Returns(new CalculatedPlanDate());
+                .Returns((DateTime d) => new CalculatedPlanDate { PlanDate = d });
         }
 
         [TestMethod]
@@ -160,6 +160,7 @@ namespace Moneyman.Tests
             result.ShouldMatchSnapshot();
         }
 
+        [TestMethod]
         public void GenerateMonthly_WithAnticipatedFrequencyTransactions_ShouldNotAppearInMonthlyGeneration_ReturnsSuccess()
         {
             // Arrange
@@ -180,6 +181,7 @@ namespace Moneyman.Tests
             result.Any(x => x.Transaction.Name == "Trans 2").Should().BeTrue();
         }
 
+        [TestMethod]
         public void GenerateMonthly_WhenCalculateOffsetThrows_ErrorIsLogged_ReturnsSuccess()
         {
             // Arrange
@@ -187,19 +189,34 @@ namespace Moneyman.Tests
             var fixture = new Fixture();
             IEnumerable<Transaction> trans = new List<Transaction>
             {
-                fixture.Build<Transaction>().With(f => f.Frequency, Frequency.Monthly).With(f => f.Name, "Trans 1").Create()
+                fixture.Build<Transaction>().With(f => f.Id, 1).With(f => f.Frequency, Frequency.Monthly).With(f => f.Name, "Trans 1").Create()
             }.AsEnumerable();
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
-            mockOffsetCalculationService.SetupSequence(x => x.CalculateOffset(It.IsAny<DateTime>()))
-                .Throws(new Exception())
-                .Returns(new CalculatedPlanDate());
+
+            int callCount = 0;
+            mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
+                .Returns((DateTime d) =>
+                {
+                    callCount++;
+                    if (callCount == 1) throw new Exception("Simulated offset error");
+                    return new CalculatedPlanDate { PlanDate = d };
+                });
+
             // Act
             var result = sut.Generate(1, Frequency.Monthly);
 
-            // Assert
+            // Assert - generation continues despite the exception, logs one error, produces 23 of 24 plan dates
             result.Should().NotBeNull();
-            mockOffsetCalculationService.Verify(x => x.CalculateOffset(It.IsAny<DateTime>()), Times.Never);
-            mockLogger.Verify(x => x.LogError(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>()), Times.Once);
+            result.Should().HaveCount(23);
+            mockOffsetCalculationService.Verify(x => x.CalculateOffset(It.IsAny<DateTime>()), Times.Exactly(24));
+            mockLogger.Verify(
+                x => x.Log(
+                    LogLevel.Error,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => true),
+                    It.IsAny<Exception>(),
+                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                Times.Once);
         }
     }
 }

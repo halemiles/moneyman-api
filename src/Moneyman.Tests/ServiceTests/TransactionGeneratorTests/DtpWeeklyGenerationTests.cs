@@ -26,19 +26,6 @@ namespace Moneyman.Tests
         private PlanDateMapper mockPlanDateMapper;
         private Mock<ILogger<DtpService>> mockLogger;
 
-        private readonly List<string> holidays = new List<string>
-        {
-                "03-01-2022",
-                "15-04-2022",
-                "18-04-2022",
-                "02-05-2022",
-                "02-06-2022",
-                "03-06-2022",
-                "29-08-2022",
-                "26-12-2022",
-                "27-12-2022"
-        };
-
         private DtpService NewDtpService() =>
             new DtpService(
                     mockTransactionRepository.Object,
@@ -62,7 +49,7 @@ namespace Moneyman.Tests
             mockPlanDateMapper = new PlanDateMapper();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
-                .Returns(new CalculatedPlanDate());
+                .Returns((DateTime d) => new CalculatedPlanDate { PlanDate = d });
 
             mockPaydayService.Setup(x => x.GetAll()).Returns(new List<Payday>());
         }
@@ -184,6 +171,7 @@ namespace Moneyman.Tests
 
 
 
+        [TestMethod]
         public void GenerateWeekly_WithAnticipatedFrequencyTransactions_ShouldNotAppearInWeeklyGeneration_ReturnsSuccess()
         {
             // Arrange
