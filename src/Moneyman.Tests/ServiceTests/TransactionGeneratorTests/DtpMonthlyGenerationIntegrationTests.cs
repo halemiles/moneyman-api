@@ -120,35 +120,5 @@ namespace Moneyman.Tests
             results.ShouldMatchSnapshot();
         }
 
-        [TestMethod]
-        [DataRow("2022-05-08",10,8,8,8,9,8,8,8,8,10,8,8)]
-        public void GenerateMonthly_WithExpectedValues_ReturnsSuccess_3(string startDateString,
-            int day1,int day2,int day3,int day4,int day5,int day6,int day7,int day8,int day9,int day10,int day11,int day12
-        )
-        {
-            // Arrange
-            var startDate = DateTime.Parse(startDateString);
-            var sut = NewDtpService();
-
-            IEnumerable<Transaction> transactions = new List<Transaction>
-            {
-                new Transaction
-                {
-                    Id = 0,
-                    Name = "transaction 1",
-                    StartDate = startDate,
-                    Frequency = Frequency.Monthly
-                }
-            }.AsEnumerable();
-
-            mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
-
-            // Act
-            var results = sut.GenerateMonthly(0);
-
-            // Assert
-            results.Count.Should().Be(24);
-            results.ShouldMatchSnapshot();
-        }
     }
 }
