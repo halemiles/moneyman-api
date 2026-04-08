@@ -83,11 +83,11 @@ namespace Moneyman.Api.Controllers
 
             if (anticipated.HasValue && anticipated.Value)
             {
-                transactions = transactions.Where(x => x.IsAnticipated == true).ToList();
+                transactions = transactions.Where(x => x.Frequency == Frequency.Anticipated).ToList();
             }
             else
             {
-                transactions = transactions.Where(x => x.IsAnticipated == false).ToList();
+                transactions = transactions.Where(x => x.Frequency != Frequency.Anticipated).ToList();
             }
 
             return Ok(transactions);
@@ -100,6 +100,14 @@ namespace Moneyman.Api.Controllers
         {
             _logger.LogInformation("DELETE transaction {TransactionId}", id);
             transactionService.Delete(id);
+            return Ok();
+        }
+
+        [HttpDelete("all")]
+        public IActionResult DeleteAll()
+        {
+            _logger.LogInformation("DELETE all transactions");
+            transactionService.DeleteAll();
             return Ok();
         }
 

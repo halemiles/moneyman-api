@@ -39,7 +39,6 @@ namespace Moneyman.Tests
                 Active = true,
                 StartDate = new DateTime(2022, 03, 01),
                 Frequency = Frequency.Monthly,
-                IsAnticipated = false,
                 PaymentType = PaymentType.DIRECTDEBIT,
                 CategoryType = CategoryType.ENTERTAINMENT,
                 PriorityType = PriorityType.DEPENDANT
@@ -60,7 +59,6 @@ namespace Moneyman.Tests
                 Active = true,
                 StartDate = new DateTime(2022, 03, 01),
                 Frequency = Frequency.Monthly,
-                IsAnticipated = false,
                 PaymentType = PaymentType.DIRECTDEBIT,
                 CategoryType = CategoryType.ENTERTAINMENT,
                 PriorityType = PriorityType.DEPENDANT

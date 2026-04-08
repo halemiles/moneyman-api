@@ -12,6 +12,7 @@ using AutoFixture;
 using Microsoft.Extensions.Logging;
 using Moneyman.Services.Interfaces;
 using Moneyman.Domain.MapperProfiles;
+using System.Threading.Tasks;
 
 namespace Moneyman.Tests
 {
@@ -69,26 +70,26 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public void GenerateMonthly_WhenNoPaydaysExist_ReturnsNotFound()
+        public async Task GenerateMonthly_WhenNoPaydaysExist_ReturnsNotFound()
         {
             // Arrange
             var sut = NewDtpService();
             mockPaydayService.Setup(x => x.GetAll()).Returns(new List<Payday>());
             // Act
-            var result = sut.GenerateAll(null);
+            var result = await sut.GenerateAll(null);
 
             // Assert
             result.StatusCode.Should().Be(StatusCode.NotFound);
         }
 
         [TestMethod]
-        public void GenerateAll_WhenNoTransactionsStartInCurrentYear_ReturnsNotFound()
+        public async Task GenerateAll_WhenNoTransactionsStartInCurrentYear_ReturnsNotFound()
         {
             // Arrange
             var sut = NewDtpService();
             const int testYear = 2024;
             mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(testYear, 6, 15));
-            
+
             // Create transactions with start dates NOT in the current year
             IEnumerable<Transaction> trans = new List<Transaction>
             {
@@ -102,9 +103,9 @@ namespace Moneyman.Tests
                 }
             };
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
-            
+
             // Act
-            var result = sut.GenerateAll(null);
+            var result = await sut.GenerateAll(null);
 
             // Assert
             result.StatusCode.Should().Be(StatusCode.NotFound);
@@ -113,13 +114,13 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public void GenerateMonthly_WithInvalidTransactionId_ReturnsEmptyList()
+        public async Task GenerateMonthly_WithInvalidTransactionId_ReturnsEmptyList()
         {
             // Arrange
             var sut = NewDtpService();
             const int testYear = 2024;
             mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(testYear, 6, 15));
-            
+
             Fixture fixture = new Fixture();
             Transaction t = new(){
                 Frequency = Frequency.Monthly,
@@ -132,7 +133,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
             mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>(){new PlanDate()});
             // Act
-            var result = sut.GenerateAll(null);
+            var result = await sut.GenerateAll(null);
 
             // Assert
             result.StatusCode.Should().Be(StatusCode.Success);

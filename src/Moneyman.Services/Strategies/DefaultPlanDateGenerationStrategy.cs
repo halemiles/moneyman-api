@@ -33,13 +33,32 @@ namespace Moneyman.Services
         {
             logger.LogInformation("Generating monthly");
 
-            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == frequency && !x.IsAnticipated);
+            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == frequency);
             if(transactionId.HasValue)
             {
                 transactions = transactions.Where(x => x.Id == transactionId);
             }
 
             List<PlanDate> planDates = new();
+
+            if (frequency == Frequency.Anticipated)
+            {
+                foreach (var transaction in transactions)
+                {
+                    try
+                    {
+                        DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(transaction.StartDate).PlanDate;
+                        var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
+                        planDates.Add(factory.Create());
+                    }
+                    catch (Exception err)
+                    {
+                        logger.LogError("Error generating anticipated plandate {TransactionName} {exceptionText}", transaction.Name, err.ToString());
+                    }
+                }
+                return planDates;
+            }
+
             int totalMonthCount = frequency.ToFrequencyCount() * TotalPlanDateYears;
 
             foreach(var transaction in transactions)

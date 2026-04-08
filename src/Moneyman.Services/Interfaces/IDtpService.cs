@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Moneyman.Domain;
 using Moneyman.Domain.Models;
 using Moneyman.Models.DomainTransferObjects;
@@ -7,7 +8,7 @@ namespace Moneyman.Services.Interfaces
 {
     public interface IDtpService
     {
-        ApiResponse<List<PlanDate>> GenerateAll(int? transactionId);
+        Task<ApiResponse<List<PlanDate>>> GenerateAll(int? transactionId);
 
         List<PlanDate> GenerateMonthly(int? transactionId);
 
@@ -16,7 +17,7 @@ namespace Moneyman.Services.Interfaces
         List<PlanDate> GenerateDaily(int? transactionId);
 
         List<PlanDate> GenerateYearly(int? transactionId);
-        ApiResponse<DtpDto> GetCurrent(int? startingValue, int? bankAccountId);
+        ApiResponse<DtpDto> GetCurrent(int? startingValue);
         ApiResponse<DtpDto> GetOffset(int? monthOffset);
 
     }

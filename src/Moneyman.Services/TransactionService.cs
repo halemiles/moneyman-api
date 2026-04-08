@@ -21,7 +21,6 @@ namespace Moneyman.Services
 
 		public TransactionService(
       ITransactionRepository transactionRepository,
-      IPlanDateRepository planDateRepository,
       ILogger<TransactionService> logger,
       TransactionMapper transactionMapper
     )
@@ -59,7 +58,7 @@ namespace Moneyman.Services
         {
             existing.Frequency = model.Frequency;
         }
-        
+
         if(model.Active != existing.Active)
         {
           existing.Active = model.Active;
@@ -88,6 +87,15 @@ namespace Moneyman.Services
         _transactionRepository.Save();
     }
 
+    public void DeleteAll()
+    {
+      // Remove dependent plan dates via repository SQL and then transactions
+      _transactionRepository.RemoveAll("PlanDates");
+      _transactionRepository.RemoveAll("Transactions");
+      logger.LogInformation("Deleting all transactions and plan dates");
+      _transactionRepository.Save();
+    }
+
     public List<TransactionDto> GetAll()
     {
       var transactions =  _transactionRepository.GetAll();
@@ -97,7 +105,7 @@ namespace Moneyman.Services
 
     public List<TransactionDto> GetAnticipated()
     {
-      var transactions =  _transactionRepository.GetAll().Where(x => x.IsAnticipated);
+      var transactions =  _transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Anticipated);
       var transactionsAsDto = transactions.Select(transactionMapper.ToDto).ToList();
       return transactionsAsDto;
     }
@@ -115,11 +123,19 @@ namespace Moneyman.Services
       var transaction = transactionMapper.ToEntity(trans);
       if(validationResult.IsValid)
       {
-        logger.LogInformation("Transaction is valid {TransactionName}", transaction.Name);
-        _transactionRepository.Add(transaction);
+        try
+        {
+          logger.LogInformation("Transaction is valid {TransactionName}", transaction.Name);
+          _transactionRepository.Add(transaction);
 
-        logger.LogInformation("Saving transaction {TransactionName}", transaction.Name);
-        await _transactionRepository.Save();
+          logger.LogInformation("Saving transaction {TransactionName}", transaction.Name);
+          await _transactionRepository.Save();
+        }
+        catch (Exception err)
+        {
+          logger.LogError("Failed to save transaction {TransactionName} {Error}", transaction.Name, err.Message);
+          return ApiResponse.ValidationError<int>("Failed to save transaction");
+        }
       }
       else
       {

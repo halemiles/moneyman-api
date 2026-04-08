@@ -7,14 +7,11 @@ namespace Moneyman.Services
 {
     public class OffsetCalculationService : IOffsetCalculationService
     {
-        private readonly IWeekdayService _weekdayService;
         private readonly IHolidayService _holidayService;
         public OffsetCalculationService(
-            IWeekdayService weekdayService,
             IHolidayService holidayService
         )
         {
-            _weekdayService = weekdayService;
             _holidayService = holidayService;
         }
 
@@ -49,11 +46,10 @@ namespace Moneyman.Services
                 }
                 else
                 {
-                    //Move forward by 1 day
-                    //Note: Direct debits typically come out Mondays or Tuesdays
-                    //      if they fall on a weekend or a bank holiday
-                    dte = dte.AddDays(-1);
-                    offsetby += -1;
+                    //Move forward to the next banking day
+                    //Note: UK direct debits always move forward, never backward
+                    dte = dte.AddDays(1);
+                    offsetby += 1;
 
                     returnObject.OffsetBy = offsetby;
                     returnObject.Reason = "On bank holiday or weekend";
