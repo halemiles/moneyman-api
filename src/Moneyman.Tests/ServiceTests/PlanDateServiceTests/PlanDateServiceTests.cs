@@ -128,7 +128,7 @@ namespace Moneyman.Tests
         [DataRow("", 100, "2022-01-01")]
         [DataRow("TransactionName", 0, "2022-01-01")]
         [DataRow("TransactionName", 100, "1/1/0001 12:00:00 AM")]
-        public async void Create_WhenObjectDoesntExist_ReturnsFailure(
+        public async Task Create_WhenObjectDoesntExist_ReturnsFailure(
             string transactionName,
             int amount,
             string startDate
@@ -148,7 +148,8 @@ namespace Moneyman.Tests
 
             _transRepoMock.Verify(x => x.Add(It.IsAny<Transaction>()), Times.Never());
             _transRepoMock.Verify(x => x.Save(), Times.Never());
-            result.Should().Be(false);
+            result.Should().NotBeNull();
+            result.Success.Should().BeFalse();
         }
 
         [TestMethod]

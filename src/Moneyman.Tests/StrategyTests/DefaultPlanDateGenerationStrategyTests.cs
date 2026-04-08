@@ -37,7 +37,8 @@ namespace Moneyman.Tests.StrategyTests
         [DataRow(Frequency.Monthly, 24)]
         [DataRow(Frequency.Yearly, 2)]
         [DataRow(Frequency.Weekly, 104)]
-        [DataRow(Frequency.Daily,730)]
+        [DataRow(Frequency.Daily, 730)]
+        [DataRow(Frequency.Anticipated, 1)]
         public void Generate_WhenMonthly_WithValidInput_ReturnsPlanDates(Frequency frequency, int expectedRecordCount)
         {
             // Arrange
@@ -45,7 +46,7 @@ namespace Moneyman.Tests.StrategyTests
 
             var transactions = new List<Transaction>
             {
-                new Transaction { Id = 1, Frequency = frequency, IsAnticipated = false, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" }
+                new Transaction { Id = 1, Frequency = frequency, StartDate = new DateTime(2021, 1, 1), Name = "Test Transaction" }
             };
 
             _mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
@@ -60,7 +61,54 @@ namespace Moneyman.Tests.StrategyTests
             result.Should().NotBeNull();
             result.Should().HaveCount(expectedRecordCount);
             result.Should().OnlyContain(planDate => planDate.Transaction == transactions[0]);
-            result.Should().OnlyContain(planDate => planDate.Date.Month >= 1 && planDate.Date.Month <= 12);
+            result.Should().OnlyContain(planDate => planDate.Date != DateTime.MinValue);
+        }
+
+        [TestMethod]
+        public void Generate_WhenOffsetShiftsDate_PlanDateReflectsShiftedDate()
+        {
+            // Arrange
+            int? transactionId = 1;
+            var originalDate = new DateTime(DateTime.Now.Year, 6, 1); // a Saturday in some years
+            var shiftedDate = originalDate.AddDays(2);
+
+            var transactions = new List<Transaction>
+            {
+                new Transaction { Id = 1, Frequency = Frequency.Monthly, StartDate = originalDate, Name = "Test Transaction" }
+            };
+
+            _mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
+            _mockOffsetCalculationService.Setup(service => service.CalculateOffset(It.IsAny<DateTime>()))
+                .Returns((DateTime d) => new CalculatedPlanDate { PlanDate = shiftedDate });
+
+            // Act
+            var result = _generator.Generate(transactionId, Frequency.Monthly);
+
+            // Assert
+            result.Should().OnlyContain(planDate => planDate.Date == shiftedDate);
+        }
+
+        [TestMethod]
+        public void Generate_WhenAnticipated_WithNullTransactionId_ReturnsAllAnticipatedTransactions()
+        {
+            // Arrange
+            var transactions = new List<Transaction>
+            {
+                new Transaction { Id = 1, Frequency = Frequency.Anticipated, StartDate = new DateTime(2024, 3, 15), Name = "Anticipated 1" },
+                new Transaction { Id = 2, Frequency = Frequency.Anticipated, StartDate = new DateTime(2024, 7, 20), Name = "Anticipated 2" }
+            };
+
+            _mockTransactionRepository.Setup(repo => repo.GetAll()).Returns(transactions.AsQueryable());
+            _mockOffsetCalculationService.Setup(service => service.CalculateOffset(It.IsAny<DateTime>()))
+                .Returns((DateTime d) => new CalculatedPlanDate { PlanDate = d });
+
+            // Act
+            var result = _generator.Generate(null, Frequency.Anticipated);
+
+            // Assert
+            result.Should().HaveCount(2);
+            result.Should().Contain(p => p.Transaction.Name == "Anticipated 1");
+            result.Should().Contain(p => p.Transaction.Name == "Anticipated 2");
         }
     }
 }
