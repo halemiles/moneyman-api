@@ -1,21 +1,21 @@
 using System.Collections.Generic;
-using Microsoft.Extensions.Options;
-using Moneyman.Domain.Settings;
+using System.Linq;
 using Moneyman.Interfaces;
 
 namespace Moneyman.Services
 {
     public class HolidayService : IHolidayService
     {
-        private readonly IOptions<HolidayOptions> holidayOptions;
-        public HolidayService(IOptions<HolidayOptions> holidayOptions)
+        private readonly IBankHolidayCache _cache;
+
+        public HolidayService(IBankHolidayCache cache)
         {
-            this.holidayOptions = holidayOptions;
+            _cache = cache;
         }
 
         public List<string> GenerateHolidays()
         {
-            return holidayOptions.Value.Holidays;
+            return _cache.Holidays.ToList();
         }
     }
 }
