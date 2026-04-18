@@ -40,5 +40,15 @@ namespace Moneyman.Api.Controllers
             var planDates = planDateService.Search(transactionName);
             return Ok(planDates);
         }
+
+        [HttpPatch("{id}/paid")]
+        public IActionResult MarkAsPaid(int id)
+        {
+            _logger.LogInformation("Marking plan date {Id} as paid", id);
+            var result = planDateService.MarkAsPaid(id);
+            if (result.StatusCode == Domain.StatusCode.NotFound)
+                return NotFound(result);
+            return Ok(result);
+        }
     }
 }
