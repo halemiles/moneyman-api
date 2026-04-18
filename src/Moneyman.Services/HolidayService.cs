@@ -12,7 +12,7 @@ namespace Moneyman.Services
         private readonly IBankHolidayCache _cache;
         private readonly IBankHolidayRepository _repository;
         private readonly IOptions<HolidayOptions> _holidayOptions;
-        private readonly object _cacheLock = new object();
+        private readonly object _populateCacheLock = new object();
 
         public HolidayService(
             IBankHolidayCache cache,
@@ -29,7 +29,7 @@ namespace Moneyman.Services
             if (_cache.Holidays.Any())
                 return _cache.Holidays.ToList();
 
-            lock (_cacheLock)
+            lock (_populateCacheLock)
             {
                 if (_cache.Holidays.Any())
                     return _cache.Holidays.ToList();
