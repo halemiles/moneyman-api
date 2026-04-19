@@ -1,8 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Options;
-using Moneyman.Domain;
-using Moneyman.Domain.Settings;
 using Moneyman.Interfaces;
 
 namespace Moneyman.Services
@@ -11,17 +8,14 @@ namespace Moneyman.Services
     {
         private readonly IBankHolidayCache _cache;
         private readonly IBankHolidayRepository _repository;
-        private readonly IOptions<HolidayOptions> _holidayOptions;
         private readonly object _populateCacheLock = new object();
 
         public HolidayService(
             IBankHolidayCache cache,
-            IBankHolidayRepository repository,
-            IOptions<HolidayOptions> holidayOptions)
+            IBankHolidayRepository repository)
         {
             _cache = cache;
             _repository = repository;
-            _holidayOptions = holidayOptions;
         }
 
         public List<string> GenerateHolidays()
@@ -43,12 +37,8 @@ namespace Moneyman.Services
                     _cache.Populate(storedHolidays);
                     return storedHolidays;
                 }
-
-                var configuredHolidays = _holidayOptions.Value?.Holidays?.ToList() ?? new List<string>();
-                if (configuredHolidays.Any())
-                    _cache.Populate(configuredHolidays);
-
-                return configuredHolidays;
+                
+                return new List<string>();
             }
         }
     }

@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moneyman.Domain;
-using Moneyman.Domain.Settings;
 using Moneyman.Interfaces;
 using Moneyman.Services;
 
@@ -22,9 +20,8 @@ namespace Moneyman.Tests
             cache.SetupGet(x => x.Holidays).Returns(cacheValues);
 
             var repository = new Mock<IBankHolidayRepository>();
-            var options = Options.Create(new HolidayOptions { Holidays = new List<string> { "02-01-2026" } });
 
-            var sut = new HolidayService(cache.Object, repository.Object, options);
+            var sut = new HolidayService(cache.Object, repository.Object);
             var result = sut.GenerateHolidays();
 
             result.Should().BeEquivalentTo(cacheValues);
@@ -45,8 +42,7 @@ namespace Moneyman.Tests
             var repository = new Mock<IBankHolidayRepository>();
             repository.Setup(x => x.GetAll()).Returns(repositoryValues);
 
-            var options = Options.Create(new HolidayOptions { Holidays = new List<string> { "02-01-2026" } });
-            var sut = new HolidayService(cache.Object, repository.Object, options);
+            var sut = new HolidayService(cache.Object, repository.Object);
 
             var result = sut.GenerateHolidays();
 
@@ -55,7 +51,7 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public void GenerateHolidays_WhenCacheAndRepositoryEmpty_ReturnsConfiguredValuesAndPopulatesCache()
+        public void GenerateHolidays_WhenCacheAndRepositoryEmpty_ReturnsEmptyList()
         {
             var cache = new Mock<IBankHolidayCache>();
             cache.SetupGet(x => x.Holidays).Returns(new List<string>());
@@ -63,14 +59,12 @@ namespace Moneyman.Tests
             var repository = new Mock<IBankHolidayRepository>();
             repository.Setup(x => x.GetAll()).Returns(new List<BankHoliday>());
 
-            var configuredValues = new List<string> { "02-01-2026" };
-            var options = Options.Create(new HolidayOptions { Holidays = configuredValues });
-            var sut = new HolidayService(cache.Object, repository.Object, options);
+            var sut = new HolidayService(cache.Object, repository.Object);
 
             var result = sut.GenerateHolidays();
 
-            result.Should().BeEquivalentTo(configuredValues);
-            cache.Verify(x => x.Populate(It.Is<IEnumerable<string>>(h => HasSingleValue(h, "02-01-2026"))), Times.Once);
+            result.Should().BeEquivalentTo(new List<string>());
+            cache.Verify(x => x.Populate(It.IsAny<IEnumerable<string>>()), Times.Never);
         }
 
         private static bool HasSingleValue(IEnumerable<string> values, string expected)

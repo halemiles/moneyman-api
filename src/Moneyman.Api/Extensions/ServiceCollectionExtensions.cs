@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
-using Moneyman.Domain.Settings;
 using Moneyman.Interfaces;
 using Moneyman.Persistence;
 using Moneyman.Services;
@@ -80,7 +79,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection SetupHolidays(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<HolidayOptions>(configuration.GetSection("HolidayOptions"));
+        services.Configure<BankHolidayApiOptions>(configuration.GetSection("BankHolidayApiOptions"));
         services.AddSingleton<IBankHolidayCache, BankHolidayCache>();
         services.AddHttpClient();
         return services;
