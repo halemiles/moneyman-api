@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPaydayRepository, PaydayRepository>();
         services.AddScoped<IPlanDateRepository, PlanDateRepository>();
         services.AddScoped<IBankAccountRepository, BankAccountRepository>();
+        services.AddScoped<IBankHolidayRepository, BankHolidayRepository>();
 
         return services;
     }
@@ -79,7 +80,9 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection SetupHolidays(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<HolidayOptions>(configuration.GetSection("HolidayOptions"));
+        services.Configure<BankHolidayApiOptions>(configuration.GetSection("BankHolidayApiOptions"));
+        services.AddSingleton<IBankHolidayCache, BankHolidayCache>();
+        services.AddHttpClient();
         return services;
     }
 

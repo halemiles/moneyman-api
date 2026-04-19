@@ -45,5 +45,11 @@ DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('Transactions',17);
 INSERT INTO sqlite_sequence VALUES('Paydays',96);
 INSERT INTO sqlite_sequence VALUES('PlanDates',3736);
+CREATE TABLE IF NOT EXISTS "BankHolidays" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_BankHolidays" PRIMARY KEY AUTOINCREMENT,
+    "Date" TEXT NOT NULL,
+    "Title" TEXT NOT NULL
+);
+
 CREATE INDEX "IX_PlanDates_TransactionId" ON "PlanDates" ("TransactionId");
 COMMIT;
