@@ -47,7 +47,9 @@ namespace Moneyman.Api.Controllers
             _logger.LogInformation("Marking plan date {Id} as paid", id);
             var result = planDateService.MarkAsPaid(id);
             if (result.StatusCode == Domain.StatusCode.NotFound)
+            {
                 return NotFound(result);
+            }
             return Ok(result);
         }
     }
