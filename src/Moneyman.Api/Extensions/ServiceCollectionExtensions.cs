@@ -80,7 +80,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection SetupHolidays(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<BankHolidayOptions>(configuration.GetSection("BankHolidayOptions"));
+        services.Configure<BankHolidayApiOptions>(configuration.GetSection("BankHolidayApiOptions"));
         services.AddSingleton<IBankHolidayCache, BankHolidayCache>();
         services.AddHttpClient();
         return services;
