@@ -97,10 +97,10 @@ namespace Moneyman.Api.Extensions
         {
             using var client = _httpClientFactory.CreateClient();
             var url = string.IsNullOrWhiteSpace(_bankHolidayApiOptions.Value.Url)
-                ? "https://www.gov.uk/bank-holidays.json"
+                ? BankHolidayApiOptions.DefaultUrl
                 : _bankHolidayApiOptions.Value.Url;
             var region = string.IsNullOrWhiteSpace(_bankHolidayApiOptions.Value.Region)
-                ? "england-and-wales"
+                ? BankHolidayApiOptions.DefaultRegion
                 : _bankHolidayApiOptions.Value.Region;
             var json = await client.GetStringAsync(url, cancellationToken);
 

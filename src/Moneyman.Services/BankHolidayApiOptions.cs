@@ -1,8 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Moneyman.Services
 {
     public class BankHolidayApiOptions
     {
-        public string Url { get; set; } = "https://www.gov.uk/bank-holidays.json";
-        public string Region { get; set; } = "england-and-wales";
+        public const string DefaultUrl = "https://www.gov.uk/bank-holidays.json";
+        public const string DefaultRegion = "england-and-wales";
+
+        [Required]
+        public string Url { get; set; } = DefaultUrl;
+
+        [Required]
+        public string Region { get; set; } = DefaultRegion;
     }
 }
