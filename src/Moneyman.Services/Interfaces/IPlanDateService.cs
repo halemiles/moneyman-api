@@ -17,5 +17,12 @@ namespace Moneyman.Interfaces
 		/// <param name="transactionName"></param>
 		/// <returns></returns>
 		List<PlanDate> Search(string transactionName);
+
+		/// <summary>
+		/// Mark a plan date as paid
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		ApiResponse<PlanDate> MarkAsPaid(int id);
 	}
 }

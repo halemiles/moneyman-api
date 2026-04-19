@@ -37,5 +37,18 @@ namespace Moneyman.Services
             }
             return planDates.ToList();
         }
+
+        public ApiResponse<PlanDate> MarkAsPaid(int id)
+        {
+            var planDate = _planDateRepository.Get(id);
+            if (planDate == null)
+            {
+                return ApiResponse.NotFound<PlanDate>($"Plan date with id {id} not found");
+            }
+
+            planDate.Paid = true;
+            _planDateRepository.Update(planDate);
+            return ApiResponse.Success<PlanDate>(planDate, "Plan date marked as paid");
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace Moneyman.Domain
         public DateTime Date { get; set; }
         public bool Active { get; set; }
         public DateTime OriginalDate { get; set; }
+        public bool Paid { get; set; }
     }
 }
