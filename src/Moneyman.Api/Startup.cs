@@ -36,7 +36,7 @@ namespace Moneyman.Api
             services.AddServices();
             services.AddMappers();
             services.SetupCors();
-            services.SetupHolidays();
+            services.SetupHolidays(Configuration);
             services.SetupPayday(Configuration);
             services.AddHostedService<BankHolidayInitializerHostedService>();
             services.AddHostedService<PaydayInitializerHostedService>();

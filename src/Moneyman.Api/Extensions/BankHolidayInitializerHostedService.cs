@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moneyman.Domain;
+using Moneyman.Domain.Settings;
 using Moneyman.Interfaces;
 
 namespace Moneyman.Api.Extensions
@@ -19,19 +21,20 @@ namespace Moneyman.Api.Extensions
         private readonly IBankHolidayCache _cache;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<BankHolidayInitializerHostedService> _logger;
-
-        private const string BankHolidayUrl = "https://www.gov.uk/bank-holidays.json";
+        private readonly BankHolidayOptions _options;
 
         public BankHolidayInitializerHostedService(
             IServiceProvider serviceProvider,
             IBankHolidayCache cache,
             IHttpClientFactory httpClientFactory,
-            ILogger<BankHolidayInitializerHostedService> logger)
+            ILogger<BankHolidayInitializerHostedService> logger,
+            IOptions<BankHolidayOptions> options)
         {
             _serviceProvider = serviceProvider;
             _cache = cache;
             _httpClientFactory = httpClientFactory;
             _logger = logger;
+            _options = options.Value;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -78,11 +81,11 @@ namespace Moneyman.Api.Extensions
         private async Task<List<BankHoliday>> FetchFromApiAsync(CancellationToken cancellationToken)
         {
             using var client = _httpClientFactory.CreateClient();
-            var json = await client.GetStringAsync(BankHolidayUrl, cancellationToken);
+            var json = await client.GetStringAsync(_options.Url, cancellationToken);
 
             using var doc = JsonDocument.Parse(json);
             var events = doc.RootElement
-                .GetProperty("england-and-wales")
+                .GetProperty(_options.Region)
                 .GetProperty("events");
 
             var holidays = new List<BankHoliday>();
