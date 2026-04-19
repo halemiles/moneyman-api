@@ -182,6 +182,7 @@ namespace Moneyman.Services
                 x.Transaction.Active
                 && x.Date > startDate
                 && x.Date < endDate
+                && !x.Paid
             ).ToList();
             var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             var amountDue = mappedPlanDates.Sum(x => x.Amount);
@@ -218,7 +219,7 @@ namespace Moneyman.Services
 
             var planDates = planDateRepository
                                .GetAll()
-                               .Where(x => x.Transaction.Active && x.Date > startDate && x.Date < endDate)
+                               .Where(x => x.Transaction.Active && x.Date > startDate && x.Date < endDate && !x.Paid)
                                .ToList();
             var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             return ApiResponse.Success<DtpDto>( new DtpDto{

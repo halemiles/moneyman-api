@@ -81,6 +81,34 @@ namespace Moneyman.Tests
             result.Count().Should().Be(5);
         }
 
+        [TestMethod]
+        public void MarkAsPaid_WhenPlanDateExists_ReturnsSuccess()
+        {
+            var planDate = new PlanDate { Id = 1, Paid = false };
+            _planDateRepoMock.Setup(x => x.Get(1)).Returns(planDate);
+            _planDateRepoMock.Setup(x => x.Update(It.IsAny<PlanDate>())).Returns(true);
+
+            var service = NewPlanDateService();
+            var result = service.MarkAsPaid(1);
+
+            result.Success.Should().BeTrue();
+            result.Payload.Paid.Should().BeTrue();
+            _planDateRepoMock.Verify(x => x.Update(It.Is<PlanDate>(p => p.Paid == true)), Times.Once());
+        }
+
+        [TestMethod]
+        public void MarkAsPaid_WhenPlanDateDoesNotExist_ReturnsNotFound()
+        {
+            _planDateRepoMock.Setup(x => x.Get(99)).Returns((PlanDate)null);
+
+            var service = NewPlanDateService();
+            var result = service.MarkAsPaid(99);
+
+            result.Success.Should().BeFalse();
+            result.StatusCode.Should().Be(StatusCode.NotFound);
+            _planDateRepoMock.Verify(x => x.Update(It.IsAny<PlanDate>()), Times.Never());
+        }
+
         // [TestMethod]
         // public void Search_WhenObjectDoesntExist_ReturnsSuccess()
         // {
