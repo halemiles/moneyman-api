@@ -97,12 +97,8 @@ namespace Moneyman.Api.Extensions
         private async Task<List<BankHoliday>> FetchFromApiAsync(CancellationToken cancellationToken)
         {
             using var client = _httpClientFactory.CreateClient();
-            var url = string.IsNullOrWhiteSpace(_bankHolidayApiOptions.Value.Url)
-                ? BankHolidayApiOptions.DefaultUrl
-                : _bankHolidayApiOptions.Value.Url;
-            var region = string.IsNullOrWhiteSpace(_bankHolidayApiOptions.Value.Region)
-                ? BankHolidayApiOptions.DefaultRegion
-                : _bankHolidayApiOptions.Value.Region;
+            var url = _bankHolidayApiOptions.Value.Url;
+            var region = _bankHolidayApiOptions.Value.Region;
             var json = await client.GetStringAsync(url, cancellationToken);
 
             using var doc = JsonDocument.Parse(json);
