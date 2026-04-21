@@ -14,8 +14,7 @@ namespace Moneyman.Domain.MapperProfiles
             {
                 TransactionName = entity.Transaction.Name,
                 Amount = entity.Transaction.Amount,
-                Date = entity.Date,
-                BankAccountId = entity.Transaction.BankAccountId
+                Date = entity.Date
             };
         }
 
@@ -29,8 +28,7 @@ namespace Moneyman.Domain.MapperProfiles
                 Transaction = new Transaction
                 {
                     Name = dto.TransactionName,
-                    Amount = dto.Amount,
-                    BankAccountId = dto.BankAccountId
+                    Amount = dto.Amount
                 }
             };
         }
