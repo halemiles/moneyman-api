@@ -261,6 +261,9 @@ server.tool(
     if (startDate) changes.push(`startDate → ${fmt(startDate)}`);
     if (active != null) changes.push(`active → ${active}`);
     if (frequency) changes.push(`frequency → ${frequency}`);
+    if (paymentType) changes.push(`paymentType → ${paymentType}`);
+    if (categoryType) changes.push(`categoryType → ${categoryType}`);
+    if (priorityType) changes.push(`priorityType → ${priorityType}`);
 
     return text(`Updated "${existing.name}" (ID ${existing.id})${changes.length ? ": " + changes.join(", ") : ""}`);
   },
@@ -316,7 +319,7 @@ server.tool(
   async ({ transactionId }) => {
     const qs = transactionId != null ? `?transactionId=${transactionId}` : "";
     const result = await apiPost<{ recordCount: number; message: string }>(`/dtp/generate${qs}`);
-    return text(`Generated ${result.recordCount} plan date(s). ${result.message ?? ""}`);
+    return text(`Generated ${result.recordCount} plan date(s). ${result.message}`);
   },
 );
 
@@ -325,4 +328,7 @@ server.tool(
 const transport = new StdioServerTransport();
 server.connect(transport).then(() => {
   process.stderr.write(`Moneyman MCP server running — API: ${BASE_URL}\n`);
+}).catch((err: unknown) => {
+  process.stderr.write(`Moneyman MCP server failed to start: ${String(err)}\n`);
+  process.exit(1);
 });

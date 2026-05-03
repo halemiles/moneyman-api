@@ -179,6 +179,12 @@ server.tool("update_transaction", "Update an existing transaction. Finds by name
         changes.push(`active → ${active}`);
     if (frequency)
         changes.push(`frequency → ${frequency}`);
+    if (paymentType)
+        changes.push(`paymentType → ${paymentType}`);
+    if (categoryType)
+        changes.push(`categoryType → ${categoryType}`);
+    if (priorityType)
+        changes.push(`priorityType → ${priorityType}`);
     return text(`Updated "${existing.name}" (ID ${existing.id})${changes.length ? ": " + changes.join(", ") : ""}`);
 });
 // 6. Delete transaction
@@ -205,10 +211,13 @@ server.tool("mark_plan_date_paid", "Mark a specific plan date entry as paid by i
 server.tool("generate_plan_dates", "Regenerate the DTP schedule (plan dates) for all transactions or a single one", { transactionId: z.number().int().optional().describe("Limit regeneration to a specific transaction ID") }, async ({ transactionId }) => {
     const qs = transactionId != null ? `?transactionId=${transactionId}` : "";
     const result = await apiPost(`/dtp/generate${qs}`);
-    return text(`Generated ${result.recordCount} plan date(s). ${result.message ?? ""}`);
+    return text(`Generated ${result.recordCount} plan date(s). ${result.message}`);
 });
 // ── Start ─────────────────────────────────────────────────────────────────────
 const transport = new StdioServerTransport();
 server.connect(transport).then(() => {
     process.stderr.write(`Moneyman MCP server running — API: ${BASE_URL}\n`);
+}).catch((err) => {
+    process.stderr.write(`Moneyman MCP server failed to start: ${String(err)}\n`);
+    process.exit(1);
 });
