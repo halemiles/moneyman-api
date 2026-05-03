@@ -54,12 +54,11 @@ For every changed `.cs` file, check the following in priority order:
 - XML doc comments must describe **intent and purpose**, not just restate the member name.
 - If `<param>` tags exist, every parameter must be documented.
 - If the method can throw, `<exception>` tags should document thrown exceptions.
-- For .NET Core 6 projects: check if `<GenerateDocumentationFile>` is enabled in the `.csproj`. If it is, undocumented public members will produce build warnings — flag any that are missing.
+- Check if `<GenerateDocumentationFile>` is enabled in the `.csproj`. If it is, undocumented public members will produce build warnings — flag any that are missing.
 
 #### 3b. Null safety and defensive coding
 
-- **Framework 4.8**: Public method parameters that are reference types should have explicit null checks (`if (paramName is null) throw new ArgumentNullException(nameof(paramName));`). Prefer `is null` / `is not null` over `== null` / `!= null` (available since C# 7.0).
-- **.NET Core 6**: If nullable reference types are enabled (`<Nullable>enable</Nullable>`), trust the type system — do not add redundant null checks for non-nullable parameters. For nullable parameters, ensure they are checked before use.
+- **.NET 9**: If nullable reference types are enabled (`<Nullable>enable</Nullable>`), trust the type system — do not add redundant null checks for non-nullable parameters. For nullable parameters, ensure they are checked before use. Prefer `is null` / `is not null` over `== null` / `!= null`.
 - Never use `?.` on a value that has already been null-checked in the same scope (redundant).
 - Flag any use of `!` (null-forgiving operator) and ask whether the suppression is justified.
 
@@ -82,8 +81,7 @@ For every changed `.cs` file, check the following in priority order:
 
 For any changed `.csproj` files:
 
-- Flag new package additions — are they compatible with the target framework?
-- For Framework 4.8: new NuGet packages must support `.NET Framework 4.8` or `.NET Standard 2.0`.
+- Flag new package additions — are they compatible with `net9.0`?
 - Flag version changes to existing packages — is this intentional or accidental?
 
 ### Step 5 — Summary report
