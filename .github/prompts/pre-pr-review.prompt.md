@@ -86,7 +86,7 @@ For any changed `.csproj` files:
 - For Framework 4.8: new NuGet packages must support `.NET Framework 4.8` or `.NET Standard 2.0`.
 - Flag version changes to existing packages — is this intentional or accidental?
 
-### Step 6 — Summary report
+### Step 5 — Summary report
 
 Present findings in the following format, grouped by file:
 

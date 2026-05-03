@@ -27,7 +27,6 @@ async function apiPut(path, body) {
     });
     if (!res.ok)
         throw new Error(`PUT ${path} → ${res.status}: ${await res.text()}`);
-    return res.json();
 }
 async function apiPatch(path) {
     const res = await fetch(`${BASE_URL}${path}`, { method: "PATCH" });
@@ -117,7 +116,7 @@ server.tool("create_transaction", "Create a new recurring or one-off transaction
     paymentType: PaymentTypeEnum.default("DIRECTDEBIT"),
     categoryType: CategoryTypeEnum.optional(),
     priorityType: PriorityTypeEnum.optional(),
-    bankAccountId: z.number().int().default(1),
+    bankAccountId: z.number().int().optional().describe("Bank account ID to associate with this transaction"),
 }, async ({ name, amount, startDate, frequency, paymentType, categoryType, priorityType, bankAccountId }) => {
     const body = {
         name,
@@ -126,7 +125,7 @@ server.tool("create_transaction", "Create a new recurring or one-off transaction
         active: true,
         frequency: FREQUENCY[frequency],
         paymentType: PAYMENT_TYPE[paymentType],
-        bankAccountId,
+        ...(bankAccountId != null && { bankAccountId }),
         ...(categoryType && { categoryType: CATEGORY_TYPE[categoryType] }),
         ...(priorityType && { priorityType: PRIORITY_TYPE[priorityType] }),
     };

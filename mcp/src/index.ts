@@ -22,14 +22,13 @@ async function apiPost<T>(path: string, body?: unknown): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-async function apiPut<T>(path: string, body: unknown): Promise<T> {
+async function apiPut(path: string, body: unknown): Promise<void> {
   const res = await fetch(`${BASE_URL}${path}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error(`PUT ${path} → ${res.status}: ${await res.text()}`);
-  return res.json() as Promise<T>;
 }
 
 async function apiPatch(path: string): Promise<void> {
@@ -194,7 +193,7 @@ server.tool(
     paymentType: PaymentTypeEnum.default("DIRECTDEBIT"),
     categoryType: CategoryTypeEnum.optional(),
     priorityType: PriorityTypeEnum.optional(),
-    bankAccountId: z.number().int().default(1),
+    bankAccountId: z.number().int().optional().describe("Bank account ID to associate with this transaction"),
   },
   async ({ name, amount, startDate, frequency, paymentType, categoryType, priorityType, bankAccountId }) => {
     const body: TransactionDto = {
@@ -204,7 +203,7 @@ server.tool(
       active: true,
       frequency: FREQUENCY[frequency as FrequencyKey],
       paymentType: PAYMENT_TYPE[paymentType as PaymentTypeKey],
-      bankAccountId,
+      ...(bankAccountId != null && { bankAccountId }),
       ...(categoryType && { categoryType: CATEGORY_TYPE[categoryType as CategoryTypeKey] }),
       ...(priorityType && { priorityType: PRIORITY_TYPE[priorityType as PriorityTypeKey] }),
     };
