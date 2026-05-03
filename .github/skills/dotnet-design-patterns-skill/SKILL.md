@@ -11,7 +11,7 @@ Your task is to ensure .NET/C# code in ${selection} meets the best practices spe
 
 - Create comprehensive XML documentation comments for all public classes, interfaces, methods, and properties
 - Include parameter descriptions and return value descriptions in XML comments
-- Follow the established namespace structure: {Core|Console|App|Service}.{Feature}
+- Follow the established namespace structure: `Moneyman.{Api|Domain|Services|Persistence|Extensions|Tests}`
 
 ## Design Patterns & Architecture
 
@@ -27,12 +27,6 @@ Your task is to ensure .NET/C# code in ${selection} meets the best practices spe
 - Use Microsoft.Extensions.DependencyInjection patterns
 - Implement service interfaces for testability
 
-## Resource Management & Localization
-
-- Use ResourceManager for localized messages and error strings
-- Separate LogMessages and ErrorMessages resource files
-- Access resources via `_resourceManager.GetString("MessageKey")`
-
 ## Async/Await Patterns
 
 - Use async/await for all I/O operations and long-running tasks
@@ -43,7 +37,7 @@ Your task is to ensure .NET/C# code in ${selection} meets the best practices spe
 ## Testing Standards
 
 - Use MSTest framework with FluentAssertions for assertions
-- Follow AAA pattern (Arrange, Act, Assert)
+- Structure tests with Arrange/Act/Assert sections but do not emit AAA as code comments
 - Use Moq for mocking dependencies
 - Test both success and failure scenarios
 - Include null parameter validation tests
@@ -54,13 +48,6 @@ Your task is to ensure .NET/C# code in ${selection} meets the best practices spe
 - Implement validation attributes (Required, NotEmptyOrWhitespace)
 - Use IConfiguration binding for settings
 - Support appsettings.json configuration files
-
-## Semantic Kernel & AI Integration
-
-- Use Microsoft.SemanticKernel for AI operations
-- Implement proper kernel configuration and service registration
-- Handle AI model settings (ChatCompletion, Embedding, etc.)
-- Use structured output patterns for reliable AI responses
 
 ## Error Handling & Logging
 
@@ -74,7 +61,6 @@ Your task is to ensure .NET/C# code in ${selection} meets the best practices spe
 - Use C# 13 features and .NET 9 optimizations where applicable
 - Implement proper input validation and sanitization
 - Use parameterized queries for database operations
-- Follow secure coding practices for AI/ML operations
 
 ## Code Quality
 

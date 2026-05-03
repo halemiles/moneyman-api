@@ -7,7 +7,7 @@ applyTo: '**/*.cs'
 
 ## C# Instructions
 - Use C# 13 features supported by the repository's current `net9.0` target framework.
-- Write clear and concise comments for each function.
+- Only add comments when the *why* is non-obvious — hidden constraints, subtle invariants, or workarounds. Do not comment what the code does.
 
 ## General Instructions
 - Make only high confidence suggestions when reviewing code changes.
