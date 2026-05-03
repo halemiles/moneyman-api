@@ -16,9 +16,9 @@ Your task is to ensure .NET/C# code in ${selection} meets the best practices spe
 ## Design Patterns & Architecture
 
 - Use primary constructor syntax for dependency injection (e.g., `public class MyClass(IDependency dependency)`)
-- Implement the Command Handler pattern with generic base classes (e.g., `CommandHandler<TOptions>`)
+- Follow the Repository pattern: generic `IRepository<T>` with scoped typed repositories per entity
+- Use the Options pattern for configuration (`PaydayOptions`, `BankHolidayApiOptions`)
 - Use interface segregation with clear naming conventions (prefix interfaces with 'I')
-- Follow the Factory pattern for complex object creation.
 
 ## Dependency Injection & Services
 
