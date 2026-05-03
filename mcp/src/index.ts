@@ -49,7 +49,7 @@ interface PlanDateDto {
   transactionName: string;
   amount: number;
   date: string;
-  bankAccountId: number;
+  bankAccountId?: number | null;
 }
 
 interface DtpDto {
@@ -70,7 +70,7 @@ interface TransactionDto {
   active?: boolean;
   frequency?: number;
   paymentType?: number;
-  bankAccountId: number;
+  bankAccountId?: number | null;
   categoryType?: number;
   priorityType?: number;
 }

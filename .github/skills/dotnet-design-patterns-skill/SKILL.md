@@ -1,5 +1,5 @@
 ---
-name: dotnet-best-practices
+name: dotnet-design-patterns
 description: 'Ensure .NET/C# code meets best practices for the solution/project.'
 ---
 

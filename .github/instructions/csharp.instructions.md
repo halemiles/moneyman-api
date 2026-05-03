@@ -6,7 +6,7 @@ applyTo: '**/*.cs'
 # C# Development
 
 ## C# Instructions
-- Always use the latest version C#, currently C# 14 features.
+- Use C# 13 features supported by the repository's current `net9.0` target framework.
 - Write clear and concise comments for each function.
 
 ## General Instructions
@@ -37,7 +37,7 @@ applyTo: '**/*.cs'
 - Explain the purpose of each generated file and folder to build understanding of the project structure.
 - Demonstrate how to organize code using feature folders or domain-driven design principles.
 - Show proper separation of concerns with models, services, and data access layers.
-- Explain the Program.cs and configuration system in ASP.NET Core 10 including environment-specific settings.
+- Explain the Program.cs and configuration system in ASP.NET Core 9, including environment-specific settings.
 
 ## Nullable Reference Types
 
