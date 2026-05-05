@@ -8,6 +8,6 @@ namespace Moneyman.Models.DomainTransferObjects
         public decimal Amount {get; set;}
         public DateTime Date {get; set;}
 
-        public int BankAccountId {get; set;}
+        public int? BankAccountId {get; set;}
     }
 }

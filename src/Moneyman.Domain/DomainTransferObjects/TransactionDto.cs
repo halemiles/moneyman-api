@@ -12,13 +12,13 @@ namespace Moneyman.Domain
         public bool? Active { get; set; }
         public Frequency? Frequency { get; set; }
         public PaymentType? PaymentType { get; set; }
-        public int BankAccountId { get; set; }
+        public int? BankAccountId { get; set; }
 
-        public string PaymentTypeDesc => PaymentType.ToString();
+        public string PaymentTypeDesc => PaymentType.HasValue ? PaymentType.Value.ToString() : null;
         public CategoryType? CategoryType {get; set;}
-        public string CategoryTypeDesc => CategoryType.ToString();
+        public string CategoryTypeDesc => CategoryType.HasValue ? CategoryType.Value.ToString() : null;
         public PriorityType? PriorityType { get; set; }
 
-        public string PriorityTypeDesc => PriorityType.ToString();
+        public string PriorityTypeDesc => PriorityType.HasValue ? PriorityType.Value.ToString() : null;
     }
 }

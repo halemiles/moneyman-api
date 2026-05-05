@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "moneyman": {
+      "command": "node",
+      "args": ["./mcp/dist/index.js"],
+      "env": {
+        "MONEYMAN_API_URL": "http://localhost:5000"
+      }
+    }
+  }
+}
