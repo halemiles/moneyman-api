@@ -79,3 +79,24 @@ The solution (`src/Moneyman.Api.sln`) is structured as 6 projects with clear lay
 - AutoFixture generates test data; Moq mocks service/repository dependencies.
 - Snapper is used for snapshot assertions — update snapshots with `Snapper.UpdateSnapshots = true` when intentionally changing output shapes.
 - Tests are organized by layer: `RepositoryTests/`, `ServiceTests/`, `DomainTests/`, `MapperTests/`, `ValidatorTests/`, `StrategyTests/`.
+
+# Project conventions
+
+## Stack
+- .NET Framework 4.8 + .NET Core 6 (mixed solution)
+- Azure DevOps pipelines, MSTest/xUnit tests
+- Full conventions: docs/coding-standards.md
+
+## Hard rules
+- Edit, don't rewrite. Diff format for changes >50 lines.
+- Public members get XML doc comments.
+- SQL ops wrap in transactions; rollback on error.
+- Null-check parameters at method entry.
+- Group >3 method params into a parameter object.
+
+## Behaviour
+- Read files before changing them; don't re-read unchanged files.
+- One task per session. /clear when switching context.
+- No "Certainly!", no recap of the question, no closing pleasantries.
+- If uncertain, ask one question. Don't speculate to fill gaps.
+- Skip files >100KB unless explicitly required.

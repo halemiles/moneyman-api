@@ -1,0 +1,25 @@
+# Build artefacts
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# Dependencies
+packages/
+node_modules/
+
+# Test & coverage output
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# Compiled binaries
+*.dll
+*.pdb
+*.exe
+
+# IDE/editor
+.idea/
+*.swp
