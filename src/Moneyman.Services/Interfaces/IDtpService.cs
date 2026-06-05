@@ -9,16 +9,7 @@ namespace Moneyman.Services.Interfaces
     public interface IDtpService
     {
         Task<ApiResponse<List<PlanDate>>> GenerateAll(int? transactionId);
-
-        List<PlanDate> GenerateMonthly(int? transactionId);
-
-        List<PlanDate> GenerateWeekly(int? transactionId);
-
-        List<PlanDate> GenerateDaily(int? transactionId);
-
-        List<PlanDate> GenerateYearly(int? transactionId);
         ApiResponse<DtpDto> GetCurrent(int? startingValue);
         ApiResponse<DtpDto> GetOffset(int? monthOffset);
-
     }
 }

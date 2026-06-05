@@ -17,13 +17,11 @@ namespace Moneyman.Tests
     public class DtpMonthlyGenerationTests
     {
         private Mock<ITransactionRepository> mockTransactionRepository;
-        private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<ILogger<DtpService>> mockLogger;
         private DefaultPlanDateGenerationStrategy NewDtpGenerationService() =>
             new DefaultPlanDateGenerationStrategy(
                     mockTransactionRepository.Object,
-                    mockPlanDateRepository.Object,
                     mockOffsetCalculationService.Object,
                     mockLogger.Object
             );
@@ -32,7 +30,6 @@ namespace Moneyman.Tests
         public void SetUp()
         {
             mockTransactionRepository = new Mock<ITransactionRepository>();
-            mockPlanDateRepository = new Mock<IPlanDateRepository>();
             mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
             mockLogger = new Mock<ILogger<DtpService>>();
 
