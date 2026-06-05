@@ -5,80 +5,74 @@ using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
 using Moneyman.Services.Extentions;
-using Moneyman.Services.Factories;
 
 namespace Moneyman.Services
 {
     public class DefaultPlanDateGenerationStrategy : IPlanDateGenerationStrategy
     {
         private readonly ITransactionRepository transactionRepository;
-        private readonly IPlanDateRepository planDateRepository;
         private readonly IOffsetCalculationService offsetCalculationService;
         private readonly ILogger<DtpService> logger;
         private const int TotalPlanDateYears = 2;
+
         public DefaultPlanDateGenerationStrategy(
             ITransactionRepository transactionRepository,
-            IPlanDateRepository planDateRepository,
             IOffsetCalculationService offsetCalculationService,
             ILogger<DtpService> logger
         )
         {
             this.transactionRepository = transactionRepository;
-            this.planDateRepository = planDateRepository;
             this.offsetCalculationService = offsetCalculationService;
             this.logger = logger;
         }
 
         public List<PlanDate> Generate(int? transactionId, Frequency frequency)
         {
-            logger.LogInformation("Generating monthly");
+            logger.LogInformation("Generating {Frequency} plan dates", frequency);
 
-            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == frequency);
-            if(transactionId.HasValue)
+            var transactions = transactionRepository.GetAll()
+                .Where(x => x.Frequency == frequency);
+            if (transactionId.HasValue)
             {
                 transactions = transactions.Where(x => x.Id == transactionId);
             }
 
             List<PlanDate> planDates = new();
+            int totalCount = frequency == Frequency.Anticipated
+                ? 1
+                : frequency.ToFrequencyCount() * TotalPlanDateYears;
 
-            if (frequency == Frequency.Anticipated)
+            foreach (var transaction in transactions)
             {
-                foreach (var transaction in transactions)
+                int year = DateTime.Now.Year;
+                int day = transaction.StartDate.Day;
+                DateTime seedDate = new DateTime(year, 1, day);
+                for (int i = 0; i < totalCount; i++)
                 {
                     try
                     {
-                        DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(transaction.StartDate).PlanDate;
-                        var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
-                        planDates.Add(factory.Create());
+                        DateTime dateOffset = frequency switch
+                        {
+                            Frequency.Daily => seedDate.AddDays(i),
+                            Frequency.Weekly => seedDate.AddDays(7 * i),
+                            Frequency.Monthly => seedDate.AddMonths(i),
+                            Frequency.Yearly => seedDate.AddYears(i),
+                            _ => seedDate.AddMonths(i)
+                        };
+
+                        DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate;
+
+                        planDates.Add(new PlanDate
+                        {
+                            Active = true,
+                            Date = calculatedOffsetDate,
+                            OriginalDate = transaction.StartDate,
+                            Transaction = transaction
+                        });
                     }
                     catch (Exception err)
                     {
-                        logger.LogError("Error generating anticipated plandate {TransactionName} {exceptionText}", transaction.Name, err.ToString());
-                    }
-                }
-                return planDates;
-            }
-
-            int totalMonthCount = frequency.ToFrequencyCount() * TotalPlanDateYears;
-
-            foreach(var transaction in transactions)
-            {
-                DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan
-                for(int i=0;i<totalMonthCount;i++)
-                {
-                    try
-                    {
-                        DateTime dateOffset = startDate.AddMonths(i);
-
-                        DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
-
-                        var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
-
-                        planDates.Add(factory.Create());
-                    }
-                    catch(Exception err)
-                    {
-                        logger.LogError("Error generating monthly plandate {TransactionName} {month} {exceptionText}", transaction.Name, i, err.ToString());
+                        logger.LogError("Error generating plandate {TransactionName} {iteration} {exceptionText}", transaction.Name, i, err.ToString());
                     }
                 }
             }

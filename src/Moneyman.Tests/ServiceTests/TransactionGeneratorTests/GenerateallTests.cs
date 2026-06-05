@@ -70,7 +70,7 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public async Task GenerateMonthly_WhenNoPaydaysExist_ReturnsNotFound()
+        public async System.Threading.Tasks.Task GenerateAll_WhenNoPaydaysExist_ReturnsNotFound()
         {
             // Arrange
             var sut = NewDtpService();
@@ -83,7 +83,7 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public async Task GenerateAll_WhenNoTransactionsStartInCurrentYear_ReturnsNotFound()
+        public async System.Threading.Tasks.Task GenerateAll_WhenNoTransactionsStartInCurrentYear_ReturnsNotFound()
         {
             // Arrange
             var sut = NewDtpService();
@@ -114,7 +114,7 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public async Task GenerateMonthly_WithInvalidTransactionId_ReturnsEmptyList()
+        public async System.Threading.Tasks.Task GenerateAll_WithMultipleMonthlyTransactions_ReturnsAllPlanDates()
         {
             // Arrange
             var sut = NewDtpService();
