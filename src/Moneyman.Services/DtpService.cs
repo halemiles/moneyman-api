@@ -78,7 +78,7 @@ namespace Moneyman.Services
             try
             {
                 var response = await planDateRepository.Save();
-                Console.WriteLine($"Saved {response} plandates");
+                logger.LogInformation("Saved {PlanDateCount} plandates", response);
             }
             catch(Exception err)
             {
@@ -109,12 +109,7 @@ namespace Moneyman.Services
                 return ApiResponse.NoContent<DtpDto>("Plandate list is empty. Please regenerate plandates");
             }
 
-            planDates = planDates.Where(x =>
-                x.Transaction.Active
-                && x.Date > startDate
-                && x.Date < endDate
-                && !x.Paid
-            ).ToList();
+            planDates = planDates.Where(x => IsDueBetween(x, startDate, endDate)).ToList();
             var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             var amountDue = mappedPlanDates.Sum(x => x.Amount);
             var weeksRemaining = WeeksRemaining(startDate, endDate);
@@ -135,6 +130,14 @@ namespace Moneyman.Services
             return (end - start).Days / 7;
         }
 
+        private static bool IsDueBetween(PlanDate planDate, DateTime startDate, DateTime endDate)
+        {
+            return planDate.Transaction.Active
+                && planDate.Date > startDate
+                && planDate.Date < endDate
+                && !planDate.Paid;
+        }
+
         public ApiResponse<DtpDto> GetOffset(int? monthOffset)
         {
             var offset = monthOffset ?? 0;
@@ -144,7 +147,7 @@ namespace Moneyman.Services
 
             var planDates = planDateRepository
                                .GetAll()
-                               .Where(x => x.Transaction.Active && x.Date > startDate && x.Date < endDate && !x.Paid)
+                               .Where(x => IsDueBetween(x, startDate, endDate))
                                .ToList();
             var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             return ApiResponse.Success<DtpDto>( new DtpDto{

@@ -32,7 +32,7 @@ namespace Moneyman.Services
 
     public int Update(Transaction model)
     {
-        var existing = _transactionRepository.Get(model.Id); // _context.Set<Transaction>().AsNoTracking().FirstOrDefault(x => x.Id == entity.Id);
+        var existing = _transactionRepository.Get(model.Id);
 
         if (existing == null)
         {

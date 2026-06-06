@@ -47,8 +47,8 @@ namespace Moneyman.Services
 				};
 				payDates.Add(pd);
 				_paydayRepository.Add(pd);
-				_paydayRepository.Save();
 			}
+			_paydayRepository.Save();
 
 			return payDates;
 		}
