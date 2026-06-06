@@ -1,5 +1,6 @@
 using System;
 
+using FluentValidation;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,7 @@ using Moneyman.Interfaces;
 using Moneyman.Persistence;
 using Moneyman.Services;
 using Moneyman.Services.Interfaces;
+using Moneyman.Services.Validators;
 
 public static class ServiceCollectionExtensions
 {
@@ -36,6 +38,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPlanDateService, PlanDateService>();
         services.AddScoped<IBankAccountService, BankAccountService>();
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+        services.AddScoped<IValidator<TransactionDto>, TransactionDtoValidator>();
 
         return services;
     }
@@ -64,15 +67,31 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection SetupCors(this IServiceCollection services){
+    public const string AllowAnyOriginPolicy = "AllowAnyOrigin";
+    public const string RestrictedOriginsPolicy = "RestrictedOrigins";
+
+    public static IServiceCollection SetupCors(this IServiceCollection services, IConfiguration configuration){
+        var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+
         services.AddCors(options =>
             {
-                options.AddPolicy(name: "AllowAnyOrigin",
+                options.AddPolicy(name: AllowAnyOriginPolicy,
                     builder => {
                         builder
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
+                    });
+
+                options.AddPolicy(name: RestrictedOriginsPolicy,
+                    builder => {
+                        if (allowedOrigins.Length > 0)
+                        {
+                            builder
+                            .WithOrigins(allowedOrigins)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                        }
                     });
             });
         return services;

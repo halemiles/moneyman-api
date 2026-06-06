@@ -35,7 +35,7 @@ namespace Moneyman.Api
             services.AddRepositories();
             services.AddServices();
             services.AddMappers();
-            services.SetupCors();
+            services.SetupCors(Configuration);
             services.SetupHolidays(Configuration);
             services.SetupPayday(Configuration);
             services.AddHostedService<BankHolidayInitializerHostedService>();
@@ -52,7 +52,9 @@ namespace Moneyman.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Moneyman.Api v1"));
             }
 
-	        app.UseCors("AllowAnyOrigin");
+	        app.UseCors(env.IsDevelopment()
+	            ? ServiceCollectionExtensions.AllowAnyOriginPolicy
+	            : ServiceCollectionExtensions.RestrictedOriginsPolicy);
 
             app.UseRouting();
 

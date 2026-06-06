@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Moneyman.Domain;
-using Moneyman.Services.Validators;
+using FluentValidation;
 using Moneyman.Domain.MapperProfiles;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -18,16 +18,19 @@ namespace Moneyman.Services
     private readonly ILogger<TransactionService> logger;
 
     private readonly TransactionMapper transactionMapper;
+    private readonly IValidator<TransactionDto> transactionValidator;
 
 		public TransactionService(
       ITransactionRepository transactionRepository,
       ILogger<TransactionService> logger,
-      TransactionMapper transactionMapper
+      TransactionMapper transactionMapper,
+      IValidator<TransactionDto> transactionValidator
     )
 		{
 			_transactionRepository = transactionRepository;
       this.logger = logger;
       this.transactionMapper = transactionMapper;
+      this.transactionValidator = transactionValidator;
 		}
 
     public int Update(Transaction model)
@@ -117,7 +120,6 @@ namespace Moneyman.Services
 
     public async Task<ApiResponse<int>> Create(TransactionDto trans)
     {
-      TransactionDtoValidator transactionValidator = new TransactionDtoValidator();
       logger.LogInformation("Validation transaction {TransactionName}", trans.Name);
       var validationResult = transactionValidator.Validate(trans);
       var transaction = transactionMapper.ToEntity(trans);

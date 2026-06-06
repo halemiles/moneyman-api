@@ -38,7 +38,7 @@ namespace Moneyman.Api.Controllers
             var result = await transactionService.Create(transactionDto);
             if(!result.Success)
             {
-                return StatusCode((int)result.StatusCode);
+                return StatusCode((int)result.StatusCode, new { message = result.Message });
             }
             return Ok(new { id = result.Payload });
         }
@@ -57,9 +57,14 @@ namespace Moneyman.Api.Controllers
         {
             _logger.LogInformation("Updating transaction {TransactionName}", transactionDto?.Name);
             var transaction = mapper.ToEntity(transactionDto);
-            transactionService.Update(transaction);
+            var result = transactionService.Update(transaction);
 
-            return Ok(transaction); //TODO - Convert back to DTO
+            if (result == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(mapper.ToDto(transaction));
         }
 
         [HttpGet("{id}")]

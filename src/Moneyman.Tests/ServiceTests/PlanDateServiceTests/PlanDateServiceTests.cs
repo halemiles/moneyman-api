@@ -37,7 +37,8 @@ namespace Moneyman.Tests
             new TransactionService(
                 _transRepoMock.Object,
                  mockTransactionServiceLogger.Object,
-                transactionMapper.Object);
+                transactionMapper.Object,
+                new Moneyman.Services.Validators.TransactionDtoValidator());
 
         [TestInitialize]
         public void SetUp()
