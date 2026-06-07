@@ -93,5 +93,102 @@ namespace Moneyman.Tests
             result.Payload.AmountDue.Should().Be(200);
             result.ShouldMatchSnapshot();
         }
+
+        [TestMethod]
+        public void GetCurrent_WithBankAccountId_ReturnsOnlyPlanDatesForThatBankAccount()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
+            {
+                PlanDateFor(bankAccountId: 1),
+                PlanDateFor(bankAccountId: 1),
+                PlanDateFor(bankAccountId: 2)
+            });
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(2022,1,1));
+            mockPaydayService.Setup(x => x.GetNext()).Returns(new Payday{Date = new DateTime(2022,12,1)});
+
+            // Act
+            var result = sut.GetCurrent(null, bankAccountId: 1);
+
+            // Assert
+            result.Payload.PlanDates.Should().HaveCount(2);
+            result.Payload.PlanDates.Should().OnlyContain(pd => pd.BankAccountId == 1);
+        }
+
+        [TestMethod]
+        public void GetCurrent_WithoutBankAccountId_ReturnsPlanDatesForAllBankAccounts()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
+            {
+                PlanDateFor(bankAccountId: 1),
+                PlanDateFor(bankAccountId: 2),
+                PlanDateFor(bankAccountId: 3)
+            });
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(2022,1,1));
+            mockPaydayService.Setup(x => x.GetNext()).Returns(new Payday{Date = new DateTime(2022,12,1)});
+
+            // Act
+            var result = sut.GetCurrent(null);
+
+            // Assert
+            result.Payload.PlanDates.Should().HaveCount(3);
+        }
+
+        [TestMethod]
+        public void GetCurrent_WithUnknownBankAccountId_ReturnsNoPlanDates()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
+            {
+                PlanDateFor(bankAccountId: 1),
+                PlanDateFor(bankAccountId: 2)
+            });
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(2022,1,1));
+            mockPaydayService.Setup(x => x.GetNext()).Returns(new Payday{Date = new DateTime(2022,12,1)});
+
+            // Act
+            var result = sut.GetCurrent(null, bankAccountId: 99);
+
+            // Assert
+            result.Payload.PlanDates.Should().BeEmpty();
+        }
+
+        [TestMethod]
+        public void GetOffset_WithBankAccountId_ReturnsOnlyPlanDatesForThatBankAccount()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
+            {
+                PlanDateFor(bankAccountId: 1),
+                PlanDateFor(bankAccountId: 2)
+            });
+            mockPaydayService.Setup(x => x.GetPrevious()).Returns(new Payday{Date = new DateTime(2022,1,1)});
+            mockPaydayService.Setup(x => x.GetNext()).Returns(new Payday{Date = new DateTime(2022,12,1)});
+
+            // Act
+            var result = sut.GetOffset(0, bankAccountId: 2);
+
+            // Assert
+            result.Payload.PlanDates.Should().HaveCount(1);
+            result.Payload.PlanDates.Should().OnlyContain(pd => pd.BankAccountId == 2);
+        }
+
+        private static PlanDate PlanDateFor(int bankAccountId) =>
+            new PlanDate
+            {
+                Date = new DateTime(2022,11,1),
+                Transaction = new Transaction
+                {
+                    Amount = 100,
+                    Frequency = Frequency.Monthly,
+                    BankAccountId = bankAccountId,
+                    Active = true
+                }
+            };
     }
 }
