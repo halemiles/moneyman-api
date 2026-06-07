@@ -81,7 +81,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromQuery] bool? anticipated)
+        public IActionResult GetAll([FromQuery] bool? anticipated, [FromQuery] int? bankAccountId)
         {
             _logger.LogInformation("GET all transactions");
             var transactions = transactionService.GetAll();
@@ -93,6 +93,11 @@ namespace Moneyman.Api.Controllers
             else
             {
                 transactions = transactions.Where(x => x.Frequency != Frequency.Anticipated).ToList();
+            }
+
+            if (bankAccountId.HasValue)
+            {
+                transactions = transactions.Where(x => x.BankAccountId == bankAccountId.Value).ToList();
             }
 
             return Ok(transactions);
@@ -114,14 +119,6 @@ namespace Moneyman.Api.Controllers
             _logger.LogInformation("DELETE all transactions");
             transactionService.DeleteAll();
             return Ok();
-        }
-
-        [HttpGet("anticipated")]
-        public IActionResult Anticipated()
-        {
-            _logger.LogInformation("Get Anticipated Transactions");
-            var transactions = transactionService.GetAnticipated();
-            return Ok(transactions);
         }
 
     }

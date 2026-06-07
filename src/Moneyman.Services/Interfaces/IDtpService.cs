@@ -9,7 +9,7 @@ namespace Moneyman.Services.Interfaces
     public interface IDtpService
     {
         Task<ApiResponse<List<PlanDate>>> GenerateAll(int? transactionId);
-        ApiResponse<DtpDto> GetCurrent(int? startingValue);
-        ApiResponse<DtpDto> GetOffset(int? monthOffset);
+        ApiResponse<DtpDto> GetCurrent(int? startingValue, int? bankAccountId = null);
+        ApiResponse<DtpDto> GetOffset(int? monthOffset, int? bankAccountId = null);
     }
 }

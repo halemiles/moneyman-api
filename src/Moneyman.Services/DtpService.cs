@@ -87,7 +87,7 @@ namespace Moneyman.Services
             return ApiResponse.Success<List<PlanDate>>(planDates, "Successfully generated plandates");
         }
 
-        public ApiResponse<DtpDto> GetCurrent(int? startingValue)
+        public ApiResponse<DtpDto> GetCurrent(int? startingValue, int? bankAccountId = null)
         {
             var startDate = dateTimeProvider.GetToday();
             DateTime endDate = DateTime.MinValue;
@@ -109,7 +109,7 @@ namespace Moneyman.Services
                 return ApiResponse.NoContent<DtpDto>("Plandate list is empty. Please regenerate plandates");
             }
 
-            planDates = planDates.Where(x => IsDueBetween(x, startDate, endDate)).ToList();
+            planDates = planDates.Where(x => IsDueBetween(x, startDate, endDate, bankAccountId)).ToList();
             var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             var amountDue = mappedPlanDates.Sum(x => x.Amount);
             var weeksRemaining = WeeksRemaining(startDate, endDate);
@@ -130,15 +130,16 @@ namespace Moneyman.Services
             return (end - start).Days / 7;
         }
 
-        private static bool IsDueBetween(PlanDate planDate, DateTime startDate, DateTime endDate)
+        private static bool IsDueBetween(PlanDate planDate, DateTime startDate, DateTime endDate, int? bankAccountId = null)
         {
             return planDate.Transaction.Active
                 && planDate.Date > startDate
                 && planDate.Date < endDate
-                && !planDate.Paid;
+                && !planDate.Paid
+                && (bankAccountId == null || planDate.Transaction.BankAccountId == bankAccountId.Value);
         }
 
-        public ApiResponse<DtpDto> GetOffset(int? monthOffset)
+        public ApiResponse<DtpDto> GetOffset(int? monthOffset, int? bankAccountId = null)
         {
             var offset = monthOffset ?? 0;
             var startDateRaw = paydayService.GetPrevious();
@@ -147,7 +148,7 @@ namespace Moneyman.Services
 
             var planDates = planDateRepository
                                .GetAll()
-                               .Where(x => IsDueBetween(x, startDate, endDate))
+                               .Where(x => IsDueBetween(x, startDate, endDate, bankAccountId))
                                .ToList();
             var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             return ApiResponse.Success<DtpDto>( new DtpDto{

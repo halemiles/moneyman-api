@@ -106,13 +106,6 @@ namespace Moneyman.Services
       return transactionsAsDto;
     }
 
-    public List<TransactionDto> GetAnticipated()
-    {
-      var transactions =  _transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Anticipated);
-      var transactionsAsDto = transactions.Select(transactionMapper.ToDto).ToList();
-      return transactionsAsDto;
-    }
-
     public Transaction GetById(int id)
     {
       return _transactionRepository.Get(id);

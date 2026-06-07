@@ -79,7 +79,7 @@ test("anticipated transaction shows in dtp/current", async ({ request }) => {
   await request.delete(`/transaction/${body.id}`);
 });
 
-test("anticipated transactions returned from /transaction/anticipated", async ({ request }) => {
+test("anticipated transactions returned from /transaction?anticipated=true", async ({ request }) => {
   const name1 = `Anticipated-${generateUuid()}`;
   const name2 = `Anticipated-${generateUuid()}`;
   const name3 = `NotAnticipated-${generateUuid()}`;
@@ -120,7 +120,7 @@ test("anticipated transactions returned from /transaction/anticipated", async ({
 
   const [body1, body2, body3] = await Promise.all([res1.json(), res2.json(), res3.json()]);
 
-  const transactionResponse = await request.get("/transaction/anticipated");
+  const transactionResponse = await request.get("/transaction?anticipated=true");
   const transactions = await transactionResponse.json();
 
   expect(transactions.some((t) => t.name === name1)).toBeTruthy();

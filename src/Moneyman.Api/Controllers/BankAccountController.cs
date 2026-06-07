@@ -27,7 +27,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromQuery] int? bankAccountId)
+        public IActionResult GetAll()
         {
             _logger.LogInformation("GET all bank accounts");
             var accounts = bankAccountService.GetAll();
