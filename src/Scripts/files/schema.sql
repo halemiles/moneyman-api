@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS "Paydays" (
 CREATE TABLE IF NOT EXISTS "Transactions" (
 	"Id"	INTEGER NOT NULL,
 	"Frequency"	INTEGER NOT NULL,
-	"IsAnticipated"	INTEGER NOT NULL,
 	"Name"	TEXT,
 	"Amount"	TEXT NOT NULL,
 	"Active"	INTEGER NOT NULL,
@@ -34,10 +33,10 @@ CREATE TABLE IF NOT EXISTS "PlanDates" (
     "Date" TEXT NOT NULL,
     "Active" INTEGER NOT NULL,
     "OriginalDate" TEXT NOT NULL,
-    "YearGroup" INTEGER NOT NULL,
-    "MonthGroup" INTEGER NOT NULL,
-    "IsAnticipated" INTEGER NOT NULL,
-    "OrderId" INTEGER NOT NULL,
+    "YearGroup" INTEGER NOT NULL DEFAULT 0,
+    "MonthGroup" INTEGER NOT NULL DEFAULT 0,
+    "OrderId" INTEGER NOT NULL DEFAULT 0,
+    "Paid" INTEGER NOT NULL DEFAULT 0,
     CONSTRAINT "FK_PlanDates_Transactions_TransactionId" FOREIGN KEY ("TransactionId") REFERENCES "Transactions" ("Id")
 );
 

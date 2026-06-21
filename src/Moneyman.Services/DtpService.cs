@@ -132,9 +132,20 @@ namespace Moneyman.Services
 
         private static bool IsDueBetween(PlanDate planDate, DateTime startDate, DateTime endDate, int? bankAccountId = null)
         {
-            return planDate.Transaction.Active
+            return planDate.Transaction != null
+                && planDate.Transaction.Active
                 && planDate.Date > startDate
                 && planDate.Date < endDate
+                && !planDate.Paid
+                && (bankAccountId == null || planDate.Transaction.BankAccountId == bankAccountId.Value);
+        }
+
+        // Like IsDueBetween but without the date window: used by the "full" view,
+        // which returns every active, unpaid plan date across the whole span.
+        private static bool IsDue(PlanDate planDate, int? bankAccountId = null)
+        {
+            return planDate.Transaction != null
+                && planDate.Transaction.Active
                 && !planDate.Paid
                 && (bankAccountId == null || planDate.Transaction.BankAccountId == bankAccountId.Value);
         }
@@ -143,8 +154,16 @@ namespace Moneyman.Services
         {
             var offset = monthOffset ?? 0;
             var startDateRaw = paydayService.GetPrevious();
+            var endDateRaw = paydayService.GetNext();
+
+            if (startDateRaw == null || endDateRaw == null)
+            {
+                logger.LogError("Failed to get payday information");
+                return ApiResponse.NotFound<DtpDto>("Could not find any paydays. Please ensure they have been generated");
+            }
+
             var startDate = startDateRaw.Date.AddMonths(offset);
-            var endDate = paydayService.GetNext().Date.AddMonths(offset);
+            var endDate = endDateRaw.Date.AddMonths(offset);
 
             var planDates = planDateRepository
                                .GetAll()
@@ -155,6 +174,23 @@ namespace Moneyman.Services
                 PlanDates = mappedPlanDates,
                 StartDate = startDate,
                 EndDate = endDate
+            }, "Success");
+        }
+
+        public ApiResponse<DtpDto> GetAll(int? bankAccountId = null)
+        {
+            // The whole generated span: every active, unpaid plan date regardless of
+            // period, so one-off Anticipated bills dated outside the current payday
+            // period are still visible.
+            var planDates = planDateRepository
+                               .GetAll()
+                               .Where(x => IsDue(x, bankAccountId))
+                               .ToList();
+            var mappedPlanDates = planDateMapper.ToDtoList(planDates);
+            return ApiResponse.Success<DtpDto>( new DtpDto{
+                PlanDates = mappedPlanDates,
+                StartDate = planDates.Count > 0 ? planDates.Min(x => x.Date) : DateTime.MinValue,
+                EndDate = planDates.Count > 0 ? planDates.Max(x => x.Date) : DateTime.MinValue
             }, "Success");
         }
     }

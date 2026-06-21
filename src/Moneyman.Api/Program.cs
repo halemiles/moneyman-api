@@ -14,6 +14,9 @@ namespace Moneyman.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    // Reads the "Sentry" config section (incl. Dsn) and the hosting
+                    // environment automatically. No-op when no Dsn is configured.
+                    webBuilder.UseSentry();
                     webBuilder.UseStartup<Startup>();
                 });
     }

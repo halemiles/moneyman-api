@@ -57,6 +57,7 @@ namespace Moneyman.Services
                             Frequency.Weekly => seedDate.AddDays(7 * i),
                             Frequency.Monthly => seedDate.AddMonths(i),
                             Frequency.Yearly => seedDate.AddYears(i),
+                            Frequency.Anticipated => transaction.StartDate,
                             _ => seedDate.AddMonths(i)
                         };
 

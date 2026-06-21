@@ -41,6 +41,14 @@ namespace Moneyman.Api.Controllers
             return Ok(planDateDto);
         }
 
+        [HttpGet("all")]
+        public IActionResult GetAllPeriods([FromQuery] int? bankAccountId)
+        {
+            _logger.LogInformation("GET all DTP (full span)");
+            var planDateDto = dtpService.GetAll(bankAccountId);
+            return Ok(planDateDto);
+        }
+
         [HttpPost("generate")]
         public async Task<IActionResult> Generate([FromQuery]int? transactionId)
         {

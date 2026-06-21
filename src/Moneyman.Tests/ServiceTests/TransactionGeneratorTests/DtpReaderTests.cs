@@ -178,16 +178,133 @@ namespace Moneyman.Tests
             result.Payload.PlanDates.Should().OnlyContain(pd => pd.BankAccountId == 2);
         }
 
-        private static PlanDate PlanDateFor(int bankAccountId) =>
+        [TestMethod]
+        public void GetAll_ReturnsActiveUnpaidPlanDates_AcrossWholeSpanWithNoWindow()
+        {
+            // Arrange: dates years apart and far outside any payday window.
+            var sut = NewDtpService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
+            {
+                PlanDateFor(bankAccountId: 1, date: new DateTime(2020, 1, 15)),
+                PlanDateFor(bankAccountId: 1, date: new DateTime(2025, 6, 20))
+            });
+
+            // Act: no today/payday set up -- GetAll is deliberately not windowed.
+            var result = sut.GetAll();
+
+            // Assert
+            result.Payload.PlanDates.Should().HaveCount(2);
+            result.Payload.StartDate.Should().Be(new DateTime(2020, 1, 15));
+            result.Payload.EndDate.Should().Be(new DateTime(2025, 6, 20));
+        }
+
+        [TestMethod]
+        public void GetAll_ExcludesPlanDatesForInactiveTransactions()
+        {
+            // Arrange: generation does not skip inactive transactions, so they are
+            // filtered here at read time.
+            var sut = NewDtpService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
+            {
+                PlanDateFor(bankAccountId: 1, active: true),
+                PlanDateFor(bankAccountId: 1, active: false)
+            });
+
+            // Act
+            var result = sut.GetAll();
+
+            // Assert
+            result.Payload.PlanDates.Should().HaveCount(1);
+        }
+
+        [TestMethod]
+        public void GetAll_ExcludesPaidPlanDates()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
+            {
+                PlanDateFor(bankAccountId: 1, paid: false),
+                PlanDateFor(bankAccountId: 1, paid: true)
+            });
+
+            // Act
+            var result = sut.GetAll();
+
+            // Assert
+            result.Payload.PlanDates.Should().HaveCount(1);
+        }
+
+        [TestMethod]
+        public void GetAll_WithBankAccountId_ReturnsOnlyPlanDatesForThatBankAccount()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
+            {
+                PlanDateFor(bankAccountId: 1),
+                PlanDateFor(bankAccountId: 2),
+                PlanDateFor(bankAccountId: 2)
+            });
+
+            // Act
+            var result = sut.GetAll(bankAccountId: 2);
+
+            // Assert
+            result.Payload.PlanDates.Should().HaveCount(2);
+            result.Payload.PlanDates.Should().OnlyContain(pd => pd.BankAccountId == 2);
+        }
+
+        [TestMethod]
+        public void GetAll_WithoutBankAccountId_ReturnsPlanDatesForAllBankAccounts()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>
+            {
+                PlanDateFor(bankAccountId: 1),
+                PlanDateFor(bankAccountId: 2),
+                PlanDateFor(bankAccountId: 3)
+            });
+
+            // Act
+            var result = sut.GetAll();
+
+            // Assert
+            result.Payload.PlanDates.Should().HaveCount(3);
+        }
+
+        [TestMethod]
+        public void GetAll_WhenNoPlanDates_ReturnsMinValueStartAndEndDates()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>());
+
+            // Act
+            var result = sut.GetAll();
+
+            // Assert
+            result.Payload.PlanDates.Should().BeEmpty();
+            result.Payload.StartDate.Should().Be(DateTime.MinValue);
+            result.Payload.EndDate.Should().Be(DateTime.MinValue);
+        }
+
+        private static PlanDate PlanDateFor(
+            int bankAccountId,
+            bool active = true,
+            bool paid = false,
+            DateTime? date = null) =>
             new PlanDate
             {
-                Date = new DateTime(2022,11,1),
+                Date = date ?? new DateTime(2022,11,1),
+                Paid = paid,
                 Transaction = new Transaction
                 {
                     Amount = 100,
                     Frequency = Frequency.Monthly,
                     BankAccountId = bankAccountId,
-                    Active = true
+                    Active = active
                 }
             };
     }

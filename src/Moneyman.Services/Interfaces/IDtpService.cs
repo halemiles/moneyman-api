@@ -11,5 +11,6 @@ namespace Moneyman.Services.Interfaces
         Task<ApiResponse<List<PlanDate>>> GenerateAll(int? transactionId);
         ApiResponse<DtpDto> GetCurrent(int? startingValue, int? bankAccountId = null);
         ApiResponse<DtpDto> GetOffset(int? monthOffset, int? bankAccountId = null);
+        ApiResponse<DtpDto> GetAll(int? bankAccountId = null);
     }
 }

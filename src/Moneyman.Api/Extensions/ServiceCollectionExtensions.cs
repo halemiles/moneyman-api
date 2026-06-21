@@ -1,11 +1,11 @@
 using System;
 
 using FluentValidation;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Moneyman.Api.Data;
 using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using Moneyman.Domain.Settings;
@@ -54,10 +54,12 @@ public static class ServiceCollectionExtensions
         try
         {
             services.AddDbContext<MoneymanContext>(
-                options => options.UseSqlite(
-                    new SqliteConnection(configuration.GetConnectionString("WebApiDatabase")),
-                    x => x.MigrationsAssembly("Moneyman.Api")
-                )
+                options => options
+                    .UseSqlite(
+                        configuration.GetConnectionString("WebApiDatabase"),
+                        x => x.MigrationsAssembly("Moneyman.Api")
+                    )
+                    .AddInterceptors(new SqlitePragmaInterceptor())
             );
         }
         catch(Exception err)
