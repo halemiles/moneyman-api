@@ -29,6 +29,16 @@ Database initialization:
 ./Scripts/intitialise-db.sh                # Creates LocalDatabase.db from schema + seed data
 ```
 
+Endpoint smoke check (requires the API already running):
+```powershell
+./Scripts/check-endpoints.ps1              # Probes read endpoints on :5000, exits non-zero on failure
+./Scripts/check-endpoints.ps1 -BaseUrl http://localhost:8600 -IncludeGenerate
+```
+Inspects the response body (not just HTTP status) so it catches business failures the API
+returns as `200` with `success:false` (e.g. "Could not find any paydays"). Fast pre-test
+sanity check; not a substitute for the Playwright suite. Run against a seeded DB — `/dtp/*`
+can legitimately report `success:false` on an empty database.
+
 ### Playwright API Tests (run from `test/`)
 
 ```bash
@@ -70,6 +80,12 @@ Uses [Riok.Mapperly](https://mapperly.riok.app/) (source-generated mappers) — 
 ### Database
 
 SQLite via EF Core. Connection string: `Data Source=./LocalDatabase.db`. Schema and seed scripts are in `src/Scripts/files/`.
+
+### Error Monitoring (Sentry)
+
+`Sentry.AspNetCore` is wired via `webBuilder.UseSentry()` in `Program.cs` and configured through the `Sentry` section in `appsettings.json` (prod project `moneyman-dotnet`) and `appsettings.Development.json` (dev project `moneyman-dotnet-dev`). The DSN must be pasted into each file's `Sentry:Dsn`; an empty DSN disables Sentry with no error. The environment tag is taken from `ASPNETCORE_ENVIRONMENT`.
+
+`SentryTestContextMiddleware` reads the `X-Test-Name` and `X-Test-Run-Id` request headers and sets them as the `test.name` / `test.run_id` Sentry tags. The Playwright suite (`test/api/fixtures.ts`) injects these headers on every request, so a failing API test can be traced to its server-side error by searching Sentry for `test.name`. Note: Sentry only captures server-side errors (unhandled exceptions / 500s), not Playwright assertion failures on successful responses.
 
 ## Test Structure
 

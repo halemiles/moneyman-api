@@ -1,6 +1,8 @@
-import { test, expect, APIRequestContext } from "@playwright/test";
+import { APIRequestContext } from "@playwright/test";
+import { test, expect } from "../fixtures";
 
 const BASE_URL = "http://localhost:5000";
+const RUN_ID = Math.random().toString(36).slice(2, 8);
 
 // Helper to produce an ISO date string for a day offset from today
 function isoDate(days = 1) {
@@ -9,11 +11,15 @@ function isoDate(days = 1) {
   return d.toISOString().split("T")[0];
 }
 
+function uniqueName(name: string) {
+  return `[${RUN_ID}] ${name}`;
+}
+
 // Helper function to create a transaction
 async function createTransaction(request: APIRequestContext, data: any): Promise<number> {
   const response = await request.post(`${BASE_URL}/transaction`, { data });
 
-  // expect(response.ok()).toBeTruthy();
+  expect(response.ok(), `createTransaction failed: ${await response.text()}`).toBeTruthy();
   const body = await response.json();
   return body.id;
 }
@@ -57,6 +63,7 @@ test.describe("DtpController - Plan Date Generation", () => {
     });
 
     const response = await request.post(`${BASE_URL}/dtp/generate?transactionId=${transactionId}`);
+    console.log(response.json());
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -249,8 +256,13 @@ test.describe("DtpController - Integration Tests with Transactions", () => {
     // Generate plan dates
     await request.post(`${BASE_URL}/dtp/generate`);
 
-    // Get DTP
-    const dtpResponse = await request.get(`${BASE_URL}/dtp/current?startingValue=500`);
+    // Use the whole-span view, not /dtp/current: this test verifies that an
+    // active transaction generates plan dates (and an inactive one doesn't), not
+    // that they fall in the current payday window. /dtp/current is calendar
+    // fragile here -- weekend dates are adjusted backwards (OffsetCalculationService
+    // subtracts days), so a bill starting on a weekend can land before "today" and
+    // be excluded from the current period.
+    const dtpResponse = await request.get(`${BASE_URL}/dtp/all`);
     const dtpBody = await dtpResponse.json();
 
     const planDates = dtpBody.payload.planDates;
