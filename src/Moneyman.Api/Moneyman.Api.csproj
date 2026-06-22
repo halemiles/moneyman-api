@@ -22,7 +22,7 @@
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.2" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.24.0.138807" />
+    <!-- SonarAnalyzer.CSharp is now provided to every project via src/Directory.Build.props -->
 
   </ItemGroup>
 

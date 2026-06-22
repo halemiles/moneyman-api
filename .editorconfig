@@ -1,0 +1,34 @@
+# EditorConfig — https://editorconfig.org
+# Central place to tune analyzer rule severities for the MoneyMan solution.
+# With EnforceCodeStyleInBuild + the analyzers enabled in src/Directory.Build.props,
+# severities set here are honoured by `dotnet build`, by Codacy, and in the IDE.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+
+[*.cs]
+indent_size = 4
+
+# --- Analyzer rule severity overrides ---------------------------------------
+# Default behaviour leaves every CA*/S*/EF*/IDE* rule at its analyzer default
+# (mostly `warning`/`suggestion`). Override individual rules below as findings
+# from issue #157 are triaged. Format:
+#   dotnet_diagnostic.<RULE>.severity = none|silent|suggestion|warning|error
+#
+# RMG020 — Mapperly flags TransactionDto.*Desc display fields as unmapped to the
+# entity. This is intentional one-way (entity -> DTO) mapping, so silence it.
+dotnet_diagnostic.RMG020.severity = none
+
+[*.{csproj,props,targets}]
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.{json,js,ts}]
+indent_size = 2
