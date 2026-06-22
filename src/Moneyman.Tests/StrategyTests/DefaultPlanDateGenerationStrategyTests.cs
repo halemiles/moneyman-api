@@ -20,7 +20,7 @@ namespace Moneyman.Tests.StrategyTests
 
         public DefaultPlanDateGenerationStrategyTests()
         {
-            var mockLogger = new Mock<ILogger<DtpService>>();
+            var mockLogger = new Mock<ILogger<DefaultPlanDateGenerationStrategy>>();
             _mockTransactionRepository = new Mock<ITransactionRepository>();
             _mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
 

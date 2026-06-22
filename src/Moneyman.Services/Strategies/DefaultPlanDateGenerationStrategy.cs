@@ -12,13 +12,13 @@ namespace Moneyman.Services
     {
         private readonly ITransactionRepository transactionRepository;
         private readonly IOffsetCalculationService offsetCalculationService;
-        private readonly ILogger<DtpService> logger;
+        private readonly ILogger<DefaultPlanDateGenerationStrategy> logger;
         private const int TotalPlanDateYears = 2;
 
         public DefaultPlanDateGenerationStrategy(
             ITransactionRepository transactionRepository,
             IOffsetCalculationService offsetCalculationService,
-            ILogger<DtpService> logger
+            ILogger<DefaultPlanDateGenerationStrategy> logger
         )
         {
             this.transactionRepository = transactionRepository;

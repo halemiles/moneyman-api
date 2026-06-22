@@ -11,11 +11,11 @@ namespace Moneyman.Services
 	{
     private readonly IBankAccountRepository bankAccountRepository;
     private readonly BankAccountMapper bankAccountMapper;
-    private readonly ILogger<TransactionService> logger;
+    private readonly ILogger<BankAccountService> logger;
 
 		public BankAccountService(
       IBankAccountRepository bankAccountRepository,
-      ILogger<TransactionService> logger,
+      ILogger<BankAccountService> logger,
       BankAccountMapper bankAccountMapper
     )
 		{

@@ -43,14 +43,14 @@ namespace Moneyman.Tests
             );
 
         private Mock<ITransactionRepository> mockTransactionRepository;
-        private Mock<ILogger<DtpService>> mockLogger;
+        private Mock<ILogger<DefaultPlanDateGenerationStrategy>> mockLogger;
         private DefaultPlanDateGenerationStrategy sut;
 
         [TestInitialize]
         public void SetUp()
         {
             mockTransactionRepository = new Mock<ITransactionRepository>();
-            mockLogger = new Mock<ILogger<DtpService>>();
+            mockLogger = new Mock<ILogger<DefaultPlanDateGenerationStrategy>>();
 
             mockHolidayService = new Mock<IHolidayService>();
             mockHolidayService.Setup(x => x.GenerateHolidays()).Returns(holidays);
