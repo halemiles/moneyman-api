@@ -14,6 +14,7 @@ using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using Moneyman.Services.Interfaces;
 using Moneyman.Api.Extensions;
+using Moneyman.Api.Middleware;
 namespace Moneyman.Api
 {
     public class Startup
@@ -35,7 +36,7 @@ namespace Moneyman.Api
             services.AddRepositories();
             services.AddServices();
             services.AddMappers();
-            services.SetupCors();
+            services.SetupCors(Configuration);
             services.SetupHolidays(Configuration);
             services.SetupPayday(Configuration);
             services.AddHostedService<BankHolidayInitializerHostedService>();
@@ -45,6 +46,10 @@ namespace Moneyman.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Runs after Sentry's own middleware (registered by UseSentry), so the
+            // tags it sets land on the current request's Sentry scope.
+            app.UseMiddleware<SentryTestContextMiddleware>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -52,7 +57,9 @@ namespace Moneyman.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Moneyman.Api v1"));
             }
 
-	        app.UseCors("AllowAnyOrigin");
+	        app.UseCors(env.IsDevelopment()
+	            ? ServiceCollectionExtensions.AllowAnyOriginPolicy
+	            : ServiceCollectionExtensions.RestrictedOriginsPolicy);
 
             app.UseRouting();
 

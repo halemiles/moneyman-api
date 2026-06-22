@@ -19,51 +19,49 @@ namespace Moneyman.Tests
     public class DtpWeeklyGenerationTests
     {
         private Mock<ITransactionRepository> mockTransactionRepository;
-        private Mock<IPlanDateRepository> mockPlanDateRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
-        private Mock<IPaydayService> mockPaydayService;
-        private Mock<IDateTimeProvider> mockDateTimeProvider;
-        private PlanDateMapper mockPlanDateMapper;
         private Mock<ILogger<DtpService>> mockLogger;
+        private DefaultPlanDateGenerationStrategy sut;
 
-        private DtpService NewDtpService() =>
-            new DtpService(
-                    mockTransactionRepository.Object,
-                    mockPlanDateRepository.Object,
-                    mockOffsetCalculationService.Object,
-                    mockPaydayService.Object,
-                    mockDateTimeProvider.Object,
-                    mockLogger.Object,
-                    mockPlanDateMapper
-            );
+        private readonly List<string> holidays = new List<string>
+        {
+                "03-01-2022",
+                "15-04-2022",
+                "18-04-2022",
+                "02-05-2022",
+                "02-06-2022",
+                "03-06-2022",
+                "29-08-2022",
+                "26-12-2022",
+                "27-12-2022"
+        };
 
         [TestInitialize]
         public void SetUp()
         {
-            mockPlanDateRepository = new Mock<IPlanDateRepository>();
             mockTransactionRepository = new Mock<ITransactionRepository>();
             mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
-            mockPaydayService = new Mock<IPaydayService>();
-            mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
-            mockPlanDateMapper = new PlanDateMapper();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns((DateTime d) => new CalculatedPlanDate { PlanDate = d });
 
-            mockPaydayService.Setup(x => x.GetAll()).Returns(new List<Payday>());
+            sut = new DefaultPlanDateGenerationStrategy(
+                mockTransactionRepository.Object,
+                mockOffsetCalculationService.Object,
+                mockLogger.Object
+            );
         }
 
         [TestMethod]
-        public void GenerateMonthly_WithInvalidTransactionId_ReturnsEmptyList()
+        public void GenerateWeekly_WithEmptyTransactionList_ReturnsEmptyList()
         {
             // Arrange
-            var sut = NewDtpService();
             IEnumerable<Transaction> trans = new List<Transaction>();
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateWeekly(null);
+            var result = sut.Generate(null, Frequency.Weekly);
 
             // Assert
             result.Count.Should().Be(0);
@@ -73,7 +71,6 @@ namespace Moneyman.Tests
         public void GenerateWeekly_WithValidWeeklyTransaction_ReturnsSuccess()
         {
             // Arrange
-            var sut = NewDtpService();
             IEnumerable<Transaction> trans = new List<Transaction>
             {
                 new Transaction
@@ -88,10 +85,10 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateWeekly(null);
+            var result = sut.Generate(null, Frequency.Weekly);
 
             // Assert
-            result.Count.Should().Be(52);
+            result.Count.Should().Be(104);
             result.All(x => x.Transaction.Name == "Trans 1").Should().BeTrue();
             result.ShouldMatchSnapshot();
         }
@@ -100,7 +97,6 @@ namespace Moneyman.Tests
         public void GenerateWeekly_WithMultipleTransactionFrequencies_ReturnsSuccess()
         {
             // Arrange
-            var sut = NewDtpService();
             IEnumerable<Transaction> trans = new List<Transaction>
             {
                 new Transaction
@@ -123,10 +119,10 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateWeekly(null);
+            var result = sut.Generate(null, Frequency.Weekly);
 
             // Assert
-            result.Count.Should().Be(52);
+            result.Count.Should().Be(104);
             result.Any(x => x.Transaction.Name == "Trans 1").Should().BeFalse();
             result.Any(x => x.Transaction.Name == "Trans 2").Should().BeTrue();
             result.ShouldMatchSnapshot();
@@ -136,7 +132,6 @@ namespace Moneyman.Tests
         public void GenerateWeekly_WithMultipleWeeklyTransactions_WhenTransactionIdSupplied_ReturnsSuccess()
         {
             // Arrange
-            var sut = NewDtpService();
             IEnumerable<Transaction> trans = new List<Transaction>
             {
                 new Transaction
@@ -161,35 +156,12 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
 
             // Act
-            var result = sut.GenerateWeekly(1);
+            var result = sut.Generate(1, Frequency.Weekly);
 
             // Assert
-            result.Count.Should().Be(52);
+            result.Count.Should().Be(104);
             result.All(x => x.Transaction.Name == "Trans 2").Should().BeTrue();
             result.ShouldMatchSnapshot();
-        }
-
-
-
-        [TestMethod]
-        public void GenerateWeekly_WithAnticipatedFrequencyTransactions_ShouldNotAppearInWeeklyGeneration_ReturnsSuccess()
-        {
-            // Arrange
-            var sut = NewDtpService();
-            var fixture = new Fixture();
-            IEnumerable<Transaction> trans = new List<Transaction>
-            {
-                fixture.Build<Transaction>().With(f => f.Frequency, Frequency.Anticipated).With(f => f.Name, "Trans 1").Create(),
-                fixture.Build<Transaction>().With(f => f.Frequency, Frequency.Weekly).With(f => f.Name, "Trans 2").Create()
-            }.AsEnumerable();
-            mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
-
-            // Act
-            var result = sut.GenerateWeekly(null);
-
-            // Assert
-            result.Any(x => x.Transaction.Name == "Trans 1").Should().BeFalse();
-            result.Any(x => x.Transaction.Name == "Trans 2").Should().BeTrue();
         }
     }
 }

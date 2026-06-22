@@ -26,7 +26,6 @@ namespace Moneyman.Tests
         private Mock<ITransactionRepository> _transRepoMock;
         private Mock<ILogger<PlanDateService>> mockLogger;
         private Mock<ILogger<TransactionService>> mockTransactionServiceLogger;
-        private Mock<IPlanDateRepository> planDateRepositoryMock;
         private Mock<TransactionMapper> transactionMapper;
         private PlanDateService NewPlanDateService() =>
             new PlanDateService(
@@ -38,13 +37,13 @@ namespace Moneyman.Tests
             new TransactionService(
                 _transRepoMock.Object,
                  mockTransactionServiceLogger.Object,
-                transactionMapper.Object);
+                transactionMapper.Object,
+                new Moneyman.Services.Validators.TransactionDtoValidator());
 
         [TestInitialize]
         public void SetUp()
         {
             _planDateRepoMock = new Mock<IPlanDateRepository>();
-            planDateRepositoryMock = new Mock<IPlanDateRepository>();
             mockLogger = new Mock<ILogger<PlanDateService>>();
             _transRepoMock = new Mock<ITransactionRepository>();
             mockTransactionServiceLogger = new Mock<ILogger<TransactionService>>();
@@ -108,28 +107,6 @@ namespace Moneyman.Tests
             result.StatusCode.Should().Be(StatusCode.NotFound);
             _planDateRepoMock.Verify(x => x.Update(It.IsAny<PlanDate>()), Times.Never());
         }
-
-        // [TestMethod]
-        // public void Search_WhenObjectDoesntExist_ReturnsSuccess()
-        // {
-        //     var newTransaction = new Transaction
-        //     {
-        //         Name = "newTransaction",
-        //         StartDate = new DateTime(2022,1,1),
-        //         Amount = 150,
-        //         Frequency = Frequency.Weekly
-        //     };
-
-        //     _transRepoMock.Setup(x => x.Update(It.IsAny<Transaction>()))
-        //         .Returns(true);
-
-        //     var service = NewTransactionService();
-        //     var result = service.Update(newTransaction);
-
-        //     _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once());
-        //     _transRepoMock.Verify(x => x.Save(), Times.Once());
-        //     result.Should().Be(0);
-        // }
 
         [TestMethod]
         public async Task Create_WhenObjectDoesntExist_ReturnsSuccess()

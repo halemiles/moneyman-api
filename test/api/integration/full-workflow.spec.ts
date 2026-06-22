@@ -1,4 +1,5 @@
-import { test, expect, APIRequestContext } from "@playwright/test";
+import { APIRequestContext } from "@playwright/test";
+import { test, expect } from "../fixtures";
 import {Frequency} from "../models/frequency";
 
 const BASE_URL = "http://localhost:5000";
@@ -51,9 +52,10 @@ test.describe("Complete Workflow Integration Tests", () => {
     expect(generateBody.message).toBe("Successfully generated plandates");
     expect(generateBody.recordCount).toBeGreaterThan(0);
 
-    // Step 3: Retrieve the DTP with a starting value
-    const startingValue = 5000;
-    const dtpResponse = await request.get(`${BASE_URL}/dtp/current?startingValue=${startingValue}`);
+    // Step 3: Retrieve the full DTP span. /dtp/all returns every generated plan date
+    // regardless of period, which is the correct view for verifying that all
+    // transactions were generated (/dtp/current is a narrow today..next-payday window).
+    const dtpResponse = await request.get(`${BASE_URL}/dtp/all`);
     expect(dtpResponse.ok()).toBeTruthy();
 
     const dtpBody = await dtpResponse.json();

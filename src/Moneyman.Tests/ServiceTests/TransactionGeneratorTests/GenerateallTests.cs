@@ -40,6 +40,7 @@ namespace Moneyman.Tests
         private Mock<IDateTimeProvider> mockDateTimeProvider;
         private PlanDateMapper planDateMapper;
         private Mock<ILogger<DtpService>> mockLogger;
+        private Mock<IPlanDateGenerationStrategy> mockGenerationStrategy;
 
         private DtpService NewDtpService() =>
             new DtpService(
@@ -49,7 +50,8 @@ namespace Moneyman.Tests
                     mockPaydayService.Object,
                     mockDateTimeProvider.Object,
                     mockLogger.Object,
-                    planDateMapper
+                    planDateMapper,
+                    mockGenerationStrategy.Object
             );
 
         [TestInitialize]
@@ -61,6 +63,8 @@ namespace Moneyman.Tests
             mockPaydayService = new Mock<IPaydayService>();
             mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
+            mockGenerationStrategy = new Mock<IPlanDateGenerationStrategy>();
+            mockGenerationStrategy.Setup(x => x.Generate(It.IsAny<int?>(), It.IsAny<Frequency>())).Returns(new List<PlanDate>());
             planDateMapper = new PlanDateMapper();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
@@ -70,7 +74,7 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public async Task GenerateMonthly_WhenNoPaydaysExist_ReturnsNotFound()
+        public async System.Threading.Tasks.Task GenerateAll_WhenNoPaydaysExist_ReturnsNotFound()
         {
             // Arrange
             var sut = NewDtpService();
@@ -83,7 +87,7 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public async Task GenerateAll_WhenNoTransactionsStartInCurrentYear_ReturnsNotFound()
+        public async System.Threading.Tasks.Task GenerateAll_WhenNoTransactionsStartInCurrentYear_ReturnsNotFound()
         {
             // Arrange
             var sut = NewDtpService();
@@ -114,30 +118,26 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        public async Task GenerateMonthly_WithInvalidTransactionId_ReturnsEmptyList()
+        public async System.Threading.Tasks.Task GenerateAll_WithMultipleMonthlyTransactions_ReturnsAllPlanDates()
         {
             // Arrange
             var sut = NewDtpService();
             const int testYear = 2024;
             mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(testYear, 6, 15));
 
-            Fixture fixture = new Fixture();
             Transaction t = new(){
                 Frequency = Frequency.Monthly,
                 StartDate = new DateTime(testYear, 1, 1)
             };
-            IEnumerable<Transaction> trans = new List<Transaction>
-            {
-                t,t,t
-            };
+            IEnumerable<Transaction> trans = new List<Transaction> { t, t, t };
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(trans);
-            mockPlanDateRepository.Setup(x => x.GetAll()).Returns(new List<PlanDate>(){new PlanDate()});
+
             // Act
             var result = await sut.GenerateAll(null);
 
             // Assert
             result.StatusCode.Should().Be(StatusCode.Success);
-            result.Payload.Count().Should().Be(24*3);
+            mockGenerationStrategy.Verify(x => x.Generate(null, It.IsAny<Frequency>()), Times.Exactly(5));
         }
     }
 }

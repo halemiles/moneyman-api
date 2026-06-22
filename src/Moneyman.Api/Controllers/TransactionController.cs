@@ -38,7 +38,7 @@ namespace Moneyman.Api.Controllers
             var result = await transactionService.Create(transactionDto);
             if(!result.Success)
             {
-                return StatusCode((int)result.StatusCode);
+                return StatusCode((int)result.StatusCode, new { message = result.Message });
             }
             return Ok(new { id = result.Payload });
         }
@@ -57,9 +57,14 @@ namespace Moneyman.Api.Controllers
         {
             _logger.LogInformation("Updating transaction {TransactionName}", transactionDto?.Name);
             var transaction = mapper.ToEntity(transactionDto);
-            transactionService.Update(transaction);
+            var result = transactionService.Update(transaction);
 
-            return Ok(transaction); //TODO - Convert back to DTO
+            if (result == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(mapper.ToDto(transaction));
         }
 
         [HttpGet("{id}")]
@@ -76,7 +81,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromQuery] bool? anticipated)
+        public IActionResult GetAll([FromQuery] bool? anticipated, [FromQuery] int? bankAccountId)
         {
             _logger.LogInformation("GET all transactions");
             var transactions = transactionService.GetAll();
@@ -88,6 +93,11 @@ namespace Moneyman.Api.Controllers
             else
             {
                 transactions = transactions.Where(x => x.Frequency != Frequency.Anticipated).ToList();
+            }
+
+            if (bankAccountId.HasValue)
+            {
+                transactions = transactions.Where(x => x.BankAccountId == bankAccountId.Value).ToList();
             }
 
             return Ok(transactions);
@@ -109,14 +119,6 @@ namespace Moneyman.Api.Controllers
             _logger.LogInformation("DELETE all transactions");
             transactionService.DeleteAll();
             return Ok();
-        }
-
-        [HttpGet("anticipated")]
-        public IActionResult Anticipated()
-        {
-            _logger.LogInformation("Get Anticipated Transactions");
-            var transactions = transactionService.GetAnticipated();
-            return Ok(transactions);
         }
 
     }

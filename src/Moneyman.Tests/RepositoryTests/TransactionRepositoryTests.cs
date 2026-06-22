@@ -13,7 +13,6 @@ using Moneyman.Tests.Builders;
 using System;
 using System.Threading.Tasks;
 using Moneyman.Domain.MapperProfiles;
-using Snapper;
 
 namespace Moneyman.Tests
 {
@@ -84,7 +83,6 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
-        [Ignore]
         public async Task Update_WithNewValidParams_PropertiesUpdated()
         {
             var existingTransaction = new TransactionBuilder()
@@ -103,29 +101,37 @@ namespace Moneyman.Tests
                 .WithStartDate(new DateTime(2021,10,1))
                 .Build();
 
-            Transaction updatedTransaction = null;
-            using (var context = new MoneymanContext(BuildGenerateInMemoryOptions()))
+            // Use separate contexts over the same in-memory store so the update
+            // does not collide with the entity tracked by the insert (this mirrors
+            // the per-request scoped DbContext the API uses in production).
+            var options = BuildGenerateInMemoryOptions();
+
+            using (var context = new MoneymanContext(options))
             {
                 var transactionRepository = new TransactionRepository(context);
                 transactionRepository.Add(existingTransaction);
                 await transactionRepository.Save();
+            }
 
+            using (var context = new MoneymanContext(options))
+            {
+                var transactionRepository = new TransactionRepository(context);
                 transactionRepository.Update(transactionUpdate);
                 await transactionRepository.Save();
+            }
 
+            Transaction updatedTransaction;
+            using (var context = new MoneymanContext(options))
+            {
                 updatedTransaction = context.Transactions.FirstOrDefault();
             }
 
             updatedTransaction.Should().NotBeNull();
-
-            var snapshot = new {
-                Id = updatedTransaction.Id,
-                Amount = updatedTransaction.Amount,
-                Active = updatedTransaction.Active,
-                Frequency = updatedTransaction.Frequency,
-                StartDate = updatedTransaction.StartDate
-            };
-            snapshot.ShouldMatchSnapshot();
+            updatedTransaction.Id.Should().Be(1);
+            updatedTransaction.Amount.Should().Be(500);
+            updatedTransaction.Active.Should().BeFalse();
+            updatedTransaction.Frequency.Should().Be(Frequency.Weekly);
+            updatedTransaction.StartDate.Should().Be(new DateTime(2021,10,1));
         }
 
         public DbContextOptions<MoneymanContext> BuildGenerateInMemoryOptions()

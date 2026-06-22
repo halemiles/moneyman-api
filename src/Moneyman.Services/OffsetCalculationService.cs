@@ -46,8 +46,7 @@ namespace Moneyman.Services
                 }
                 else
                 {
-                    //Move forward to the next banking day
-                    //Note: UK direct debits always move forward, never backward
+                    // Move forward to next working day — UK DDs taken on next business day if date falls on weekend/holiday
                     dte = dte.AddDays(1);
                     offsetby += 1;
 

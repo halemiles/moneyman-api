@@ -8,14 +8,12 @@ using Moneyman.Domain.MapperProfiles;
 using Moneyman.Domain.Models;
 using Moneyman.Interfaces;
 using Moneyman.Models.DomainTransferObjects;
-using Moneyman.Services.Factories;
 using Moneyman.Services.Interfaces;
 
 namespace Moneyman.Services
 {
     public class DtpService : IDtpService
     {
-
         private readonly ITransactionRepository transactionRepository;
         private readonly IPlanDateRepository planDateRepository;
         private readonly IOffsetCalculationService offsetCalculationService;
@@ -23,6 +21,7 @@ namespace Moneyman.Services
         private readonly ILogger<DtpService> logger;
         private readonly IDateTimeProvider dateTimeProvider;
         private readonly PlanDateMapper planDateMapper;
+        private readonly IPlanDateGenerationStrategy generationStrategy;
 
         public DtpService(
             ITransactionRepository transactionRepository,
@@ -31,7 +30,8 @@ namespace Moneyman.Services
             IPaydayService paydayService,
             IDateTimeProvider dateTimeProvider,
             ILogger<DtpService> logger,
-            PlanDateMapper planDateMapper
+            PlanDateMapper planDateMapper,
+            IPlanDateGenerationStrategy generationStrategy
         )
         {
             this.transactionRepository = transactionRepository;
@@ -41,9 +41,9 @@ namespace Moneyman.Services
             this.dateTimeProvider = dateTimeProvider;
             this.logger = logger;
             this.planDateMapper = planDateMapper;
+            this.generationStrategy = generationStrategy;
         }
 
-        //TODO: Move this to a another class so we can unit test
         public async Task<ApiResponse<List<PlanDate>>> GenerateAll(int? transactionId)
         {
             if(!paydayService.GetAll().Any())
@@ -62,11 +62,11 @@ namespace Moneyman.Services
             transactionRepository.RemoveAll("PlanDates");
 
             List<PlanDate> planDates = new();
-            planDates.AddRange(GenerateMonthly(transactionId));
-            planDates.AddRange(GenerateWeekly(transactionId));
-            planDates.AddRange(GenerateYearly(transactionId));
-            planDates.AddRange(GenerateAnticipated(transactionId));
-            planDates.AddRange(GenerateDaily(transactionId));
+            foreach (var frequency in new[] { Frequency.Monthly, Frequency.Weekly, Frequency.Yearly, Frequency.Anticipated, Frequency.Daily })
+            {
+                planDates.AddRange(generationStrategy.Generate(transactionId, frequency));
+            }
+
             foreach(var planDate in planDates)
             {
                 planDateRepository.Add(planDate);
@@ -74,82 +74,17 @@ namespace Moneyman.Services
 
             try
             {
-                var response = await planDateRepository.Save(); //TODO - Try moving this out so we run batches
-                Console.WriteLine($"Saved {response} plandates");
+                var response = await planDateRepository.Save();
+                logger.LogInformation("Saved {PlanDateCount} plandates", response);
             }
             catch(Exception err)
             {
                 logger.LogError("Failed saving plandates {ExceptionText}", err.ToString());
-
             }
             return ApiResponse.Success<List<PlanDate>>(planDates, "Successfully generated plandates");
         }
 
-        public List<PlanDate> GenerateDaily(int? transactionId)
-        {
-            return GetGenerationStrategy().Generate(transactionId, Frequency.Daily);
-        }
-
-        private IPlanDateGenerationStrategy GetGenerationStrategy()
-        {
-            return new DefaultPlanDateGenerationStrategy(
-                transactionRepository,
-                planDateRepository,
-                offsetCalculationService,
-                logger
-            );
-        }
-
-        public List<PlanDate> GenerateWeekly(int? transactionId)
-        {
-            logger.LogInformation("Generating weekly");
-            var transactions = transactionRepository.GetAll().Where(x => x.Frequency == Frequency.Weekly);
-            if(transactionId.HasValue)
-            {
-                transactions = transactions.Where(x => x.Id == transactionId);
-            }
-
-            List<PlanDate> planDates = new List<PlanDate>();
-            foreach(var transaction in transactions)
-            {
-                for(int i=0;i<52;i++)
-                {
-                    try
-                    {
-                        DateTime startDate = new DateTime(DateTime.Now.Year, 1, transaction.StartDate.Day); //Start at Jan of the current year
-                        DateTime dateOffset = startDate.AddDays(7*i);
-
-                        DateTime calculatedOffsetDate = offsetCalculationService.CalculateOffset(dateOffset).PlanDate; //TODO: Should this just return a date?
-
-                        var factory = new PlanDateFactory(transaction, calculatedOffsetDate);
-
-                        planDates.Add(factory.Create());
-                    }
-                    catch(Exception err)
-                    {
-                        logger.LogError("Error generating weekly plandate {TransactionName} {week} {exceptionText}", transaction.Name, i, err.ToString());
-                    }
-                }
-            }
-            return planDates;
-        }
-
-        public List<PlanDate> GenerateYearly(int? transactionId)
-        {
-            return GetGenerationStrategy().Generate(transactionId, Frequency.Yearly);
-        }
-
-        public List<PlanDate> GenerateAnticipated(int? transactionId)
-        {
-            return GetGenerationStrategy().Generate(transactionId, Frequency.Anticipated);
-        }
-
-        public List<PlanDate> GenerateMonthly(int? transactionId)
-        {
-            return GetGenerationStrategy().Generate(transactionId, Frequency.Monthly);
-        }
-
-        public ApiResponse<DtpDto> GetCurrent(int? startingValue)
+        public ApiResponse<DtpDto> GetCurrent(int? startingValue, int? bankAccountId = null)
         {
             var startDate = dateTimeProvider.GetToday();
             DateTime endDate = DateTime.MinValue;
@@ -163,14 +98,7 @@ namespace Moneyman.Services
                 return ApiResponse.NotFound<DtpDto>("Could not find any paydays. Please ensure they have been generated");
             }
 
-            logger.LogInformation(
-                "Getting current DTP period {startDate} {endDate}",
-                startDate,
-                endDate
-            );
-
-            var planDates = planDateRepository
-                               .GetAll();
+            var planDates = planDateRepository.GetAll();
 
             if (!planDates.Any())
             {
@@ -178,12 +106,7 @@ namespace Moneyman.Services
                 return ApiResponse.NoContent<DtpDto>("Plandate list is empty. Please regenerate plandates");
             }
 
-            planDates = planDates.Where(x =>
-                x.Transaction.Active
-                && x.Date > startDate
-                && x.Date < endDate
-                && !x.Paid
-            ).ToList();
+            planDates = planDates.Where(x => IsDueBetween(x, startDate, endDate, bankAccountId)).ToList();
             var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             var amountDue = mappedPlanDates.Sum(x => x.Amount);
             var weeksRemaining = WeeksRemaining(startDate, endDate);
@@ -204,28 +127,67 @@ namespace Moneyman.Services
             return (end - start).Days / 7;
         }
 
-        public ApiResponse<DtpDto>  GetOffset(int? monthOffset )
+        private static bool IsDueBetween(PlanDate planDate, DateTime startDate, DateTime endDate, int? bankAccountId = null)
+        {
+            return planDate.Transaction != null
+                && planDate.Transaction.Active
+                && planDate.Date > startDate
+                && planDate.Date < endDate
+                && !planDate.Paid
+                && (bankAccountId == null || planDate.Transaction.BankAccountId == bankAccountId.Value);
+        }
+
+        // Like IsDueBetween but without the date window: used by the "full" view,
+        // which returns every active, unpaid plan date across the whole span.
+        private static bool IsDue(PlanDate planDate, int? bankAccountId = null)
+        {
+            return planDate.Transaction != null
+                && planDate.Transaction.Active
+                && !planDate.Paid
+                && (bankAccountId == null || planDate.Transaction.BankAccountId == bankAccountId.Value);
+        }
+
+        public ApiResponse<DtpDto> GetOffset(int? monthOffset, int? bankAccountId = null)
         {
             var offset = monthOffset ?? 0;
             var startDateRaw = paydayService.GetPrevious();
-            var startDate = startDateRaw.Date.AddMonths(offset);
-            var endDate = paydayService.GetNext().Date.AddMonths(offset);
+            var endDateRaw = paydayService.GetNext();
 
-            logger.LogInformation(
-                "Getting current DTP period {startDate} {endDate}",
-                startDate,
-                endDate
-            );
+            if (startDateRaw == null || endDateRaw == null)
+            {
+                logger.LogError("Failed to get payday information");
+                return ApiResponse.NotFound<DtpDto>("Could not find any paydays. Please ensure they have been generated");
+            }
+
+            var startDate = startDateRaw.Date.AddMonths(offset);
+            var endDate = endDateRaw.Date.AddMonths(offset);
 
             var planDates = planDateRepository
                                .GetAll()
-                               .Where(x => x.Transaction.Active && x.Date > startDate && x.Date < endDate && !x.Paid)
+                               .Where(x => IsDueBetween(x, startDate, endDate, bankAccountId))
                                .ToList();
             var mappedPlanDates = planDateMapper.ToDtoList(planDates);
             return ApiResponse.Success<DtpDto>( new DtpDto{
                 PlanDates = mappedPlanDates,
                 StartDate = startDate,
                 EndDate = endDate
+            }, "Success");
+        }
+
+        public ApiResponse<DtpDto> GetAll(int? bankAccountId = null)
+        {
+            // The whole generated span: every active, unpaid plan date regardless of
+            // period, so one-off Anticipated bills dated outside the current payday
+            // period are still visible.
+            var planDates = planDateRepository
+                               .GetAll()
+                               .Where(x => IsDue(x, bankAccountId))
+                               .ToList();
+            var mappedPlanDates = planDateMapper.ToDtoList(planDates);
+            return ApiResponse.Success<DtpDto>( new DtpDto{
+                PlanDates = mappedPlanDates,
+                StartDate = planDates.Count > 0 ? planDates.Min(x => x.Date) : DateTime.MinValue,
+                EndDate = planDates.Count > 0 ? planDates.Max(x => x.Date) : DateTime.MinValue
             }, "Success");
         }
     }

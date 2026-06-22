@@ -1,5 +1,6 @@
 using Moneyman.Interfaces;
 using Moneyman.Services;
+using Moneyman.Services.Validators;
 using Moq;
 using Moneyman.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,8 @@ namespace Moneyman.Tests
             new TransactionService(
                 _transRepoMock.Object,
                 mockLogger.Object,
-                _mapper.Object
+                _mapper.Object,
+                new TransactionDtoValidator()
             );
 
         [TestInitialize]

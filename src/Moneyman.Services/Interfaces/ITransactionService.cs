@@ -9,7 +9,6 @@ namespace Moneyman.Interfaces
 	{
 		Task<ApiResponse<int>> Create(TransactionDto trans);
 		List<TransactionDto> GetAll();
-		List<TransactionDto> GetAnticipated();
 		Transaction GetById(int id);
 		int Update(Transaction model);
 		void Update(List<Transaction> model);

@@ -22,40 +22,44 @@ namespace Moneyman.Tests
     [TestClass]
     public class DtpMonthlyGenerationIntegrationTests
     {
-        private Mock<ITransactionRepository> mockTransactionRepository;
-        private Mock<IPlanDateRepository> mockPlanDateRepository;
-        private Mock<IOffsetCalculationService> mockOffsetCalculationService;
-        private Mock<IPaydayService> mockPaydayService;
-        private Mock<IDateTimeProvider> mockDateTimeProvider;
-        private Mock<ILogger<DtpService>> mockLogger;
-        private Mock<PlanDateMapper> mockPlanDateMapper;
+        private readonly List<string> holidays = new List<string>
+        {
+                "03-01-2022",
+                "15-04-2022",
+                "18-04-2022",
+                "02-05-2022",
+                "02-06-2022",
+                "03-06-2022",
+                "29-08-2022",
+                "26-12-2022",
+                "27-12-2022"
+        };
 
-        private DtpService NewDtpService() =>
-            new DtpService(
-                    mockTransactionRepository.Object,
-                    mockPlanDateRepository.Object,
-                    mockOffsetCalculationService.Object,
-                    mockPaydayService.Object,
-                    mockDateTimeProvider.Object,
-                    mockLogger.Object,
-                    mockPlanDateMapper.Object
+        private Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
+
+        private OffsetCalculationService NewOffsetCalculationService() =>
+            new(
+                mockHolidayService.Object
             );
+
+        private Mock<ITransactionRepository> mockTransactionRepository;
+        private Mock<ILogger<DtpService>> mockLogger;
+        private DefaultPlanDateGenerationStrategy sut;
 
         [TestInitialize]
         public void SetUp()
         {
-            mockPlanDateRepository = new Mock<IPlanDateRepository>();
             mockTransactionRepository = new Mock<ITransactionRepository>();
-            mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
-            mockPaydayService = new Mock<IPaydayService>();
-            mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
-            mockPlanDateMapper = new Mock<PlanDateMapper>();
 
-            mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
-                .Returns(new CalculatedPlanDate());
+            mockHolidayService = new Mock<IHolidayService>();
+            mockHolidayService.Setup(x => x.GenerateHolidays()).Returns(holidays);
 
-            mockPaydayService.Setup(x => x.GetAll()).Returns(new List<Payday>());
+            sut = new DefaultPlanDateGenerationStrategy(
+                mockTransactionRepository.Object,
+                NewOffsetCalculationService(),
+                mockLogger.Object
+            );
         }
 
         [TestMethod]
@@ -66,7 +70,6 @@ namespace Moneyman.Tests
         {
             // Arrange
             var startDate = DateTime.Parse(startDateString);
-            var sut = NewDtpService();
 
             IEnumerable<Transaction> transactions = new List<Transaction>
             {
@@ -82,7 +85,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
 
             // Act
-            var results = sut.GenerateMonthly(0);
+            var results = sut.Generate(null, Frequency.Monthly);
 
             // Assert
             results.Count.Should().Be(24);
@@ -97,7 +100,6 @@ namespace Moneyman.Tests
         {
             // Arrange
             var startDate = DateTime.Parse(startDateString);
-            var sut = NewDtpService();
 
             IEnumerable<Transaction> transactions = new List<Transaction>
             {
@@ -113,7 +115,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
 
             // Act
-            var results = sut.GenerateMonthly(0);
+            var results = sut.Generate(null, Frequency.Monthly);
 
             // Assert
             results.Count.Should().Be(24);
@@ -128,7 +130,6 @@ namespace Moneyman.Tests
         {
             // Arrange
             var startDate = DateTime.Parse(startDateString);
-            var sut = NewDtpService();
 
             IEnumerable<Transaction> transactions = new List<Transaction>
             {
@@ -144,7 +145,7 @@ namespace Moneyman.Tests
             mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
 
             // Act
-            var results = sut.GenerateMonthly(0);
+            var results = sut.Generate(null, Frequency.Monthly);
 
             // Assert
             results.Count.Should().Be(24);

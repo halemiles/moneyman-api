@@ -11,3 +11,27 @@ coveragereport
 history
 tools
 .idea
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md
+.agents
+.claude
+
+# API run logs (restart-api.ps1)
+*.log
+
+# Coverage / Playwright artifacts
+lcov.info
+cobertura.xml
+test-results/
+playwright-report/
+
+# Rider/ReSharper per-user settings
+*.DotSettings.user
+
+# Local environment files
+.env
+
+# Linter caches
+.codacy
+.opengrep

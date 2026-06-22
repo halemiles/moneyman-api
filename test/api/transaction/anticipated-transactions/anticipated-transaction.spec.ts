@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../fixtures";
 import { dtpResponse } from "../../models/dtp";
 import { Frequency } from "../../models/frequency";
 
@@ -9,6 +9,14 @@ function generateUuid(): string {
     id += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return id;
+}
+
+// A date a couple of days from now, so an anticipated bill falls inside the
+// current payday period (today .. next payday) and is visible in /dtp/current.
+function inCurrentPeriodDate(): string {
+  const d = new Date();
+  d.setDate(d.getDate() + 2);
+  return d.toISOString().split("T")[0];
 }
 
 test("anticipated transaction shows in dtp/full", async ({ request }) => {
@@ -34,7 +42,7 @@ test("anticipated transaction shows in dtp/full", async ({ request }) => {
   const generateResponse = await request.post("/dtp/generate");
   expect(generateResponse.ok()).toBeTruthy();
 
-  const dtpFullResult = await request.get("/dtp/full?startingValue=100");
+  const dtpFullResult = await request.get("/dtp/all?startingValue=100");
   const dtpResultJson = (await dtpFullResult.json()) as dtpResponse;
 
   expect(dtpResultJson.payload.planDates).not.toBeNull();
@@ -52,7 +60,7 @@ test("anticipated transaction shows in dtp/current", async ({ request }) => {
     data: {
       Name: uniqueName,
       Amount: 34,
-      StartDate: "2026-04-15",
+      StartDate: inCurrentPeriodDate(),
       Frequency: Frequency.Anticipated,
       Active: true,
     },
@@ -79,57 +87,58 @@ test("anticipated transaction shows in dtp/current", async ({ request }) => {
   await request.delete(`/transaction/${body.id}`);
 });
 
-test("anticipated transactions returned from /transaction/anticipated", async ({ request }) => {
+test("anticipated transactions returned from /transaction?anticipated=true", async ({ request }) => {
   const name1 = `Anticipated-${generateUuid()}`;
   const name2 = `Anticipated-${generateUuid()}`;
   const name3 = `NotAnticipated-${generateUuid()}`;
 
-  const [res1, res2, res3] = await Promise.all([
-    request.post("/transaction", {
-      data: {
-        Name: name1,
-        Amount: 34,
-        StartDate: "2026-06-17",
-        Frequency: Frequency.Anticipated,
-        Active: true,
-      },
-    }),
-    request.post("/transaction", {
-      data: {
-        Name: name2,
-        Amount: 34,
-        StartDate: "2026-06-17",
-        Frequency: Frequency.Anticipated,
-        Active: true,
-      },
-    }),
-    request.post("/transaction", {
-      data: {
-        Name: name3,
-        Amount: 34,
-        StartDate: "2026-06-17",
-        Frequency: Frequency.Monthly,
-        Active: true,
-      },
-    }),
-  ]);
+  // Create sequentially, not via Promise.all: SQLite is single-writer, so
+  // concurrent POSTs can hit "database is locked". Concurrency isn't under test
+  // here — we only need the three transactions to exist before we query them.
+  const res1 = await request.post("/transaction", {
+    data: {
+      Name: name1,
+      Amount: 34,
+      StartDate: "2026-06-17",
+      Frequency: Frequency.Anticipated,
+      Active: true,
+    },
+  });
+  const res2 = await request.post("/transaction", {
+    data: {
+      Name: name2,
+      Amount: 34,
+      StartDate: "2026-06-17",
+      Frequency: Frequency.Anticipated,
+      Active: true,
+    },
+  });
+  const res3 = await request.post("/transaction", {
+    data: {
+      Name: name3,
+      Amount: 34,
+      StartDate: "2026-06-17",
+      Frequency: Frequency.Monthly,
+      Active: true,
+    },
+  });
 
   await expect(res1.ok()).toBeTruthy();
   await expect(res2.ok()).toBeTruthy();
   await expect(res3.ok()).toBeTruthy();
 
-  const [body1, body2, body3] = await Promise.all([res1.json(), res2.json(), res3.json()]);
+  const body1 = await res1.json();
+  const body2 = await res2.json();
+  const body3 = await res3.json();
 
-  const transactionResponse = await request.get("/transaction/anticipated");
+  const transactionResponse = await request.get("/transaction?anticipated=true");
   const transactions = await transactionResponse.json();
 
   expect(transactions.some((t) => t.name === name1)).toBeTruthy();
   expect(transactions.some((t) => t.name === name2)).toBeTruthy();
   expect(transactions.some((t) => t.name === name3)).toBeFalsy();
 
-  await Promise.all([
-    request.delete(`/transaction/${body1.id}`),
-    request.delete(`/transaction/${body2.id}`),
-    request.delete(`/transaction/${body3.id}`),
-  ]);
+  await request.delete(`/transaction/${body1.id}`);
+  await request.delete(`/transaction/${body2.id}`);
+  await request.delete(`/transaction/${body3.id}`);
 });

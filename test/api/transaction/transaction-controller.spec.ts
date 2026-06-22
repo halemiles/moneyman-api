@@ -1,4 +1,5 @@
-import { test, expect, APIRequestContext } from "@playwright/test";
+import { APIRequestContext } from "@playwright/test";
+import { test, expect } from "../fixtures";
 import { Frequency } from "../models/frequency";
 
 const BASE_URL = "http://localhost:5000";
@@ -24,7 +25,6 @@ test.describe("TransactionController - CRUD Operations", () => {
       StartDate: "2026-06-01",
       Frequency: Frequency.Monthly,
       Active: true,
-      IsAnticipated: false,
     };
 
     const response = await request.post(`${BASE_URL}/transaction`, {
@@ -96,9 +96,8 @@ test.describe("TransactionController - CRUD Operations", () => {
       Name: "Non-Anticipated Transaction",
       Amount: 50,
       StartDate: "2026-06-01",
-      Frequency: 1,
+      Frequency: Frequency.Monthly,
       Active: true,
-      IsAnticipated: false,
     });
 
     const response = await request.get(`${BASE_URL}/transaction`);
@@ -109,7 +108,7 @@ test.describe("TransactionController - CRUD Operations", () => {
 
     const transaction = body.find((t) => t.id === transactionId);
     expect(transaction).toBeDefined();
-    expect(transaction.isAnticipated).toBe(false);
+    expect(transaction.frequency).not.toBe(Frequency.Anticipated);
 
     // Cleanup
     await deleteTransaction(request, transactionId);
@@ -120,9 +119,8 @@ test.describe("TransactionController - CRUD Operations", () => {
       Name: "Anticipated Transaction",
       Amount: 75,
       StartDate: "2026-06-01",
-      Frequency: 1,
+      Frequency: Frequency.Anticipated,
       Active: true,
-      IsAnticipated: true,
     });
 
     const response = await request.get(`${BASE_URL}/transaction?anticipated=true`);
@@ -133,7 +131,7 @@ test.describe("TransactionController - CRUD Operations", () => {
 
     // All returned transactions should be anticipated
     body.forEach((t) => {
-      expect(t.isAnticipated).toBe(true);
+      expect(t.frequency).toBe(Frequency.Anticipated);
     });
 
     const transaction = body.find((t) => t.id === anticipatedId);
@@ -143,17 +141,16 @@ test.describe("TransactionController - CRUD Operations", () => {
     await deleteTransaction(request, anticipatedId);
   });
 
-  test("GET /transaction/anticipated - Get anticipated transactions", async ({ request }) => {
+  test("GET /transaction?anticipated=true - Get anticipated transactions", async ({ request }) => {
     const anticipatedId = await createTransaction(request, {
       Name: "Another Anticipated Transaction",
       Amount: 125,
       StartDate: "2026-06-01",
-      Frequency: 1,
+      Frequency: 4, // Anticipated
       Active: true,
-      IsAnticipated: true,
     });
 
-    const response = await request.get(`${BASE_URL}/transaction/anticipated`);
+    const response = await request.get(`${BASE_URL}/transaction?anticipated=true`);
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
@@ -161,7 +158,7 @@ test.describe("TransactionController - CRUD Operations", () => {
 
     const transaction = body.find((t) => t.id === anticipatedId);
     expect(transaction).toBeDefined();
-    expect(transaction.isAnticipated).toBe(true);
+    expect(transaction.frequency).toBe(4);
 
     // Cleanup
     await deleteTransaction(request, anticipatedId);

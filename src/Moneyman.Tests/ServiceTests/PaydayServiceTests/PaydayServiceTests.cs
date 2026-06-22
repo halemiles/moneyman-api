@@ -98,6 +98,20 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
+        public void Create_PersistsAllPaydaysInASingleSave()
+        {
+            int dayOfMonth = 25;
+            var paydayService = NewPaydayService();
+            mockDateTimeProvider.Setup(x => x.GetNow()).Returns(new DateTime(2024, 1, dayOfMonth));
+
+            paydayService.Generate(dayOfMonth);
+
+            // All 24 paydays are added, but persisted in one batched Save (not per-iteration)
+            mockPaydayRepository.Verify(x => x.Add(It.IsAny<Payday>()), Times.Exactly(24));
+            mockPaydayRepository.Verify(x => x.Save(), Times.Once());
+        }
+
+        [TestMethod]
         public void GetPrevious_ReturnsSuccess()
         {
             var paydayService = NewPaydayService();

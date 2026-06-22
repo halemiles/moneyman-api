@@ -32,11 +32,6 @@ namespace Moneyman.Persistence
       return  _context.Set<T>().AsEnumerable();
     }
 
-    public virtual DbSet<T> GetDbSet()
-    {
-      return _context.Set<T>();
-    }
-
     public virtual void Remove(int id)
     {
         var entity = Get(id);
