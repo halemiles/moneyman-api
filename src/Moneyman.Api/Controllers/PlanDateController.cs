@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
@@ -26,6 +27,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType<List<PlanDate>>(StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
             _logger.LogInformation("Getting all plan dates");
@@ -34,6 +36,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet("search")]
+        [ProducesResponseType<List<PlanDate>>(StatusCodes.Status200OK)]
         public IActionResult Search(string transactionName)
         {
             _logger.LogInformation("Getting all plan dates");
@@ -42,6 +45,8 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpPatch("{id}/paid")]
+        [ProducesResponseType<ApiResponse<PlanDate>>(StatusCodes.Status200OK)]
+        [ProducesResponseType<ApiResponse<PlanDate>>(StatusCodes.Status404NotFound)]
         public IActionResult MarkAsPaid(int id)
         {
             _logger.LogInformation("Marking plan date {Id} as paid", id);
