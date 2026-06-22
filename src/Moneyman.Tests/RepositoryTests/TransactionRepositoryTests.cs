@@ -46,6 +46,19 @@ namespace Moneyman.Tests
             result.Count().Should().Be(0);
         }
 
+        [DataTestMethod]
+        [DataRow("PlanDates; DROP TABLE Transactions")]
+        [DataRow("Plan Dates")]
+        [DataRow("")]
+        public void RemoveAll_WithInvalidTableName_ThrowsArgumentException(string tableName)
+        {
+            var repository = NewTransactionRepository();
+
+            Action act = () => repository.RemoveAll(tableName);
+
+            act.Should().Throw<ArgumentException>();
+        }
+
         [TestMethod]
         public void Add_WithOneNewTransaction_SaveReturnsOneRecordCount()
         {
