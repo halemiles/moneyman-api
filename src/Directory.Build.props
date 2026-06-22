@@ -10,10 +10,12 @@
     static-analysis debt is worked through.
   -->
   <PropertyGroup>
-    <!-- Built-in CA* analyzers -->
+    <!-- Built-in CA* analyzers. AnalysisMode left at Default: the Sonar S* rules
+         (which match Codacy) come from SonarAnalyzer regardless of this setting,
+         so we avoid the CA1848/CA1873 logging flood that 'Recommended' adds. -->
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
-    <AnalysisMode>Recommended</AnalysisMode>
+    <AnalysisMode>Default</AnalysisMode>
     <!-- Run .editorconfig-driven code-style (IDE*) rules during build, not just in the IDE -->
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <!-- Keep findings visible without failing CI -->
