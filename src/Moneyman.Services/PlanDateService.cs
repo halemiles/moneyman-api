@@ -5,22 +5,18 @@ using System;
 using Moneyman.Domain;
 using Moneyman.Services.Validators;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
 namespace Moneyman.Services
 {
 	public class PlanDateService : IPlanDateService
 	{
 		private readonly IPlanDateRepository _planDateRepository;
-    private readonly ILogger<PlanDateService> logger;
 
 		public PlanDateService(
-      IPlanDateRepository planDateRepository,
-      ILogger<PlanDateService> logger
+      IPlanDateRepository planDateRepository
     )
 		{
 			_planDateRepository = planDateRepository;
-      this.logger = logger;
 		}
 
       public List<PlanDate> GetAll()

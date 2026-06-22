@@ -16,7 +16,6 @@ namespace Moneyman.Services
     {
         private readonly ITransactionRepository transactionRepository;
         private readonly IPlanDateRepository planDateRepository;
-        private readonly IOffsetCalculationService offsetCalculationService;
         private readonly IPaydayService paydayService;
         private readonly ILogger<DtpService> logger;
         private readonly IDateTimeProvider dateTimeProvider;
@@ -26,7 +25,6 @@ namespace Moneyman.Services
         public DtpService(
             ITransactionRepository transactionRepository,
             IPlanDateRepository planDateRepository,
-            IOffsetCalculationService offsetCalculationService,
             IPaydayService paydayService,
             IDateTimeProvider dateTimeProvider,
             ILogger<DtpService> logger,
@@ -36,7 +34,6 @@ namespace Moneyman.Services
         {
             this.transactionRepository = transactionRepository;
             this.planDateRepository = planDateRepository;
-            this.offsetCalculationService = offsetCalculationService;
             this.paydayService = paydayService;
             this.dateTimeProvider = dateTimeProvider;
             this.logger = logger;

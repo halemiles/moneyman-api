@@ -19,7 +19,6 @@ namespace Moneyman.Tests
     {
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
-        private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
         private Mock<IDateTimeProvider> mockDateTimeProvider;
         private PlanDateMapper planDateMapper;
@@ -30,7 +29,6 @@ namespace Moneyman.Tests
             new DtpService(
                     mockTransactionRepository.Object,
                     mockPlanDateRepository.Object,
-                    mockOffsetCalculationService.Object,
                     mockPaydayService.Object,
                     mockDateTimeProvider.Object,
                     mockLogger.Object,
@@ -43,14 +41,10 @@ namespace Moneyman.Tests
         {
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
             mockTransactionRepository = new Mock<ITransactionRepository>();
-            mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
             mockPaydayService = new Mock<IPaydayService>();
             mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
             mockGenerationStrategy = new Mock<IPlanDateGenerationStrategy>();
-
-            mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
-                .Returns(new CalculatedPlanDate());
 
             planDateMapper = new PlanDateMapper();
         }
