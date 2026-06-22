@@ -24,6 +24,7 @@ namespace Moneyman.Tests
         private Mock<IDateTimeProvider> mockDateTimeProvider;
         private PlanDateMapper planDateMapper;
         private Mock<ILogger<DtpService>> mockLogger;
+        private Mock<IPlanDateGenerationStrategy> mockGenerationStrategy;
 
         private DtpService NewDtpService() =>
             new DtpService(
@@ -33,7 +34,8 @@ namespace Moneyman.Tests
                     mockPaydayService.Object,
                     mockDateTimeProvider.Object,
                     mockLogger.Object,
-                    planDateMapper
+                    planDateMapper,
+                    mockGenerationStrategy.Object
             );
 
         [TestInitialize]
@@ -45,6 +47,7 @@ namespace Moneyman.Tests
             mockPaydayService = new Mock<IPaydayService>();
             mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
+            mockGenerationStrategy = new Mock<IPlanDateGenerationStrategy>();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns(new CalculatedPlanDate());

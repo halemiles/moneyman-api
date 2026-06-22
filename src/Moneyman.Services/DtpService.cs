@@ -30,7 +30,8 @@ namespace Moneyman.Services
             IPaydayService paydayService,
             IDateTimeProvider dateTimeProvider,
             ILogger<DtpService> logger,
-            PlanDateMapper planDateMapper
+            PlanDateMapper planDateMapper,
+            IPlanDateGenerationStrategy generationStrategy
         )
         {
             this.transactionRepository = transactionRepository;
@@ -40,11 +41,7 @@ namespace Moneyman.Services
             this.dateTimeProvider = dateTimeProvider;
             this.logger = logger;
             this.planDateMapper = planDateMapper;
-            generationStrategy = new DefaultPlanDateGenerationStrategy(
-                transactionRepository,
-                offsetCalculationService,
-                logger
-            );
+            this.generationStrategy = generationStrategy;
         }
 
         public async Task<ApiResponse<List<PlanDate>>> GenerateAll(int? transactionId)

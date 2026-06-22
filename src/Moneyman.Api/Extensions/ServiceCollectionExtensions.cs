@@ -38,6 +38,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPlanDateService, PlanDateService>();
         services.AddScoped<IBankAccountService, BankAccountService>();
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+        services.AddScoped<IPlanDateGenerationStrategy, DefaultPlanDateGenerationStrategy>();
         services.AddScoped<IValidator<TransactionDto>, TransactionDtoValidator>();
 
         return services;
