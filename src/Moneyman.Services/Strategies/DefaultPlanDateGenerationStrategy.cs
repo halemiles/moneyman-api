@@ -73,7 +73,7 @@ namespace Moneyman.Services
                     }
                     catch (Exception err)
                     {
-                        logger.LogError("Error generating plandate {TransactionName} {iteration} {exceptionText}", transaction.Name, i, err.ToString());
+                        logger.LogError(err, "Error generating plandate {TransactionName} {Iteration}", transaction.Name, i);
                     }
                 }
             }

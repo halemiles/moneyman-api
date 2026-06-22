@@ -79,7 +79,7 @@ namespace Moneyman.Services
             }
             catch(Exception err)
             {
-                logger.LogError("Failed saving plandates {ExceptionText}", err.ToString());
+                logger.LogError(err, "Failed saving plandates");
             }
             return ApiResponse.Success<List<PlanDate>>(planDates, "Successfully generated plandates");
         }
@@ -92,9 +92,9 @@ namespace Moneyman.Services
             {
                 endDate = paydayService.GetNext().Date;
             }
-            catch(Exception)
+            catch(Exception err)
             {
-                logger.LogError("Failed to get payday information");
+                logger.LogError(err, "Failed to get payday information");
                 return ApiResponse.NotFound<DtpDto>("Could not find any paydays. Please ensure they have been generated");
             }
 

@@ -67,7 +67,7 @@ namespace Moneyman.Api.Controllers
             }
             catch(Exception err)
             {
-                _logger.LogError(err.ToString());
+                _logger.LogError(err, "Unexpected error generating DTP");
                 return Ok(new DtpHttpResponse{RecordCount = 0, Message = $"Unexpected error occurred: {err.Message}"});
             }
         }

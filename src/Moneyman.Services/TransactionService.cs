@@ -128,7 +128,7 @@ namespace Moneyman.Services
         }
         catch (Exception err)
         {
-          logger.LogError("Failed to save transaction {TransactionName} {Error}", transaction.Name, err.Message);
+          logger.LogError(err, "Failed to save transaction {TransactionName}", transaction.Name);
           return ApiResponse.ValidationError<int>("Failed to save transaction");
         }
       }

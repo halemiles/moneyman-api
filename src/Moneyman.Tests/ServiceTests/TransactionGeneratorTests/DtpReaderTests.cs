@@ -161,6 +161,24 @@ namespace Moneyman.Tests
         }
 
         [TestMethod]
+        public void GetCurrent_WhenNoPaydaysExist_ReturnsNotFound()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(2022,1,1));
+            mockPaydayService.Setup(x => x.GetNext())
+                .Throws(new InvalidOperationException("No paydays generated"));
+
+            // Act
+            var result = sut.GetCurrent(null);
+
+            // Assert
+            result.StatusCode.Should().Be(StatusCode.NotFound);
+            result.Success.Should().BeFalse();
+            result.Payload.Should().BeNull();
+        }
+
+        [TestMethod]
         public void GetOffset_WithBankAccountId_ReturnsOnlyPlanDatesForThatBankAccount()
         {
             // Arrange
