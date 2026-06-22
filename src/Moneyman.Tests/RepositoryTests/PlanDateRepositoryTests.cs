@@ -23,14 +23,11 @@ namespace Moneyman.Tests
     {
         private Mock<MoneymanContext> _contextMock;
         private List<PlanDate> _planDates;
-        private PlanDateRepository NewPlanDateRepository() =>
-            new PlanDateRepository(_contextMock.Object);
 
         [TestInitialize]
         public void SetUp()
         {
             _contextMock = new  Mock<MoneymanContext>();
-            var fixture = new Fixture();
 
             var transaction1 = new Transaction
             {

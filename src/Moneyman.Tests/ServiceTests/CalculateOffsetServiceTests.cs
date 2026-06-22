@@ -14,8 +14,6 @@ namespace Moneyman.Tests
     [TestClass]
     public class CalculateOffsetServiceTests //TODO - Rename this
     {
-        private Mock<ITransactionService> mockTransactionService;
-        private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IHolidayService> mockHolidayService;
 
         private OffsetCalculationService NewOffsetCalculationService() =>
@@ -26,8 +24,6 @@ namespace Moneyman.Tests
         [TestInitialize]
         public void SetUp()
         {
-            mockTransactionService = new Mock<ITransactionService>();
-            mockTransactionRepository = new Mock<ITransactionRepository>();
             mockHolidayService = new Mock<IHolidayService>();
 
             var holidays = new List<string>

@@ -19,21 +19,14 @@ namespace Moneyman.Tests
     [TestClass]
     public class TransactionRepositoryTests
     {
-        private Mock<DbSet<Transaction>> _dbSetMock;
         private Mock<MoneymanContext> _contextMock;
-        private Mock<TransactionRepository> _transRepoMock;
-        private Mock<IRepository<Transaction>> _genericRepositoryMock;
-        private TransactionMapper _mapper;
         private TransactionRepository NewTransactionRepository() =>
             new TransactionRepository(_contextMock.Object);
 
         [TestInitialize]
         public void SetUp()
         {
-            _dbSetMock = new  Mock<DbSet<Transaction>>();
             _contextMock = new  Mock<MoneymanContext>();
-            _transRepoMock = new Mock<TransactionRepository>();
-            _genericRepositoryMock = new Mock<IRepository<Transaction>>();
 
             var _transactions = new List<Transaction>
             {
@@ -42,8 +35,6 @@ namespace Moneyman.Tests
             }.AsQueryable().BuildMockDbSet();
 
             _contextMock.Setup(x => x.Set<Transaction>()).Returns(_transactions.Object);
-
-            _mapper = new TransactionMapper();
         }
 
         [TestMethod]

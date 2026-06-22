@@ -25,7 +25,6 @@ namespace Moneyman.Tests
     public class TransactionServiceTests
     {
         private Mock<ITransactionRepository> _transRepoMock;
-        private Mock<IPlanDateRepository> _planDateRepoMock;
         private Mock<ILogger<TransactionService>> mockLogger;
         private Mock<TransactionMapper> _mapper;
         private TransactionService NewTransactionService() =>
@@ -40,7 +39,6 @@ namespace Moneyman.Tests
         public void SetUp()
         {
             _transRepoMock = new Mock<ITransactionRepository>();
-            _planDateRepoMock = new Mock<IPlanDateRepository>();
             mockLogger = new Mock<ILogger<TransactionService>>();
             _mapper = new Mock<TransactionMapper>();
             
@@ -189,7 +187,7 @@ namespace Moneyman.Tests
                 Amount = 200,
                 Frequency = Frequency.Weekly
             };
-            var result = service.Update(updatedTransaction);
+            service.Update(updatedTransaction);
 
             _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once());
         }

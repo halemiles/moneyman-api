@@ -16,15 +16,8 @@ namespace Moneyman.Tests
     [TestClass]
     public class DateTimeProviderTests
     {
-        private Mock<IDateTimeProvider> mockDateTimeProvider;
-        private DateTimeProvider NewDateTimeProvider() 
+        private DateTimeProvider NewDateTimeProvider()
             => new DateTimeProvider();
-
-        [TestInitialize]
-        public void SetUp()
-        {            
-            mockDateTimeProvider = new Mock<IDateTimeProvider>();
-        }
 
         [TestMethod]
         public void GetToday_WithDate_ReturnsDate()
