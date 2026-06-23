@@ -55,7 +55,7 @@ namespace Moneyman.Tests
 
             var service = NewPlanDateService();
             var result = service.GetAll();
-            result.Count().Should().Be(0);
+            result.Count.Should().Be(0);
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace Moneyman.Tests
 
             var service = NewPlanDateService();
             var result = service.GetAll();
-            result.Count().Should().Be(5);
+            result.Count.Should().Be(5);
         }
 
         [TestMethod]

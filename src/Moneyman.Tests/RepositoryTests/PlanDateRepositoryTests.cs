@@ -92,7 +92,7 @@ namespace Moneyman.Tests
                 updatedPlanDates = planDateRepository.GetAll().ToList();
             }
 
-            updatedPlanDates.Count().Should().Be(0);
+            updatedPlanDates.Count.Should().Be(0);
         }
 
         [TestMethod]
@@ -109,7 +109,7 @@ namespace Moneyman.Tests
                 updatedPlanDates = planDateRepository.GetAll().ToList();
 
             }
-            updatedPlanDates.Count().Should().Be(2);
+            updatedPlanDates.Count.Should().Be(2);
         }
 
         [TestMethod]

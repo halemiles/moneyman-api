@@ -120,7 +120,7 @@ namespace Moneyman.Services
             }, "Success");
         }
 
-        private int WeeksRemaining(DateTime start, DateTime end){
+        private static int WeeksRemaining(DateTime start, DateTime end){
             return (end - start).Days / 7;
         }
 

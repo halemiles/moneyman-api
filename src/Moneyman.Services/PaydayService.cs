@@ -57,8 +57,7 @@ namespace Moneyman.Services
         {
             return _paydayRepository
 				.GetAll()
-				.Where(x => x.Date > _dateTimeProvider.GetNow())
-				.FirstOrDefault();
+				.FirstOrDefault(x => x.Date > _dateTimeProvider.GetNow());
 
         }
 
@@ -66,8 +65,7 @@ namespace Moneyman.Services
         {
             return _paydayRepository
 				.GetAll()
-				.Where(x => x.Date < _dateTimeProvider.GetNow())
-				.LastOrDefault();
+				.LastOrDefault(x => x.Date < _dateTimeProvider.GetNow());
         }
 
         public void RemoveAll()

@@ -51,7 +51,7 @@ namespace Moneyman.Tests
 
             var service = NewTransactionService();
             var result = service.GetAll();
-            result.Count().Should().Be(0);
+            result.Count.Should().Be(0);
         }
 
         [TestMethod]

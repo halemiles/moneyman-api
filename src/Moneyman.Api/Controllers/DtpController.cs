@@ -70,7 +70,7 @@ namespace Moneyman.Api.Controllers
                     return Ok(new DtpHttpResponse{RecordCount = 0, Message = planDates.Message});
                 }
 
-                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count(), Message = planDates.Message});
+                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count, Message = planDates.Message});
             }
             catch(Exception err)
             {

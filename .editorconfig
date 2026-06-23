@@ -24,12 +24,16 @@ indent_size = 4
 # entity. This is intentional one-way (entity -> DTO) mapping, so silence it.
 dotnet_diagnostic.RMG020.severity = none
 
+# S6562 — "provide DateTimeKind". The domain models naive UK calendar dates
+# (paydays, plan dates, bank holidays) with no time-of-day or timezone meaning,
+# so a Kind would be misleading rather than helpful. Silenced solution-wide.
+dotnet_diagnostic.S6562.severity = none
+
 # --- Test project: silence pattern noise -----------------------------------
 # Unit-test fixtures legitimately build/parse literal dates and use instance
 # helpers. These rules add hundreds of findings with no real-world payoff in
 # test code, so scope them off here (they stay active in production code).
 [**/Moneyman.Tests/**.cs]
-dotnet_diagnostic.S6562.severity = none   # DateTimeKind on literal test dates
 dotnet_diagnostic.S6580.severity = none   # format provider when parsing test dates
 dotnet_diagnostic.S2325.severity = none   # test helpers needn't be static
 dotnet_diagnostic.S6966.severity = none   # await ToListAsync/FirstOrDefaultAsync in tests
