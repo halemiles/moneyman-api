@@ -25,11 +25,13 @@ namespace Moneyman.Tests
     public class TransactionServiceTests
     {
         private Mock<ITransactionRepository> _transRepoMock;
+        private Mock<IPlanDateRepository> _planDateRepoMock;
         private Mock<ILogger<TransactionService>> mockLogger;
         private Mock<TransactionMapper> _mapper;
         private TransactionService NewTransactionService() =>
             new TransactionService(
                 _transRepoMock.Object,
+                _planDateRepoMock.Object,
                 mockLogger.Object,
                 _mapper.Object,
                 new TransactionDtoValidator()
@@ -39,6 +41,7 @@ namespace Moneyman.Tests
         public void SetUp()
         {
             _transRepoMock = new Mock<ITransactionRepository>();
+            _planDateRepoMock = new Mock<IPlanDateRepository>();
             mockLogger = new Mock<ILogger<TransactionService>>();
             _mapper = new Mock<TransactionMapper>();
             

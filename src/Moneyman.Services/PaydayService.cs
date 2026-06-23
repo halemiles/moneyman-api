@@ -34,7 +34,7 @@ namespace Moneyman.Services
 
 		public List<Payday> Generate(int dayOfMonth)
 		{
-			_paydayRepository.RemoveAll("Paydays");
+			_paydayRepository.RemoveAll();
 			List<Payday> payDates = new List<Payday>();
 			for(int i=0;i<TotalPaydayMonths;i++)
 			{
@@ -70,7 +70,7 @@ namespace Moneyman.Services
 
         public void RemoveAll()
         {
-	        _paydayRepository.RemoveAll("Paydays");
+	        _paydayRepository.RemoveAll();
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Moneyman.Services
             }
 
             logger.LogInformation("Removing existing plan dates");
-            transactionRepository.RemoveAll("PlanDates");
+            planDateRepository.RemoveAll();
 
             List<PlanDate> planDates = new();
             foreach (var frequency in new[] { Frequency.Monthly, Frequency.Weekly, Frequency.Yearly, Frequency.Anticipated, Frequency.Daily })

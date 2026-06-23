@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Moneyman.Domain;
 using Microsoft.EntityFrameworkCore;
 using Moneyman.Interfaces;
@@ -62,21 +61,10 @@ namespace Moneyman.Persistence
         return await _context.SaveChangesAsync();
     }
 
-    //TODO: Update this to accept T
-    public bool RemoveAll(string tableName)
+    //Bulk-deletes every row of T's table directly in the database.
+    public int RemoveAll()
     {
-        // A table name cannot be supplied as a SQL parameter, so guard against
-        // injection by accepting only simple identifiers. Callers pass
-        // compile-time constants ("PlanDates", "Transactions", "Paydays").
-        if (string.IsNullOrWhiteSpace(tableName) || !Regex.IsMatch(tableName, "^[A-Za-z0-9_]+$"))
-        {
-            throw new ArgumentException($"Invalid table name '{tableName}'.", nameof(tableName));
-        }
-
-#pragma warning disable EF1002 // tableName validated as a safe identifier above; it is never user input.
-        var result = _context.Database.ExecuteSqlRaw($"DELETE FROM {tableName}");
-#pragma warning restore EF1002
-        return result == 1;
+        return _context.Set<T>().ExecuteDelete();
     }
   }
 }
