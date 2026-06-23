@@ -5,6 +5,6 @@ namespace Moneyman.Interfaces
 {
     public interface IOffsetCalculationService
     {
-        CalculatedPlanDate CalculateOffset(DateTime dte); //TODO - Should we just return a date?
+        CalculatedPlanDate CalculateOffset(DateTime dte);
     }
 }

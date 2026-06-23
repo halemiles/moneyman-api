@@ -49,7 +49,6 @@ namespace Moneyman.Tests
 
         private readonly Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
 
-        //TODO - Move this to a fixture class
         public OffsetCalculationService NewOffsetCalculationService() =>
             new(
                 mockHolidayService.Object

@@ -35,7 +35,7 @@ namespace Moneyman.Services
 		public List<Payday> Generate(int dayOfMonth)
 		{
 			_paydayRepository.RemoveAll("Paydays");
-			List<Payday> payDates = new List<Payday>(); //TODO - Refactor this so we don't have to intialise
+			List<Payday> payDates = new List<Payday>();
 			for(int i=0;i<TotalPaydayMonths;i++)
 			{
 				var plannedDate = new DateTime(_dateTimeProvider.GetNow().Year,1,dayOfMonth);

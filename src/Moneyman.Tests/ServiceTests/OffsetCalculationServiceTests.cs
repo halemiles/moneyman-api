@@ -12,7 +12,7 @@ using Snapper;
 namespace Moneyman.Tests
 {
     [TestClass]
-    public class CalculateOffsetServiceTests //TODO - Rename this
+    public class OffsetCalculationServiceTests
     {
         private Mock<IHolidayService> mockHolidayService;
 
@@ -67,6 +67,26 @@ namespace Moneyman.Tests
 
             // Assert
             result.PlanDate.Year.Should().Be(2023);
+        }
+
+        [TestMethod]
+        public void CalculateOffset_WhenNoWorkingDayFoundWithinLimit_StopsAndReturnsInvalid()
+        {
+            // Arrange — mark a contiguous run of days as bank holidays so a valid
+            // working day is never found. The loop guard must cap the search at 10
+            // iterations rather than spin forever, leaving the result invalid.
+            var contiguousHolidays = Enumerable.Range(0, 12)
+                .Select(offset => new DateTime(2022, 3, 1).AddDays(offset).ToString("dd-MM-yyyy"))
+                .ToList();
+            mockHolidayService.Setup(x => x.GenerateHolidays()).Returns(contiguousHolidays);
+            var sut = NewOffsetCalculationService();
+
+            // Act
+            var result = sut.CalculateOffset(new DateTime(2022, 3, 1));
+
+            // Assert
+            result.IsValid.Should().BeFalse();
+            result.OffsetBy.Should().Be(11);
         }
     }
 }

@@ -86,7 +86,7 @@ namespace Moneyman.Services
     public void Delete(int id)
     {
         _transactionRepository.Remove(id);
-        logger.LogInformation("Deleting transaction {TransactionId}", id); //TODO - Add transaction name to log?
+        logger.LogInformation("Deleting transaction {TransactionId}", id);
         _transactionRepository.Save();
     }
 
