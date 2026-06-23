@@ -1,0 +1,49 @@
+# EditorConfig — https://editorconfig.org
+# Central place to tune analyzer rule severities for the MoneyMan solution.
+# With EnforceCodeStyleInBuild + the analyzers enabled in src/Directory.Build.props,
+# severities set here are honoured by `dotnet build`, by Codacy, and in the IDE.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+
+[*.cs]
+indent_size = 4
+
+# --- Analyzer rule severity overrides ---------------------------------------
+# Default behaviour leaves every CA*/S*/EF*/IDE* rule at its analyzer default
+# (mostly `warning`/`suggestion`). Override individual rules below as findings
+# from issue #157 are triaged. Format:
+#   dotnet_diagnostic.<RULE>.severity = none|silent|suggestion|warning|error
+#
+# RMG020 — Mapperly flags TransactionDto.*Desc display fields as unmapped to the
+# entity. This is intentional one-way (entity -> DTO) mapping, so silence it.
+dotnet_diagnostic.RMG020.severity = none
+
+# S6562 — "provide DateTimeKind". The domain models naive UK calendar dates
+# (paydays, plan dates, bank holidays) with no time-of-day or timezone meaning,
+# so a Kind would be misleading rather than helpful. Silenced solution-wide.
+dotnet_diagnostic.S6562.severity = none
+
+# --- Test project: silence pattern noise -----------------------------------
+# Unit-test fixtures legitimately build/parse literal dates and use instance
+# helpers. These rules add hundreds of findings with no real-world payoff in
+# test code, so scope them off here (they stay active in production code).
+[**/Moneyman.Tests/**.cs]
+dotnet_diagnostic.S6580.severity = none   # format provider when parsing test dates
+dotnet_diagnostic.S2325.severity = none   # test helpers needn't be static
+dotnet_diagnostic.S6966.severity = none   # await ToListAsync/FirstOrDefaultAsync in tests
+dotnet_diagnostic.S1125.severity = none   # redundant boolean literal in assertions
+
+[*.{csproj,props,targets}]
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.{json,js,ts}]
+indent_size = 2

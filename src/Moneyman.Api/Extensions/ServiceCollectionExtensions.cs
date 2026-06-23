@@ -15,6 +15,8 @@ using Moneyman.Services;
 using Moneyman.Services.Interfaces;
 using Moneyman.Services.Validators;
 
+namespace Moneyman.Api.Extensions;
+
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddRepositories(this IServiceCollection services)

@@ -49,7 +49,6 @@ namespace Moneyman.Tests
 
         private readonly Mock<IHolidayService> mockHolidayService = new Mock<IHolidayService>();
 
-        //TODO - Move this to a fixture class
         public OffsetCalculationService NewOffsetCalculationService() =>
             new(
                 mockHolidayService.Object
@@ -171,10 +170,10 @@ namespace Moneyman.Tests
         {
             var paydayService = NewPaydayService();
             mockDateTimeProvider.Setup(x => x.GetNow())
-                .Returns(new DateTime(2022,5,25));
+                .Returns(new DateTime(2022,5,24));
             var result = paydayService.GetNext();
 
-            result.Date.Should().Be(new DateTime(2022,6,27));
+            result.Date.Should().Be(new DateTime(2022,5,25));
         }
     }
 }

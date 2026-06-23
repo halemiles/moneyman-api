@@ -59,3 +59,13 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: results.sarif
+
+      # Also publish the raw SARIF as a downloadable artifact so the full Codacy
+      # report can be pulled from a CI run for offline review (see issue #157).
+      - name: Upload SARIF as build artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codacy-sarif
+          path: results.sarif
+          if-no-files-found: warn

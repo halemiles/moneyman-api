@@ -43,14 +43,14 @@ namespace Moneyman.Tests
             );
 
         private Mock<ITransactionRepository> mockTransactionRepository;
-        private Mock<ILogger<DtpService>> mockLogger;
+        private Mock<ILogger<DefaultPlanDateGenerationStrategy>> mockLogger;
         private DefaultPlanDateGenerationStrategy sut;
 
         [TestInitialize]
         public void SetUp()
         {
             mockTransactionRepository = new Mock<ITransactionRepository>();
-            mockLogger = new Mock<ILogger<DtpService>>();
+            mockLogger = new Mock<ILogger<DefaultPlanDateGenerationStrategy>>();
 
             mockHolidayService = new Mock<IHolidayService>();
             mockHolidayService.Setup(x => x.GenerateHolidays()).Returns(holidays);
@@ -62,11 +62,14 @@ namespace Moneyman.Tests
             );
         }
 
-        [TestMethod]
-        [DataRow("2022-01-08",10,8,8,8,9,8,8,8,8,10,8,8)]
-        public void GenerateMonthly_WithExpectedValues_ReturnsSuccess_1(string startDateString,
-            int day1,int day2,int day3,int day4,int day5,int day6,int day7,int day8,int day9,int day10,int day11,int day12
-        )
+        // Each start date is a distinct case verified against its own child
+        // snapshot. The generated plan dates depend on weekend/bank-holiday
+        // offsetting, so the snapshot is the source of truth for expected output.
+        [DataTestMethod]
+        [DataRow("2022-01-08")]
+        [DataRow("2022-01-15")] // Start date whose April recurrence hits two bank holidays
+        [DataRow("2022-05-08")]
+        public void GenerateMonthly_WithExpectedValues_ReturnsSuccess(string startDateString)
         {
             // Arrange
             var startDate = DateTime.Parse(startDateString);
@@ -89,67 +92,7 @@ namespace Moneyman.Tests
 
             // Assert
             results.Count.Should().Be(24);
-            results.ShouldMatchSnapshot();
-        }
-
-        [TestMethod]
-        [DataRow("2022-01-15",17,15,15,19,16,15,15,15,15,17,15,15)] //Includes two bank holidays in April
-        public void GenerateMonthly_WithExpectedValues_ReturnsSuccess_2(string startDateString,
-            int day1,int day2,int day3,int day4,int day5,int day6,int day7,int day8,int day9,int day10,int day11,int day12
-        )
-        {
-            // Arrange
-            var startDate = DateTime.Parse(startDateString);
-
-            IEnumerable<Transaction> transactions = new List<Transaction>
-            {
-                new Transaction
-                {
-                    Id = 0,
-                    Name = "transaction 1",
-                    StartDate = startDate,
-                    Frequency = Frequency.Monthly
-                }
-            }.AsEnumerable();
-
-            mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
-
-            // Act
-            var results = sut.Generate(null, Frequency.Monthly);
-
-            // Assert
-            results.Count.Should().Be(24);
-            results.ShouldMatchSnapshot();
-        }
-
-        [TestMethod]
-        [DataRow("2022-05-08",10,8,8,8,9,8,8,8,8,10,8,8)]
-        public void GenerateMonthly_WithExpectedValues_ReturnsSuccess_3(string startDateString,
-            int day1,int day2,int day3,int day4,int day5,int day6,int day7,int day8,int day9,int day10,int day11,int day12
-        )
-        {
-            // Arrange
-            var startDate = DateTime.Parse(startDateString);
-
-            IEnumerable<Transaction> transactions = new List<Transaction>
-            {
-                new Transaction
-                {
-                    Id = 0,
-                    Name = "transaction 1",
-                    StartDate = startDate,
-                    Frequency = Frequency.Monthly
-                }
-            }.AsEnumerable();
-
-            mockTransactionRepository.Setup(x => x.GetAll()).Returns(transactions);
-
-            // Act
-            var results = sut.Generate(null, Frequency.Monthly);
-
-            // Assert
-            results.Count.Should().Be(24);
-            results.ShouldMatchSnapshot();
+            results.ShouldMatchChildSnapshot(startDateString);
         }
     }
 }

@@ -1,0 +1,37 @@
+<Project>
+
+  <!--
+    Shared build settings for every project under src/.
+    Enables the .NET (Roslyn) analyzers and SonarAnalyzer consistently so the
+    same findings Codacy reports server-side surface locally as build warnings.
+    See issue #157 for the catalogue of findings this exposes.
+
+    Warnings are NOT treated as errors so the build stays green while the
+    static-analysis debt is worked through.
+  -->
+  <PropertyGroup>
+    <!-- Built-in CA* analyzers. AnalysisMode left at Default: the Sonar S* rules
+         (which match Codacy) come from SonarAnalyzer regardless of this setting,
+         so we avoid the CA1848/CA1873 logging flood that 'Recommended' adds. -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Default</AnalysisMode>
+    <!-- Run .editorconfig-driven code-style (IDE*) rules during build, not just in the IDE -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- Keep findings visible without failing CI -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!--
+    SonarAnalyzer across all projects. Source of the S* rules in issue #157.
+    Previously referenced only in Moneyman.Api; centralised here so every
+    project is scanned. PrivateAssets keeps it out of downstream/package output.
+  -->
+  <ItemGroup>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.24.0.138807">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

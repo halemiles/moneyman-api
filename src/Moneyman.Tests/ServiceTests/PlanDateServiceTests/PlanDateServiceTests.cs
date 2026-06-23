@@ -24,18 +24,17 @@ namespace Moneyman.Tests
     {
         private Mock<IPlanDateRepository> _planDateRepoMock;
         private Mock<ITransactionRepository> _transRepoMock;
-        private Mock<ILogger<PlanDateService>> mockLogger;
         private Mock<ILogger<TransactionService>> mockTransactionServiceLogger;
         private Mock<TransactionMapper> transactionMapper;
         private PlanDateService NewPlanDateService() =>
             new PlanDateService(
-                _planDateRepoMock.Object,
-                mockLogger.Object
+                _planDateRepoMock.Object
             );
 
         private TransactionService NewTransactionService() =>
             new TransactionService(
                 _transRepoMock.Object,
+                _planDateRepoMock.Object,
                  mockTransactionServiceLogger.Object,
                 transactionMapper.Object,
                 new Moneyman.Services.Validators.TransactionDtoValidator());
@@ -44,7 +43,6 @@ namespace Moneyman.Tests
         public void SetUp()
         {
             _planDateRepoMock = new Mock<IPlanDateRepository>();
-            mockLogger = new Mock<ILogger<PlanDateService>>();
             _transRepoMock = new Mock<ITransactionRepository>();
             mockTransactionServiceLogger = new Mock<ILogger<TransactionService>>();
             transactionMapper = new Mock<TransactionMapper>();
@@ -58,7 +56,7 @@ namespace Moneyman.Tests
 
             var service = NewPlanDateService();
             var result = service.GetAll();
-            result.Count().Should().Be(0);
+            result.Count.Should().Be(0);
         }
 
         [TestMethod]
@@ -77,7 +75,7 @@ namespace Moneyman.Tests
 
             var service = NewPlanDateService();
             var result = service.GetAll();
-            result.Count().Should().Be(5);
+            result.Count.Should().Be(5);
         }
 
         [TestMethod]

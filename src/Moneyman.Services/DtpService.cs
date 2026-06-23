@@ -16,7 +16,6 @@ namespace Moneyman.Services
     {
         private readonly ITransactionRepository transactionRepository;
         private readonly IPlanDateRepository planDateRepository;
-        private readonly IOffsetCalculationService offsetCalculationService;
         private readonly IPaydayService paydayService;
         private readonly ILogger<DtpService> logger;
         private readonly IDateTimeProvider dateTimeProvider;
@@ -26,7 +25,6 @@ namespace Moneyman.Services
         public DtpService(
             ITransactionRepository transactionRepository,
             IPlanDateRepository planDateRepository,
-            IOffsetCalculationService offsetCalculationService,
             IPaydayService paydayService,
             IDateTimeProvider dateTimeProvider,
             ILogger<DtpService> logger,
@@ -36,7 +34,6 @@ namespace Moneyman.Services
         {
             this.transactionRepository = transactionRepository;
             this.planDateRepository = planDateRepository;
-            this.offsetCalculationService = offsetCalculationService;
             this.paydayService = paydayService;
             this.dateTimeProvider = dateTimeProvider;
             this.logger = logger;
@@ -59,7 +56,7 @@ namespace Moneyman.Services
             }
 
             logger.LogInformation("Removing existing plan dates");
-            transactionRepository.RemoveAll("PlanDates");
+            planDateRepository.RemoveAll();
 
             List<PlanDate> planDates = new();
             foreach (var frequency in new[] { Frequency.Monthly, Frequency.Weekly, Frequency.Yearly, Frequency.Anticipated, Frequency.Daily })
@@ -79,7 +76,7 @@ namespace Moneyman.Services
             }
             catch(Exception err)
             {
-                logger.LogError("Failed saving plandates {ExceptionText}", err.ToString());
+                logger.LogError(err, "Failed saving plandates");
             }
             return ApiResponse.Success<List<PlanDate>>(planDates, "Successfully generated plandates");
         }
@@ -92,9 +89,9 @@ namespace Moneyman.Services
             {
                 endDate = paydayService.GetNext().Date;
             }
-            catch(Exception)
+            catch(Exception err)
             {
-                logger.LogError("Failed to get payday information");
+                logger.LogError(err, "Failed to get payday information");
                 return ApiResponse.NotFound<DtpDto>("Could not find any paydays. Please ensure they have been generated");
             }
 
@@ -123,7 +120,7 @@ namespace Moneyman.Services
             }, "Success");
         }
 
-        private int WeeksRemaining(DateTime start, DateTime end){
+        private static int WeeksRemaining(DateTime start, DateTime end){
             return (end - start).Days / 7;
         }
 

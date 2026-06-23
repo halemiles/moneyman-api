@@ -23,14 +23,11 @@ namespace Moneyman.Tests
     {
         private Mock<MoneymanContext> _contextMock;
         private List<PlanDate> _planDates;
-        private PlanDateRepository NewPlanDateRepository() =>
-            new PlanDateRepository(_contextMock.Object);
 
         [TestInitialize]
         public void SetUp()
         {
             _contextMock = new  Mock<MoneymanContext>();
-            var fixture = new Fixture();
 
             var transaction1 = new Transaction
             {
@@ -95,7 +92,7 @@ namespace Moneyman.Tests
                 updatedPlanDates = planDateRepository.GetAll().ToList();
             }
 
-            updatedPlanDates.Count().Should().Be(0);
+            updatedPlanDates.Count.Should().Be(0);
         }
 
         [TestMethod]
@@ -112,7 +109,7 @@ namespace Moneyman.Tests
                 updatedPlanDates = planDateRepository.GetAll().ToList();
 
             }
-            updatedPlanDates.Count().Should().Be(2);
+            updatedPlanDates.Count.Should().Be(2);
         }
 
         [TestMethod]

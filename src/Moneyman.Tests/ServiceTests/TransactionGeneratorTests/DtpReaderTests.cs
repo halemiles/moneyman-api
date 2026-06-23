@@ -19,7 +19,6 @@ namespace Moneyman.Tests
     {
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IPlanDateRepository> mockPlanDateRepository;
-        private Mock<IOffsetCalculationService> mockOffsetCalculationService;
         private Mock<IPaydayService> mockPaydayService;
         private Mock<IDateTimeProvider> mockDateTimeProvider;
         private PlanDateMapper planDateMapper;
@@ -30,7 +29,6 @@ namespace Moneyman.Tests
             new DtpService(
                     mockTransactionRepository.Object,
                     mockPlanDateRepository.Object,
-                    mockOffsetCalculationService.Object,
                     mockPaydayService.Object,
                     mockDateTimeProvider.Object,
                     mockLogger.Object,
@@ -43,14 +41,10 @@ namespace Moneyman.Tests
         {
             mockPlanDateRepository = new Mock<IPlanDateRepository>();
             mockTransactionRepository = new Mock<ITransactionRepository>();
-            mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
             mockPaydayService = new Mock<IPaydayService>();
             mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockLogger = new Mock<ILogger<DtpService>>();
             mockGenerationStrategy = new Mock<IPlanDateGenerationStrategy>();
-
-            mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
-                .Returns(new CalculatedPlanDate());
 
             planDateMapper = new PlanDateMapper();
         }
@@ -158,6 +152,24 @@ namespace Moneyman.Tests
 
             // Assert
             result.Payload.PlanDates.Should().BeEmpty();
+        }
+
+        [TestMethod]
+        public void GetCurrent_WhenNoPaydaysExist_ReturnsNotFound()
+        {
+            // Arrange
+            var sut = NewDtpService();
+            mockDateTimeProvider.Setup(x => x.GetToday()).Returns(new DateTime(2022,1,1));
+            mockPaydayService.Setup(x => x.GetNext())
+                .Throws(new InvalidOperationException("No paydays generated"));
+
+            // Act
+            var result = sut.GetCurrent(null);
+
+            // Assert
+            result.StatusCode.Should().Be(StatusCode.NotFound);
+            result.Success.Should().BeFalse();
+            result.Payload.Should().BeNull();
         }
 
         [TestMethod]

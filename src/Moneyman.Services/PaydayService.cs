@@ -34,8 +34,8 @@ namespace Moneyman.Services
 
 		public List<Payday> Generate(int dayOfMonth)
 		{
-			_paydayRepository.RemoveAll("Paydays");
-			List<Payday> payDates = new List<Payday>(); //TODO - Refactor this so we don't have to intialise
+			_paydayRepository.RemoveAll();
+			List<Payday> payDates = new List<Payday>();
 			for(int i=0;i<TotalPaydayMonths;i++)
 			{
 				var plannedDate = new DateTime(_dateTimeProvider.GetNow().Year,1,dayOfMonth);
@@ -57,8 +57,7 @@ namespace Moneyman.Services
         {
             return _paydayRepository
 				.GetAll()
-				.Where(x => x.Date > _dateTimeProvider.GetNow())
-				.FirstOrDefault();
+				.FirstOrDefault(x => x.Date > _dateTimeProvider.GetNow());
 
         }
 
@@ -66,13 +65,12 @@ namespace Moneyman.Services
         {
             return _paydayRepository
 				.GetAll()
-				.Where(x => x.Date < _dateTimeProvider.GetNow())
-				.LastOrDefault();
+				.LastOrDefault(x => x.Date < _dateTimeProvider.GetNow());
         }
 
         public void RemoveAll()
         {
-	        _paydayRepository.RemoveAll("Paydays");
+	        _paydayRepository.RemoveAll();
         }
     }
 }

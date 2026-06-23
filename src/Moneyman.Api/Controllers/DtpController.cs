@@ -2,8 +2,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Moneyman.Domain;
 using Moneyman.Domain.Models;
+using Moneyman.Models.DomainTransferObjects;
 using Moneyman.Services.Interfaces;
 
 namespace Moneyman.Api.Controllers
@@ -26,6 +29,7 @@ namespace Moneyman.Api.Controllers
 
 
         [HttpGet("current")]
+        [ProducesResponseType<ApiResponse<DtpDto>>(StatusCodes.Status200OK)]
         public IActionResult GetCurrentPeriod(int? startingValue, [FromQuery] int? bankAccountId)
         {
             _logger.LogInformation("GET all current");
@@ -34,6 +38,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet("full")]
+        [ProducesResponseType<ApiResponse<DtpDto>>(StatusCodes.Status200OK)]
         public IActionResult GetOffsetPeriod([FromQuery] int? bankAccountId)
         {
             _logger.LogInformation("GET all DTP");
@@ -42,6 +47,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet("all")]
+        [ProducesResponseType<ApiResponse<DtpDto>>(StatusCodes.Status200OK)]
         public IActionResult GetAllPeriods([FromQuery] int? bankAccountId)
         {
             _logger.LogInformation("GET all DTP (full span)");
@@ -50,6 +56,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpPost("generate")]
+        [ProducesResponseType<DtpHttpResponse>(StatusCodes.Status200OK)]
         public async Task<IActionResult> Generate([FromQuery]int? transactionId)
         {
             _logger.LogInformation("GET generate DTP {TransactionId}", transactionId ?? 0);
@@ -63,11 +70,11 @@ namespace Moneyman.Api.Controllers
                     return Ok(new DtpHttpResponse{RecordCount = 0, Message = planDates.Message});
                 }
 
-                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count(), Message = planDates.Message});
+                return Ok(new DtpHttpResponse{RecordCount = planDates.Payload.Count, Message = planDates.Message});
             }
             catch(Exception err)
             {
-                _logger.LogError(err.ToString());
+                _logger.LogError(err, "Unexpected error generating DTP");
                 return Ok(new DtpHttpResponse{RecordCount = 0, Message = $"Unexpected error occurred: {err.Message}"});
             }
         }

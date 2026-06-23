@@ -14,33 +14,6 @@ namespace Moneyman.Tests
     [TestClass]
     public class CalculatedPlanDateTests
     {
-        private Mock<ITransactionService> mockTransactionService;
-        private Mock<ITransactionRepository> mockTransactionRepository;
-        private Mock<IHolidayService> mockHolidayService;
-
-        private OffsetCalculationService NewOffsetCalculationService() =>
-            new OffsetCalculationService(
-                mockHolidayService.Object
-            );
-
-        [TestInitialize]
-        public void SetUp()
-        {
-            mockTransactionService = new Mock<ITransactionService>();
-            mockTransactionRepository = new Mock<ITransactionRepository>();
-            mockHolidayService = new Mock<IHolidayService>();
-
-            var holidays = new List<string>
-            {
-                "01-01-2022", //New years day
-                "05-05-2022", //A random Thursday - Not likley to ever happen IRL
-                "20-06-2022", //Bank holiday Monday
-                "24-12-2022", //Christmas day
-                "25-12-2022"  //Boxing day
-            };
-            mockHolidayService.Setup(x => x.GenerateHolidays()).Returns(holidays);
-        }
-
         [TestMethod]
         public void PlanDateString_WithDate_ReturnsStringInCorrectFormat()
         {

@@ -20,28 +20,15 @@ namespace Moneyman.Tests
     {
         private Mock<ITransactionRepository> mockTransactionRepository;
         private Mock<IOffsetCalculationService> mockOffsetCalculationService;
-        private Mock<ILogger<DtpService>> mockLogger;
+        private Mock<ILogger<DefaultPlanDateGenerationStrategy>> mockLogger;
         private DefaultPlanDateGenerationStrategy sut;
-
-        private readonly List<string> holidays = new List<string>
-        {
-                "03-01-2022",
-                "15-04-2022",
-                "18-04-2022",
-                "02-05-2022",
-                "02-06-2022",
-                "03-06-2022",
-                "29-08-2022",
-                "26-12-2022",
-                "27-12-2022"
-        };
 
         [TestInitialize]
         public void SetUp()
         {
             mockTransactionRepository = new Mock<ITransactionRepository>();
             mockOffsetCalculationService = new Mock<IOffsetCalculationService>();
-            mockLogger = new Mock<ILogger<DtpService>>();
+            mockLogger = new Mock<ILogger<DefaultPlanDateGenerationStrategy>>();
 
             mockOffsetCalculationService.Setup(x => x.CalculateOffset(It.IsAny<DateTime>()))
                 .Returns((DateTime d) => new CalculatedPlanDate { PlanDate = d });

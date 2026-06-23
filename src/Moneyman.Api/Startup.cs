@@ -44,8 +44,11 @@ namespace Moneyman.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // Configure must remain an instance method: the ASP.NET Startup convention invokes it on the Startup instance.
+#pragma warning disable S2325
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+#pragma warning restore S2325
             // Runs after Sentry's own middleware (registered by UseSentry), so the
             // tags it sets land on the current request's Sentry scope.
             app.UseMiddleware<SentryTestContextMiddleware>();
@@ -58,8 +61,8 @@ namespace Moneyman.Api
             }
 
 	        app.UseCors(env.IsDevelopment()
-	            ? ServiceCollectionExtensions.AllowAnyOriginPolicy
-	            : ServiceCollectionExtensions.RestrictedOriginsPolicy);
+	            ? Extensions.ServiceCollectionExtensions.AllowAnyOriginPolicy
+	            : Extensions.ServiceCollectionExtensions.RestrictedOriginsPolicy);
 
             app.UseRouting();
 

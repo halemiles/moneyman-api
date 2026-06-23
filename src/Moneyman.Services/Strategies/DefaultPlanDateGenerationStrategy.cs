@@ -12,13 +12,13 @@ namespace Moneyman.Services
     {
         private readonly ITransactionRepository transactionRepository;
         private readonly IOffsetCalculationService offsetCalculationService;
-        private readonly ILogger<DtpService> logger;
+        private readonly ILogger<DefaultPlanDateGenerationStrategy> logger;
         private const int TotalPlanDateYears = 2;
 
         public DefaultPlanDateGenerationStrategy(
             ITransactionRepository transactionRepository,
             IOffsetCalculationService offsetCalculationService,
-            ILogger<DtpService> logger
+            ILogger<DefaultPlanDateGenerationStrategy> logger
         )
         {
             this.transactionRepository = transactionRepository;
@@ -73,7 +73,7 @@ namespace Moneyman.Services
                     }
                     catch (Exception err)
                     {
-                        logger.LogError("Error generating plandate {TransactionName} {iteration} {exceptionText}", transaction.Name, i, err.ToString());
+                        logger.LogError(err, "Error generating plandate {TransactionName} {Iteration}", transaction.Name, i);
                     }
                 }
             }

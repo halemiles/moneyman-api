@@ -31,6 +31,7 @@ namespace Moneyman.Tests
         private TransactionService NewTransactionService() =>
             new TransactionService(
                 _transRepoMock.Object,
+                _planDateRepoMock.Object,
                 mockLogger.Object,
                 _mapper.Object,
                 new TransactionDtoValidator()
@@ -53,7 +54,7 @@ namespace Moneyman.Tests
 
             var service = NewTransactionService();
             var result = service.GetAll();
-            result.Count().Should().Be(0);
+            result.Count.Should().Be(0);
         }
 
         [TestMethod]
@@ -189,7 +190,7 @@ namespace Moneyman.Tests
                 Amount = 200,
                 Frequency = Frequency.Weekly
             };
-            var result = service.Update(updatedTransaction);
+            service.Update(updatedTransaction);
 
             _transRepoMock.Verify(x => x.Update(It.IsAny<Transaction>()), Times.Once());
         }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Moneyman.Domain;
 using Moneyman.Domain.MapperProfiles;
 using Moneyman.Interfaces;
@@ -53,6 +54,8 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType<TransactionDto>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Update(TransactionDto transactionDto)
         {
             _logger.LogInformation("Updating transaction {TransactionName}", transactionDto?.Name);
@@ -68,6 +71,8 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType<Transaction>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
             _logger.LogInformation("GET transaction {TransactionId}", id);
@@ -81,6 +86,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType<List<TransactionDto>>(StatusCodes.Status200OK)]
         public IActionResult GetAll([FromQuery] bool? anticipated, [FromQuery] int? bankAccountId)
         {
             _logger.LogInformation("GET all transactions");

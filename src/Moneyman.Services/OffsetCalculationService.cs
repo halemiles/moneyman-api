@@ -56,8 +56,8 @@ namespace Moneyman.Services
 
                 }
 
-                //This is to prevent infinate loops
-                //TODO - Unit test to make sure this doesnt happen in the first place
+                //This is to prevent infinite loops (covered by
+                //CalculateOffset_WhenNoWorkingDayFoundWithinLimit_StopsAndReturnsInvalid)
                 if(foundLoopCount >=10)
                 {
                     found  = true;

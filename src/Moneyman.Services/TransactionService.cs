@@ -15,6 +15,7 @@ namespace Moneyman.Services
 	public class TransactionService : ITransactionService
 	{
 		private readonly ITransactionRepository _transactionRepository;
+    private readonly IPlanDateRepository _planDateRepository;
     private readonly ILogger<TransactionService> logger;
 
     private readonly TransactionMapper transactionMapper;
@@ -22,12 +23,14 @@ namespace Moneyman.Services
 
 		public TransactionService(
       ITransactionRepository transactionRepository,
+      IPlanDateRepository planDateRepository,
       ILogger<TransactionService> logger,
       TransactionMapper transactionMapper,
       IValidator<TransactionDto> transactionValidator
     )
 		{
 			_transactionRepository = transactionRepository;
+      _planDateRepository = planDateRepository;
       this.logger = logger;
       this.transactionMapper = transactionMapper;
       this.transactionValidator = transactionValidator;
@@ -86,15 +89,15 @@ namespace Moneyman.Services
     public void Delete(int id)
     {
         _transactionRepository.Remove(id);
-        logger.LogInformation("Deleting transaction {TransactionId}", id); //TODO - Add transaction name to log?
+        logger.LogInformation("Deleting transaction {TransactionId}", id);
         _transactionRepository.Save();
     }
 
     public void DeleteAll()
     {
-      // Remove dependent plan dates via repository SQL and then transactions
-      _transactionRepository.RemoveAll("PlanDates");
-      _transactionRepository.RemoveAll("Transactions");
+      // Remove dependent plan dates first, then the transactions themselves
+      _planDateRepository.RemoveAll();
+      _transactionRepository.RemoveAll();
       logger.LogInformation("Deleting all transactions and plan dates");
       _transactionRepository.Save();
     }
@@ -128,7 +131,7 @@ namespace Moneyman.Services
         }
         catch (Exception err)
         {
-          logger.LogError("Failed to save transaction {TransactionName} {Error}", transaction.Name, err.Message);
+          logger.LogError(err, "Failed to save transaction {TransactionName}", transaction.Name);
           return ApiResponse.ValidationError<int>("Failed to save transaction");
         }
       }

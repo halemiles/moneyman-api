@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Moneyman.Domain;
@@ -60,11 +61,10 @@ namespace Moneyman.Persistence
         return await _context.SaveChangesAsync();
     }
 
-    //TODO: Update this to accept T
-    public bool RemoveAll(string tableName)
+    //Bulk-deletes every row of T's table directly in the database.
+    public int RemoveAll()
     {
-        var result = _context.Database.ExecuteSqlRaw($"DELETE FROM {tableName}");
-        return result == 1;
+        return _context.Set<T>().ExecuteDelete();
     }
   }
 }

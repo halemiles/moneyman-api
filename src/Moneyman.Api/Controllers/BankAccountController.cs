@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Moneyman.Domain;
 using Moneyman.Interfaces;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace Moneyman.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType<List<BankAccountDto>>(StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
             _logger.LogInformation("GET all bank accounts");
