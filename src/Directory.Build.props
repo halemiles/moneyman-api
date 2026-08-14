@@ -28,7 +28,7 @@
     project is scanned. PrivateAssets keeps it out of downstream/package output.
   -->
   <ItemGroup>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.24.0.138807">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.32.0.713">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
